@@ -9,6 +9,7 @@ body        | text      | not null
 author_id   | integer   | not null, foreign key (references users), indexed
 notebook_id | integer   | not null, foreign key (references notebooks), indexed
 archived    | boolean   | not null, default: false
+shortcut    | boolean   | not null, default: false
 
 ## notebooks
 column name | data type | details
@@ -16,7 +17,7 @@ column name | data type | details
 id          | integer   | not null, primary key
 author_id   | integer   | not null, foreign key (references users), indexed
 title       | string    | not null
-description | string    | 
+description | string    |
 
 ## reminders
 column name | data type | details
