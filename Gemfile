@@ -46,3 +46,7 @@ group :development do
   gem 'binding_of_caller'
   gem 'better_errors'
 end
+
+group :production do
+  gem 'rails_12factor'
+end
