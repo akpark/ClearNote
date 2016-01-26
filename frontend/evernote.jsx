@@ -5,31 +5,25 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var root = document.getElementById('root');
+var NavBar = require('./components/navbar');
 
 var App = React.createClass({
   render: function(){
     return (
         <div>
-          <header><h1>ClearNote</h1></header>
+          <header></header>
           {this.props.children}
         </div>
     );
   }
 });
 
-// var routes = (
-    // <Route path="/" component={App}>
-    //   <IndexRoute component={Search}/>
-    //   <Route path="benches/new" component={BenchForm}/>
-    //   {this.props.children}
-    // </Route>
-// );
-
 var routes = (
   <Route path="/" component={App}>
-    // <IndexRoute component={Notebooks}/>
+    <IndexRoute component={NavBar}/>
   </Route>
 );
 
-
-ReactDOM.render(<Router>{routes}</Router>, root);
+document.addEventListener("DOMContentLoaded", function() {
+  ReactDOM.render(<Router>{routes}</Router>, root);
+});
