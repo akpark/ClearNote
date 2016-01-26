@@ -5,7 +5,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.create(user_params);
+    @user = User.create(user_params)
     if @user.save
       sign_in(@user)
       redirect_to('/')

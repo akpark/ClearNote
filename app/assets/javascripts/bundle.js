@@ -52,6 +52,7 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var root = document.getElementById('root');
 	var NavBar = __webpack_require__(206);
+	var NotesIndex = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./components/notes/index\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -60,7 +61,7 @@
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement('header', null),
+	      React.createElement(NavBar, null),
 	      this.props.children
 	    );
 	  }
@@ -69,7 +70,7 @@
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: NavBar })
+	  React.createElement(IndexRoute, { component: NotesIndex })
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {

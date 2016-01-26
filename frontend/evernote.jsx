@@ -6,12 +6,13 @@ var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var root = document.getElementById('root');
 var NavBar = require('./components/navbar');
+var NotesIndex = require('./components/notes/index');
 
 var App = React.createClass({
   render: function(){
     return (
         <div>
-          <header></header>
+          <NavBar />
           {this.props.children}
         </div>
     );
@@ -20,7 +21,8 @@ var App = React.createClass({
 
 var routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={NavBar}/>
+    <IndexRoute component={NotesIndex}/>
+    
   </Route>
 );
 
