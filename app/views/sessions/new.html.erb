@@ -1,0 +1,26 @@
+<div class="sign-in">
+  <h1>Sign in</h1>
+
+  <form class="sign-in-form" action="<%= session_url %>" method="post">
+    <%= auth_token_input %>
+
+    <div class="input">
+      <label for="username">Email address or username</label>
+      <input id="username" type="text" name="user[username]" value="">
+    </div>
+
+    <div class="input">
+      <label for="password">Password</label>
+      <input id="password" type="password" name="user[password]" value="">
+    </div>
+
+    <div class="submit">
+      <input type="submit" value="Sign In">
+    </div>
+
+  </form>
+  <!-- Forgot password? -->
+
+  <p>Don't have an account?</p>
+  <%= link_to 'Create Account', new_user_url %>
+</div>

@@ -1,0 +1,25 @@
+<div class="sign-up">
+  <h1>Create Account</h1>
+
+  <form class="sign-up-form" action="<%= users_url %>" method="post">
+    <%= auth_token_input %>
+
+    <div class="input">
+      <label for="username">Your Email Address</label>
+      <input id="username" type="text" name="user[username]" value="">
+    </div>
+
+    <div class="input">
+      <label for="password">Create a password</label>
+      <input id="password" type="password" name="user[password]" value="">
+    </div>
+
+    <div class="submit">
+      <input type="submit" value="Create Account">
+    </div>
+
+  </form>
+
+  <div>Already have an account?</div>
+  <%= link_to 'Sign in', new_session_url %>
+</div>
