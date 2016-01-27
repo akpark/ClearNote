@@ -1,4 +1,5 @@
-var NoteConstants = require('../constants/NoteConstants');
+var NoteConstants = require('../constants/noteConstants');
+var AppDispatcher = require('../dispatcher/dispatcher')
 
 var NoteActions = {
   fetchAllNotes: function(notes) {
@@ -14,12 +15,6 @@ var NoteActions = {
       note: note
     });
   },
-
-  createNote: function() {
-    AppDispatcher.dispatch({
-
-    });
-  }
 };
 
 module.exports = NoteActions;

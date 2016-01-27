@@ -1,19 +1,31 @@
 var NoteStore = require('../stores/note');
-var ApiActions = require('../actions/apiActions');
+var NoteActions = require('../actions/NoteActions');
 
 var ApiUtil = {
   fetchAllNotes: function() {
-    $.get('api/notes', null, function(notes){
-      ApiActions.receiveAllNotes(notes);
+    $.ajax({
+      method: "GET",
+      url: "/api/notes",
+      dataType: "json",
+      success: function(notes) {
+        NoteActions.fetchAllNotes(notes);
+      }
     });
   },
 
   fetchSingleNote: function() {
-
+    $.ajax({
+      method: "GET",
+      url: "",
+      dataType: "json",
+      success: function(note) {
+        ApiActions.receiveSingleNote(note);
+      }
+    })
   },
 
   createNote: function() {
-    
+
   }
 };
 

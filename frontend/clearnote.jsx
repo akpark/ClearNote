@@ -14,7 +14,6 @@ var App = React.createClass({
         <div>
           <Navbar />
           <NotesIndex />
-          {this.props.children}
         </div>
     );
   }

@@ -1,6 +1,7 @@
 var React = require('react');
 var NoteStore = require('../../stores/note');
 var ApiUtil = require('../../util/apiUtil');
+var NoteActions = require('../../actions/noteActions')
 
 var NotesIndex = React.createClass({
   getInitialState: function() {
