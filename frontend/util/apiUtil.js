@@ -8,18 +8,19 @@ var ApiUtil = {
       url: "/api/notes",
       dataType: "json",
       success: function(notes) {
-        NoteActions.fetchAllNotes(notes);
+        debugger
+        NoteActions.receiveAllNotes(notes);
       }
     });
   },
 
-  fetchSingleNote: function() {
+  fetchSingleNote: function(id) {
     $.ajax({
       method: "GET",
-      url: "",
+      url: "api/notes/" + id,
       dataType: "json",
       success: function(note) {
-        ApiActions.receiveSingleNote(note);
+        NoteActions.receiveSingleNote(note);
       }
     });
   },
@@ -35,10 +36,16 @@ var ApiUtil = {
     });
   },
 
-  editNote: function() {
+  editNote: function(note, callback) {
     $.ajax({
       method: "PATCH",
-      url: ""
+      url: "api/notes/" + note.id,
+      data: {note: note},
+      success: function (note) {
+        debugger
+        NoteActions.editNote(note);
+        callback();
+      }
     });
   },
 

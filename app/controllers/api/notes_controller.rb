@@ -19,11 +19,13 @@ class Api::NotesController < ApplicationController
   end
 
   def show
-
+    @note = Note.find(params[:id])
   end
 
   def update
-    
+    @note = Note.find(params[:id])
+    byebug
+    @note.update(note_params)
   end
 
   private

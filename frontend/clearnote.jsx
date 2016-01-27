@@ -8,12 +8,14 @@ var root = document.getElementById('root');
 var Navbar = require('./components/navbar');
 var NotesIndex = require('./components/notes/index');
 var NoteForm = require('./components/notes/form');
+var NoteDetail = require('./components/notes/detail');
 
 var App = React.createClass({
   render: function(){
     return (
         <div className="app group">
           <Navbar history={this.props.history}/>
+          <NotesIndex />
           {this.props.children}
         </div>
     );
@@ -22,8 +24,8 @@ var App = React.createClass({
 
 var routes = (
   <Route path="/" component={App}>
-    <IndexRoute component={NotesIndex}/>
     <Route path="api/notes/new" component={NoteForm} />
+    <Route path="api/notes/:noteId" component={NoteDetail} />
   </Route>
 );
 

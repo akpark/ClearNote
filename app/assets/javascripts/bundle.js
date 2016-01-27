@@ -54,6 +54,7 @@
 	var Navbar = __webpack_require__(206);
 	var NotesIndex = __webpack_require__(207);
 	var NoteForm = __webpack_require__(235);
+	var NoteDetail = __webpack_require__(240);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -63,6 +64,7 @@
 	      'div',
 	      { className: 'app group' },
 	      React.createElement(Navbar, { history: this.props.history }),
+	      React.createElement(NotesIndex, null),
 	      this.props.children
 	    );
 	  }
@@ -71,8 +73,8 @@
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
-	  React.createElement(IndexRoute, { component: NotesIndex }),
-	  React.createElement(Route, { path: 'api/notes/new', component: NoteForm })
+	  React.createElement(Route, { path: 'api/notes/new', component: NoteForm }),
+	  React.createElement(Route, { path: 'api/notes/:noteId', component: NoteDetail })
 	);
 	
 	document.addEventListener("DOMContentLoaded", function () {
@@ -24079,13 +24081,13 @@
 	  },
 	
 	  componentDidMount: function () {
-	    NoteStore.addListener(this._onChange);
+	    this.notesListener = NoteStore.addListener(this._onChange);
 	    ApiUtil.fetchAllNotes();
 	  },
 	
-	  // componentWillUnmount: function() {
-	  //   NoteStore.removeListener(this._onChange);
-	  // },
+	  componentWillUnmount: function () {
+	    this.notesListener.remove();
+	  },
 	
 	  _onChange: function () {
 	    this.setState({ notes: NoteStore.all() });
@@ -24095,13 +24097,19 @@
 	    var notes = this.state.notes.map(function (note, key) {
 	      return React.createElement(
 	        NoteIndexItem,
-	        { key: key, note: note },
+	        { children: this.props.children, key: key, note: note },
 	        note.title
 	      );
-	    });
+	    }.bind(this));
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'notes-index' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Notes'
+	      ),
 	      notes
 	    );
 	  }
@@ -24124,8 +24132,31 @@
 	  return _notes.slice(0);
 	};
 	
+	NoteStore.find = function (id) {
+	  return _notes.find(function (note) {
+	    return note.id == id;
+	  });
+	};
+	
 	var resetNotes = function (notes) {
 	  _notes = notes.slice(0);
+	};
+	
+	var resetNote = function (newNote) {
+	  _notes.forEach(function (note) {
+	    if (note.id == newNote.id) {
+	      note = newNote;
+	    }
+	  });
+	};
+	
+	var deleteNote = function (note) {
+	  _notes.forEach(function (note) {
+	    var idx = _notes.indexOf(note);
+	    if (idx > 0) {
+	      _notes.splice(idx, 1);
+	    }
+	  });
 	};
 	
 	NoteStore.__onDispatch = function (payload) {
@@ -24134,9 +24165,25 @@
 	      resetNotes(payload.notes);
 	      this.__emitChange();
 	      break;
+	
+	    case NoteConstants.NOTE_RECEIVED:
+	      resetNote(payload.note);
+	      this.__emitChange();
+	      break;
+	
+	    case NoteConstants.EDIT_NOTE:
+	      resetNote(payload.note);
+	      this.__emitChange();
+	      break;
+	
+	    case NoteConstants.DELETE_NOTE:
+	      deleteNote(payload.note);
+	      this.__emitChange();
+	      break;
 	  }
 	};
 	
+	window.NoteStore = NoteStore;
 	module.exports = NoteStore;
 
 /***/ },
@@ -30931,18 +30978,19 @@
 	      url: "/api/notes",
 	      dataType: "json",
 	      success: function (notes) {
-	        NoteActions.fetchAllNotes(notes);
+	        debugger;
+	        NoteActions.receiveAllNotes(notes);
 	      }
 	    });
 	  },
 	
-	  fetchSingleNote: function () {
+	  fetchSingleNote: function (id) {
 	    $.ajax({
 	      method: "GET",
-	      url: "",
+	      url: "api/notes/" + id,
 	      dataType: "json",
 	      success: function (note) {
-	        ApiActions.receiveSingleNote(note);
+	        NoteActions.receiveSingleNote(note);
 	      }
 	    });
 	  },
@@ -30958,10 +31006,16 @@
 	    });
 	  },
 	
-	  editNote: function () {
+	  editNote: function (note, callback) {
 	    $.ajax({
 	      method: "PATCH",
-	      url: ""
+	      url: "api/notes/" + note.id,
+	      data: { note: note },
+	      success: function (note) {
+	        debugger;
+	        NoteActions.editNote(note);
+	        callback();
+	      }
 	    });
 	  },
 	
@@ -30985,14 +31039,14 @@
 	var AppDispatcher = __webpack_require__(228);
 	
 	var NoteActions = {
-	  fetchAllNotes: function (notes) {
+	  receiveAllNotes: function (notes) {
 	    AppDispatcher.dispatch({
 	      actionType: NoteConstants.NOTES_RECEIVED,
 	      notes: notes
 	    });
 	  },
 	
-	  fetchSingleNote: function (note) {
+	  receiveSingleNote: function (note) {
 	    AppDispatcher.dispatch({
 	      actionType: NoteConstants.NOTE_RECEIVED,
 	      note: note
@@ -31006,7 +31060,7 @@
 	    });
 	  },
 	
-	  editNote: function () {
+	  editNote: function (note) {
 	    AppDispatcher.dispatch({
 	      actionType: NoteConstants.EDIT_NOTE,
 	      note: note
@@ -31029,28 +31083,41 @@
 
 	var React = __webpack_require__(1);
 	var NoteStore = __webpack_require__(208);
+	var History = __webpack_require__(159).History;
+	var NoteDetail = __webpack_require__(240);
 	
 	var NoteIndexItem = React.createClass({
 	  displayName: 'NoteIndexItem',
+	
+	  mixins: [History],
 	
 	  getInitialState: function () {
 	    return { note: this.props.note };
 	  },
 	
+	  showDetail: function () {
+	    var note = this.state.note;
+	    this.history.pushState(null, 'api/notes/' + this.props.note.id, note);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.setState({ selected: false });
+	  },
+	
 	  render: function () {
 	    var note = this.state.note;
+	
 	    return React.createElement(
 	      'div',
-	      { className: 'note-index-item' },
+	      null,
 	      React.createElement(
 	        'div',
-	        null,
-	        note.title
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        note.description
+	        { onClick: this.showDetail, className: 'note-index-item' },
+	        React.createElement(
+	          'div',
+	          null,
+	          note.title
+	        )
 	      )
 	    );
 	  }
@@ -31349,6 +31416,99 @@
 	};
 	
 	module.exports = ReactStateSetters;
+
+/***/ },
+/* 240 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NoteStore = __webpack_require__(208);
+	var ApiUtil = __webpack_require__(231);
+	var History = __webpack_require__(159).History;
+	var LinkedStateMixin = __webpack_require__(236);
+	
+	var typingTimer;
+	var doneTypingInterval = 3000;
+	
+	var NoteDetail = React.createClass({
+	  displayName: 'NoteDetail',
+	
+	  mixins: [LinkedStateMixin],
+	
+	  getStateFromStore: function () {
+	    var note = NoteStore.find(parseInt(this.props.params.noteId));
+	    note = note || { id: 0, title: "", body: "" };
+	    return { id: note.id, title: note.title, body: note.body };
+	  },
+	
+	  getInitialState: function () {
+	    return this.getStateFromStore();
+	  },
+	
+	  _onChange: function () {
+	    this.setState(this.getStateFromStore());
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    //with these new props, we fetch the new note
+	    ApiUtil.fetchSingleNote(parseInt(newProps.params.noteId));
+	  },
+	
+	  componentDidMount: function () {
+	    this.noteListener = NoteStore.addListener(this._onChange);
+	    ApiUtil.fetchSingleNote(parseInt(this.props.params.noteId));
+	  },
+	
+	  handleTitleChange: function (e) {
+	    this.setState({ title: e.target.value });
+	  },
+	
+	  handleBodyChange: function (e) {
+	    if (this.timer) {
+	      clearTimeout(this.timer);
+	    }
+	    this.timer = setTimeout(function () {
+	      var note = { id: this.state.id, title: this.state.title, body: this.state.body };
+	      ApiUtil.editNote(note, function () {
+	        console.log("Successfully edited!");
+	      });
+	    }.bind(this), 3000);
+	
+	    this.setState({ body: e.target.value });
+	  },
+	
+	  render: function () {
+	    //a form for that particular note
+	    //automatically update the note when input
+	    return React.createElement(
+	      'form',
+	      { className: 'note-detail-form' },
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement('label', { htmlFor: 'note-title' }),
+	        React.createElement('input', {
+	          onChange: this.handleTitleChange,
+	          type: 'text',
+	          id: 'note-title',
+	          value: this.state.title
+	        })
+	      ),
+	      React.createElement(
+	        'div',
+	        null,
+	        React.createElement('label', { htmlFor: 'note-body' }),
+	        React.createElement('textarea', {
+	          onChange: this.handleBodyChange,
+	          id: 'note-body',
+	          value: this.state.body
+	        })
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NoteDetail;
 
 /***/ }
 /******/ ]);

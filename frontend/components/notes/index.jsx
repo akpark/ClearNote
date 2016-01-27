@@ -10,13 +10,13 @@ var NotesIndex = React.createClass({
   },
 
   componentDidMount: function() {
-    NoteStore.addListener(this._onChange);
+    this.notesListener = NoteStore.addListener(this._onChange);
     ApiUtil.fetchAllNotes();
   },
 
-  // componentWillUnmount: function() {
-  //   NoteStore.removeListener(this._onChange);
-  // },
+  componentWillUnmount: function() {
+    this.notesListener.remove();
+  },
 
   _onChange: function() {
     this.setState({notes: NoteStore.all()});
@@ -25,11 +25,13 @@ var NotesIndex = React.createClass({
   render: function() {
     var notes = this.state.notes.map(function(note, key) {
       return (
-        <NoteIndexItem key={key} note={note}>{note.title}</NoteIndexItem>
+        <NoteIndexItem children={this.props.children} key={key} note={note}>{note.title}</NoteIndexItem>
       );
-    });
+    }.bind(this));
+
     return(
       <div className="notes-index">
+        <h1>Notes</h1>
         {notes}
       </div>
     );
