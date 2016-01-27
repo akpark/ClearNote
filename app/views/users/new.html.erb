@@ -14,12 +14,10 @@
       <input id="password" type="password" name="user[password]" value="">
     </div>
 
-    <div class="submit">
-      <input type="submit" value="Create Account">
-    </div>
+    <button>Create Account</button>
 
   </form>
 
-  <div>Already have an account?</div>
-  <%= link_to 'Sign in', new_session_url %>
+  <div class="sign-in-question">Already have an account?</div>
+  <a class="sign-in-link" href="/session/new">Sign in</a>
 </div>

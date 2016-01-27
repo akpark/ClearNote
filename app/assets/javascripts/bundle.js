@@ -58,10 +58,11 @@
 	  displayName: 'App',
 	
 	  render: function () {
+	    debugger;
 	    return React.createElement(
 	      'div',
 	      null,
-	      React.createElement(Navbar, null),
+	      React.createElement(Navbar, { history: this.props.history }),
 	      React.createElement(NotesIndex, null)
 	    );
 	  }
@@ -24137,10 +24138,40 @@
 	var React = __webpack_require__(1);
 	
 	var NavBar = React.createClass({
-	  displayName: 'NavBar',
+	  displayName: "NavBar",
+	
+	  handleNewNoteClick: function () {},
+	
+	  handleNotesClick: function () {
+	    this.props.history.pushState(null, "api/notes");
+	  },
+	
+	  handleNotebooksClick: function () {},
 	
 	  render: function () {
-	    return React.createElement('div', null);
+	    return React.createElement(
+	      "ul",
+	      null,
+	      React.createElement(
+	        "div",
+	        null,
+	        React.createElement(
+	          "li",
+	          { onClick: this.handleNewNoteClick },
+	          "New Note"
+	        ),
+	        React.createElement(
+	          "li",
+	          { onClick: this.handleNotesClick },
+	          "Notes"
+	        ),
+	        React.createElement(
+	          "li",
+	          { onClick: this.handleNotebooksClick },
+	          "Notebooks"
+	        )
+	      )
+	    );
 	  }
 	});
 	

@@ -10,9 +10,10 @@ var NotesIndex = require('./components/notes/index');
 
 var App = React.createClass({
   render: function(){
+    debugger
     return (
         <div>
-          <Navbar />
+          <Navbar history={this.props.history} />
           <NotesIndex />
         </div>
     );

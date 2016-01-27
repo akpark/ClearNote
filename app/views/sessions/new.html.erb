@@ -14,13 +14,12 @@
       <input id="password" type="password" name="user[password]" value="<%=@user.password%>">
     </div>
 
-    <div class="submit">
-      <input type="submit" value="Sign In">
-    </div>
+    <button>Sign In</button>
 
   </form>
   <!-- Forgot password? -->
 
-  <p>Don't have an account?</p>
-  <%= link_to 'Create Account', new_user_url %>
+  <div class="create-account-question">Don't have an account?</div>
+  <a class="create-account-link" href="/users/new">Create Account</a>
+
 </div>
