@@ -7,13 +7,14 @@ var IndexRoute = ReactRouter.IndexRoute;
 var root = document.getElementById('root');
 var Navbar = require('./components/navbar');
 var NotesIndex = require('./components/notes/index');
+var NoteForm = require('./components/notes/form');
 
 var App = React.createClass({
   render: function(){
     return (
         <div className="app group">
-          <Navbar history={this.props.history} />
-          <NotesIndex />
+          <Navbar history={this.props.history}/>
+          {this.props.children}
         </div>
     );
   }
@@ -21,9 +22,15 @@ var App = React.createClass({
 
 var routes = (
   <Route path="/" component={App}>
+    <IndexRoute component={NotesIndex}/>
+    <Route path="api/notes/new" component={NoteForm} />
   </Route>
 );
 
 document.addEventListener("DOMContentLoaded", function() {
   ReactDOM.render(<Router>{routes}</Router>, root);
 });
+
+
+// var editor = new Quill('#editor');
+// editor.addModule('toolbar', { container: '#toolbar' });
