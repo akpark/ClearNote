@@ -15,4 +15,4 @@
 ### Actions
 
 ## Gems/Libraries
-* react-quill (npm)
+* summernote

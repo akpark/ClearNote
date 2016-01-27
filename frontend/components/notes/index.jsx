@@ -28,7 +28,7 @@ var NotesIndex = React.createClass({
       );
     });
     return(
-      <ul>
+      <ul className="notes-index">
         {notes}
       </ul>
     );

@@ -15,12 +15,11 @@ var NavBar = React.createClass({
 
   render: function() {
     return (
-      <ul>
-        <div>
-          <li onClick={this.handleNewNoteClick}>New Note</li>
-          <li onClick={this.handleNotesClick}>Notes</li>
-          <li onClick={this.handleNotebooksClick}>Notebooks</li>
-        </div>
+      <ul className="navbar group">
+        <img class="logo" />
+        <li onClick={this.handleNewNoteClick}>New Note</li>
+        <li onClick={this.handleNotesClick}>Notes</li>
+        <li onClick={this.handleNotebooksClick}>Notebooks</li>
       </ul>
     )
   }

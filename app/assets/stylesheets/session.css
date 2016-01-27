@@ -13,10 +13,15 @@ html, header, body, footer {
   background: transparent;
 }
 
+ul {
+  list-style: none;
+}
+
 body {
   background: #f6f6f6;
   font-family: didot;
   color: #747474;
+  height: 100%;
 }
 
 .sign-in, .sign-up {

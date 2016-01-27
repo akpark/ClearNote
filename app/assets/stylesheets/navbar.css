@@ -1,0 +1,12 @@
+.navbar {
+  height: 100%;
+  float: left;
+}
+
+.navbar > li {
+
+}
+
+.navbar > li:hover {
+  cursor: pointer;
+}

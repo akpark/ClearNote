@@ -58,10 +58,9 @@
 	  displayName: 'App',
 	
 	  render: function () {
-	    debugger;
 	    return React.createElement(
 	      'div',
-	      null,
+	      { className: 'app group' },
 	      React.createElement(Navbar, { history: this.props.history }),
 	      React.createElement(NotesIndex, null)
 	    );
@@ -24151,25 +24150,22 @@
 	  render: function () {
 	    return React.createElement(
 	      "ul",
-	      null,
+	      { className: "navbar group" },
+	      React.createElement("img", { "class": "logo" }),
 	      React.createElement(
-	        "div",
-	        null,
-	        React.createElement(
-	          "li",
-	          { onClick: this.handleNewNoteClick },
-	          "New Note"
-	        ),
-	        React.createElement(
-	          "li",
-	          { onClick: this.handleNotesClick },
-	          "Notes"
-	        ),
-	        React.createElement(
-	          "li",
-	          { onClick: this.handleNotebooksClick },
-	          "Notebooks"
-	        )
+	        "li",
+	        { onClick: this.handleNewNoteClick },
+	        "New Note"
+	      ),
+	      React.createElement(
+	        "li",
+	        { onClick: this.handleNotesClick },
+	        "Notes"
+	      ),
+	      React.createElement(
+	        "li",
+	        { onClick: this.handleNotebooksClick },
+	        "Notebooks"
 	      )
 	    );
 	  }
@@ -24216,7 +24212,7 @@
 	    });
 	    return React.createElement(
 	      'ul',
-	      null,
+	      { className: 'notes-index' },
 	      notes
 	    );
 	  }

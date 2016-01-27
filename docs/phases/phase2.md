@@ -17,10 +17,7 @@
 * Note
 
 ### Actions
-* ApiActions.receiveAllNotes -> triggered by ApiUtil
-* ApiActions.receiveSingleNote
-* ApiActions.deleteNote
-* NoteActions.fetchAllNotes -> triggers ApiUtil
+* NoteActions.fetchAllNotes
 * NoteActions.fetchSingleNote
 * NoteActions.createNote
 * NoteActions.editNote
