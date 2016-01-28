@@ -66,4 +66,7 @@ var NotesIndex = React.createClass({
 
 });
 
+$(document).on("click", function() {
+  
+});
 module.exports = NotesIndex;

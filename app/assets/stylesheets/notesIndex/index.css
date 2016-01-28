@@ -18,9 +18,12 @@
 
 .notes-index-title {
   color: #878787;
-  font-weight: 500;
-  font-family: gotham;
-  font-size: 24px;
+  font-weight: 200;
+  font-family: gotham, helvetica, arial, sans-serif;
+  font-size: 21px;
+  vertical-align: top;
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .notes-index-header-bottom {
@@ -55,7 +58,7 @@
 }
 
 .note-index-items {
-  border: 1px solid #ccc;
+  border-top: 1px solid #ccc;
   display: block;
   overflow-y: scroll;
 }

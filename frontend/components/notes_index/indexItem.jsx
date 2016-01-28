@@ -11,7 +11,8 @@ var NoteIndexItem = React.createClass({
   },
 
   showDetail: function() {
-    this.history.pushState(null, 'api/notes/' + this.props.note.id, note);
+    this.selected = true;
+    this.history.pushState(null, 'api/notes/' + this.props.note.id, this.state.note);
   },
 
   componentWillUnmount: function() {
@@ -19,8 +20,12 @@ var NoteIndexItem = React.createClass({
   },
 
   render: function() {
+    var klass = "note-index-item";
+    if (this.selected) {
+      klass = "note-index-item selected";
+    }
     return (
-      <div className="note-index-item" onClick={this.showDetail}>
+      <div className={klass} onClick={this.showDetail}>
         <div className="note-index-item-inner">
           <div className="note-index-item-title">{this.state.note.title}</div>
           <div className="note-index-item-date">Date Created</div>

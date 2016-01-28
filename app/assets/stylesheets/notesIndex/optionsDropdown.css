@@ -9,6 +9,7 @@
   padding: 0 10px;
   display: block;
   background: white;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 }
 
 .sort-options {
@@ -20,6 +21,11 @@
   font-size: 12px;
   color: #aaa;
   cursor: default;
+}
+
+.sort-by-option:hover,
+.view-option:hover {
+  background: #2dbe60;
 }
 
 .options-dropdown div {

@@ -31477,6 +31477,7 @@
 	
 	});
 	
+	$(document).on("click", function () {});
 	module.exports = NotesIndex;
 
 /***/ },
@@ -31498,7 +31499,8 @@
 	  },
 	
 	  showDetail: function () {
-	    this.history.pushState(null, 'api/notes/' + this.props.note.id, note);
+	    this.selected = true;
+	    this.history.pushState(null, 'api/notes/' + this.props.note.id, this.state.note);
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31506,9 +31508,13 @@
 	  },
 	
 	  render: function () {
+	    var klass = "note-index-item";
+	    if (this.selected) {
+	      klass = "note-index-item selected";
+	    }
 	    return React.createElement(
 	      'div',
-	      { className: 'note-index-item', onClick: this.showDetail },
+	      { className: klass, onClick: this.showDetail },
 	      React.createElement(
 	        'div',
 	        { className: 'note-index-item-inner' },
@@ -31650,32 +31656,32 @@
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "sort-by-option" },
 	          "Date Created (oldest first)"
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "sort-by-option" },
 	          "Date Created (newest first)"
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "sort-by-option" },
 	          "Date Updated (oldest first)"
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "sort-by-option" },
 	          "Date Updated (newest first)"
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "sort-by-option" },
 	          "Title (ascending)"
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "sort-by-option" },
 	          "Title (descending)"
 	        )
 	      ),
@@ -31689,12 +31695,12 @@
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "view-option" },
 	          "Show Images"
 	        ),
 	        React.createElement(
 	          "div",
-	          null,
+	          { className: "view-option" },
 	          "Show Text"
 	        )
 	      )
