@@ -33,6 +33,5 @@ document.addEventListener("DOMContentLoaded", function() {
   ReactDOM.render(<Router>{routes}</Router>, root);
 });
 
-
 // var editor = new Quill('#editor');
 // editor.addModule('toolbar', { container: '#toolbar' });

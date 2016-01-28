@@ -24040,22 +24040,22 @@
 	
 	  render: function () {
 	    return React.createElement(
-	      "ul",
+	      "div",
 	      { className: "navbar group" },
 	      React.createElement("img", { className: "logo" }),
 	      React.createElement(
-	        "li",
-	        { onClick: this.handleNewNoteClick },
+	        "div",
+	        { className: "navbar-link", onClick: this.handleNewNoteClick },
 	        "New Note"
 	      ),
 	      React.createElement(
-	        "li",
-	        { onClick: this.handleNotesClick },
+	        "div",
+	        { className: "navbar-link", onClick: this.handleNotesClick },
 	        "Notes"
 	      ),
 	      React.createElement(
-	        "li",
-	        { onClick: this.handleNotebooksClick },
+	        "div",
+	        { className: "navbar-link", onClick: this.handleNotebooksClick },
 	        "Notebooks"
 	      )
 	    );
@@ -31057,7 +31057,6 @@
 	  },
 	
 	  createNote: function (note) {
-	    debugger;
 	    AppDispatcher.dispatch({
 	      actionType: NoteConstants.CREATE_NOTE,
 	      note: note

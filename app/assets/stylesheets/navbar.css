@@ -1,12 +1,19 @@
 .navbar {
   height: 100%;
   float: left;
+  margin-left: 10px;
+  border: 1px solid black;
 }
 
-.navbar > li {
+.navbar-link {
+  margin: 10px 0;
+  background: #fff;
+  border-radius: 50%;
+  border: 1px solid #2dbe60;
 
 }
 
-.navbar > li:hover {
+.navbar-link:hover {
   cursor: pointer;
+  background: #2dbe60;
 }

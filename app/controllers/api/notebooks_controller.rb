@@ -5,7 +5,7 @@ class Api::NotebooksController < ApplicationController
   end
 
   def new
-
+    
   end
 
   def show
