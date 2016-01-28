@@ -6,7 +6,7 @@ class Api::NotesController < ApplicationController
 
   def new
     @note = Note.new(note_params)
-    if @note.save!
+    if @note.save
       redirect_to root_url
     else
       flash.now[:errors] = @note.errors.full_messages
@@ -24,7 +24,6 @@ class Api::NotesController < ApplicationController
 
   def update
     @note = Note.find(params[:id])
-    byebug
     @note.update(note_params)
   end
 

@@ -8,13 +8,13 @@ var ApiUtil = {
       url: "/api/notes",
       dataType: "json",
       success: function(notes) {
-        debugger
         NoteActions.receiveAllNotes(notes);
       }
     });
   },
 
   fetchSingleNote: function(id) {
+    console.log("single");
     $.ajax({
       method: "GET",
       url: "api/notes/" + id,
@@ -25,13 +25,16 @@ var ApiUtil = {
     });
   },
 
-  createNote: function() {
+  createNote: function(note) {
+    debugger
     $.ajax({
       method: "POST",
       url: "api/notes",
       data: {note: note},
+      dataType: "json",
       success: function (note) {
-        NoteActions.createNote(note);
+        debugger
+        NoteActions.receiveSingleNote(note);
       }
     });
   },
@@ -42,19 +45,11 @@ var ApiUtil = {
       url: "api/notes/" + note.id,
       data: {note: note},
       success: function (note) {
-        debugger
         NoteActions.editNote(note);
         callback();
       }
     });
   },
-
-  destroyNote: function() {
-    $.ajax({
-      method: "DELETE",
-      url: "",
-    });
-  }
 
 };
 

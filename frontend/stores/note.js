@@ -35,6 +35,10 @@ var deleteNote = function(note) {
   });
 };
 
+var addNote = function(note) {
+  _notes.push(note);
+};
+
 NoteStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
     case NoteConstants.NOTES_RECEIVED:
@@ -44,6 +48,11 @@ NoteStore.__onDispatch = function(payload) {
 
     case NoteConstants.NOTE_RECEIVED:
       resetNote(payload.note);
+      this.__emitChange();
+      break;
+
+    case NoteConstants.CREATE_NOTE:
+      addNote(payload.note);
       this.__emitChange();
       break;
 

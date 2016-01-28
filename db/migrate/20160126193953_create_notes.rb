@@ -7,6 +7,8 @@ class CreateNotes < ActiveRecord::Migration
       t.integer :notebook_id, null: false
       t.boolean :shortcut, default: false
       t.boolean :archived, default: false
+
+      t.timestamps
     end
   end
 end

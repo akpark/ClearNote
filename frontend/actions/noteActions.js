@@ -17,6 +17,7 @@ var NoteActions = {
   },
 
   createNote: function(note) {
+    debugger
     AppDispatcher.dispatch({
       actionType: NoteConstants.CREATE_NOTE,
       note: note

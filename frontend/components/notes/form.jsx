@@ -1,14 +1,14 @@
 var React = require('react');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var ApiUtil = require('../../util/apiUtil');
-var History = require('flux').History;
+var History = require('react-router').History;
 
 var NoteForm = React.createClass({
   mixins: [LinkedStateMixin, History],
 
   blankAttrs: {
     title: 'Untitled',
-    description: ''
+    body: ''
   },
 
   getInitialState: function () {
@@ -18,11 +18,11 @@ var NoteForm = React.createClass({
   createNote: function (e) {
     e.preventDefault();
     var note = {};
-    note[title] = this.state[title];
-    note[description] = this.state[description];
+    note.title = this.state.title;
+    note.body = this.state.body;
     ApiUtil.createNote(note, function () {
       this.history.pushState(null, "/", {});
-    });
+    }.bind(this));
   },
 
   render: function() {
@@ -38,12 +38,14 @@ var NoteForm = React.createClass({
         </div>
 
         <div>
-          <label htmlFor="note-desc"></label>
+          <label htmlFor="note-body"></label>
           <textarea
-            id="note-desc"
-            valueLink={this.linkState('description')}
+            id="note-body"
+            valueLink={this.linkState('body')}
           />
         </div>
+
+        <button className="create-button">Done</button>
 
       </form>
     );

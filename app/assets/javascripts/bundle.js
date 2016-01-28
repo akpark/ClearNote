@@ -24159,6 +24159,10 @@
 	  });
 	};
 	
+	var addNote = function (note) {
+	  _notes.push(note);
+	};
+	
 	NoteStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
 	    case NoteConstants.NOTES_RECEIVED:
@@ -24168,6 +24172,11 @@
 	
 	    case NoteConstants.NOTE_RECEIVED:
 	      resetNote(payload.note);
+	      this.__emitChange();
+	      break;
+	
+	    case NoteConstants.CREATE_NOTE:
+	      addNote(payload.note);
 	      this.__emitChange();
 	      break;
 	
@@ -30978,13 +30987,13 @@
 	      url: "/api/notes",
 	      dataType: "json",
 	      success: function (notes) {
-	        debugger;
 	        NoteActions.receiveAllNotes(notes);
 	      }
 	    });
 	  },
 	
 	  fetchSingleNote: function (id) {
+	    console.log("single");
 	    $.ajax({
 	      method: "GET",
 	      url: "api/notes/" + id,
@@ -30995,13 +31004,16 @@
 	    });
 	  },
 	
-	  createNote: function () {
+	  createNote: function (note) {
+	    debugger;
 	    $.ajax({
 	      method: "POST",
 	      url: "api/notes",
 	      data: { note: note },
+	      dataType: "json",
 	      success: function (note) {
-	        NoteActions.createNote(note);
+	        debugger;
+	        NoteActions.receiveSingleNote(note);
 	      }
 	    });
 	  },
@@ -31012,17 +31024,9 @@
 	      url: "api/notes/" + note.id,
 	      data: { note: note },
 	      success: function (note) {
-	        debugger;
 	        NoteActions.editNote(note);
 	        callback();
 	      }
-	    });
-	  },
-	
-	  destroyNote: function () {
-	    $.ajax({
-	      method: "DELETE",
-	      url: ""
 	    });
 	  }
 	
@@ -31054,6 +31058,7 @@
 	  },
 	
 	  createNote: function (note) {
+	    debugger;
 	    AppDispatcher.dispatch({
 	      actionType: NoteConstants.CREATE_NOTE,
 	      note: note
@@ -31132,7 +31137,7 @@
 	var React = __webpack_require__(1);
 	var LinkedStateMixin = __webpack_require__(236);
 	var ApiUtil = __webpack_require__(231);
-	var History = __webpack_require__(229).History;
+	var History = __webpack_require__(159).History;
 	
 	var NoteForm = React.createClass({
 	  displayName: 'NoteForm',
@@ -31141,7 +31146,7 @@
 	
 	  blankAttrs: {
 	    title: 'Untitled',
-	    description: ''
+	    body: ''
 	  },
 	
 	  getInitialState: function () {
@@ -31151,11 +31156,11 @@
 	  createNote: function (e) {
 	    e.preventDefault();
 	    var note = {};
-	    note[title] = this.state[title];
-	    note[description] = this.state[description];
+	    note.title = this.state.title;
+	    note.body = this.state.body;
 	    ApiUtil.createNote(note, function () {
 	      this.history.pushState(null, "/", {});
-	    });
+	    }.bind(this));
 	  },
 	
 	  render: function () {
@@ -31175,11 +31180,16 @@
 	      React.createElement(
 	        'div',
 	        null,
-	        React.createElement('label', { htmlFor: 'note-desc' }),
+	        React.createElement('label', { htmlFor: 'note-body' }),
 	        React.createElement('textarea', {
-	          id: 'note-desc',
-	          valueLink: this.linkState('description')
+	          id: 'note-body',
+	          valueLink: this.linkState('body')
 	        })
+	      ),
+	      React.createElement(
+	        'button',
+	        { className: 'create-button' },
+	        'Done'
 	      )
 	    );
 	  }
