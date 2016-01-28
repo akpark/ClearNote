@@ -14,6 +14,10 @@ NoteStore.find = function(id) {
   });
 };
 
+NoteStore.findLatest = function() {
+  return _notes[0];
+};
+
 var resetNotes = function(notes) {
   _notes = notes.slice(0);
 };

@@ -4,8 +4,10 @@ var ApiUtil = require('../../util/apiUtil');
 var NoteActions = require('../../actions/noteActions');
 var NoteIndexItem = require('./indexItem');
 var OptionsDropdown = require('./optionsDropdown');
+var History = require('react-router').History;
 
 var NotesIndex = React.createClass({
+  mixins: [History],
   getInitialState: function() {
     return ({notes: NoteStore.all(), optionsClicked: false});
   },
@@ -21,6 +23,10 @@ var NotesIndex = React.createClass({
 
   _onChange: function() {
     this.setState({notes: NoteStore.all()});
+    // var note = NoteStore.findLatest();
+    // if (note) {
+    //   this.history.pushState(null, 'api/notes/' + note.id, note);
+    // }
   },
 
   showOptions: function() {
@@ -67,6 +73,6 @@ var NotesIndex = React.createClass({
 });
 
 $(document).on("click", function() {
-  
+
 });
 module.exports = NotesIndex;

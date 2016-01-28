@@ -1,7 +1,6 @@
 var React = require('react');
 var NoteStore = require('../../stores/note');
 var History = require('react-router').History;
-var NoteDetail = require('./detail');
 
 var NoteIndexItem = React.createClass({
   mixins: [History],
@@ -12,6 +11,7 @@ var NoteIndexItem = React.createClass({
 
   showDetail: function() {
     this.selected = true;
+    debugger
     this.history.pushState(null, 'api/notes/' + this.props.note.id, this.state.note);
   },
 
