@@ -10,6 +10,7 @@ var NavBar = React.createClass({
   },
 
   handleNotebooksClick: function() {
+    this.props.history.pushState(null, "/api/notebooks");
     //show notebooks as a modal
   },
 

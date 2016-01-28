@@ -26,14 +26,12 @@ var ApiUtil = {
   },
 
   createNote: function(note) {
-    debugger
     $.ajax({
       method: "POST",
       url: "api/notes",
       data: {note: note},
       dataType: "json",
       success: function (note) {
-        debugger
         NoteActions.receiveSingleNote(note);
       }
     });
