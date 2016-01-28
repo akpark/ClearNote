@@ -6,8 +6,8 @@ var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var root = document.getElementById('root');
 var Navbar = require('./components/navbar');
-var NotesIndex = require('./components/notes/index');
-var NoteForm = require('./components/notes/form');
+var NotesIndex = require('./components/notes_index/index');
+var NoteForm = require('./components/noteForm');
 var NoteDetail = require('./components/notes/detail');
 
 var App = React.createClass({
@@ -16,6 +16,7 @@ var App = React.createClass({
         <div className="app group">
           <Navbar history={this.props.history}/>
           <NotesIndex />
+          <NoteForm />
           {this.props.children}
         </div>
     );
@@ -25,7 +26,7 @@ var App = React.createClass({
 var routes = (
   <Route path="/" component={App}>
     <Route path="api/notes/new" component={NoteForm} />
-    <Route path="api/notes/:noteId" component={NoteDetail} />
+    <Route path="api/notes/:noteId" component={NoteForm} />
   </Route>
 );
 

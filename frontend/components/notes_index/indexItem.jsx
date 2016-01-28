@@ -11,7 +11,6 @@ var NoteIndexItem = React.createClass({
   },
 
   showDetail: function() {
-    var note = this.state.note;
     this.history.pushState(null, 'api/notes/' + this.props.note.id, note);
   },
 
@@ -20,13 +19,12 @@ var NoteIndexItem = React.createClass({
   },
 
   render: function() {
-    var note = this.state.note;
-
     return (
-      <div>
-        <div>
-        <div onClick={this.showDetail} className="note-index-item">
-          <div>{note.title}</div>
+      <div className="note-index-item" onClick={this.showDetail}>
+        <div className="note-index-item-inner">
+          <div className="note-index-item-title">{this.state.note.title}</div>
+          <div className="note-index-item-date">Date Created</div>
+          <div className="note-index-item-body">{this.state.note.body}</div>
         </div>
       </div>
     );

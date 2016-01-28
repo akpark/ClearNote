@@ -1,0 +1,27 @@
+.options-dropdown {
+  font-size: 14px;
+  text-align: left;
+  border: 1px solid #ccc;
+  z-index: 10000;
+  position: absolute;
+  width: 250px;
+  height: 400px;
+  padding: 0 10px;
+  display: block;
+  background: white;
+}
+
+.sort-options {
+  border-bottom: 1px solid #ccc;
+}
+
+.sort-by-title,
+.view-options-title {
+  font-size: 12px;
+  color: #aaa;
+  cursor: default;
+}
+
+.options-dropdown div {
+  padding: 10px 0;
+}

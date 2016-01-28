@@ -1,0 +1,61 @@
+.notes-index {
+  float: left;
+  height: 100%;
+  border-left: 1px solid #ccc;
+  border-right: 1px solid #ccc;
+  width: 350px;
+}
+
+.group:after {
+  clear: both;
+  content: "";
+  display: block;
+}
+
+.notes-index-header {
+  padding: 20px 20px 15px 10px;
+}
+
+.notes-index-title {
+  color: #878787;
+  font-weight: 500;
+  font-family: gotham;
+  font-size: 24px;
+}
+
+.notes-index-header-bottom {
+  display: block;
+  margin-top: 30px;
+}
+
+.number-of-notes {
+  font-size: 13px;
+}
+
+.options-dropdown-click {
+  float: right;
+  font-size: 13px;
+  position: relative;
+}
+
+.options-dropdown-click:hover {
+  cursor: pointer;
+}
+
+.number-of-notes,
+.options-dropdown {
+}
+
+.number-of-notes {
+  float: left;
+}
+
+.options-dropdown {
+  float:right;
+}
+
+.note-index-items {
+  border: 1px solid #ccc;
+  display: block;
+  overflow-y: scroll;
+}
