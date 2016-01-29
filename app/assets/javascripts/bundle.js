@@ -52,11 +52,9 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var root = document.getElementById('root');
 	var Navbar = __webpack_require__(206);
-	var NotesIndex = __webpack_require__(240);
-	var NoteForm = __webpack_require__(245);
-	var NoteDetail = __webpack_require__(234);
+	var NotesIndex = __webpack_require__(207);
+	var NoteForm = __webpack_require__(235);
 	var NoteStore = __webpack_require__(208);
-	var ReactQuill = __webpack_require__(254);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -24103,7 +24101,106 @@
 	module.exports = NavBar;
 
 /***/ },
-/* 207 */,
+/* 207 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NoteStore = __webpack_require__(208);
+	var ApiUtil = __webpack_require__(231);
+	var NoteActions = __webpack_require__(232);
+	var NoteIndexItem = __webpack_require__(233);
+	var OptionsDropdown = __webpack_require__(234);
+	var History = __webpack_require__(159).History;
+	
+	var NotesIndex = React.createClass({
+	  displayName: 'NotesIndex',
+	
+	  mixins: [History],
+	  getInitialState: function () {
+	    return { notes: NoteStore.all(), optionsClicked: false };
+	  },
+	
+	  componentDidMount: function () {
+	    this.notesListener = NoteStore.addListener(this._onChange);
+	    ApiUtil.fetchAllNotes();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.notesListener.remove();
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ notes: NoteStore.all() });
+	    // var note = NoteStore.findLatest();
+	    // if (note) {
+	    //   this.history.pushState(null, 'api/notes/' + note.id, note);
+	    // }
+	    // var note = NoteStore.findLatest();
+	  },
+	
+	  showOptions: function () {
+	    if (this.state.optionsClicked) {
+	      this.setState({ optionsClicked: false });
+	    } else {
+	      this.setState({ optionsClicked: true });
+	    }
+	  },
+	
+	  render: function () {
+	    var notes = this.state.notes.map(function (note, key) {
+	      return React.createElement(
+	        NoteIndexItem,
+	        { key: key, note: note },
+	        note.title
+	      );
+	    }.bind(this));
+	
+	    var optionsDropdown;
+	    if (this.state.optionsClicked) {
+	      optionsDropdown = React.createElement(OptionsDropdown, null);
+	    }
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'notes-index' },
+	      React.createElement(
+	        'div',
+	        { className: 'notes-index-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'notes-index-title' },
+	          'NOTES'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'notes-index-header-bottom group' },
+	          React.createElement(
+	            'div',
+	            { className: 'number-of-notes' },
+	            '567 Notes'
+	          ),
+	          React.createElement(
+	            'div',
+	            { onClick: this.showOptions, className: 'options-dropdown-click' },
+	            'Options ⌄',
+	            optionsDropdown
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'note-index-items' },
+	        notes
+	      )
+	    );
+	  }
+	
+	});
+	
+	$(document).on("click", function () {});
+	module.exports = NotesIndex;
+
+/***/ },
 /* 208 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -31068,431 +31165,7 @@
 	module.exports = NoteActions;
 
 /***/ },
-/* 233 */,
-/* 234 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NoteStore = __webpack_require__(208);
-	var ApiUtil = __webpack_require__(231);
-	var History = __webpack_require__(159).History;
-	var LinkedStateMixin = __webpack_require__(235);
-	
-	var typingTimer;
-	var doneTypingInterval = 3000;
-	
-	var NoteDetail = React.createClass({
-	  displayName: 'NoteDetail',
-	
-	  mixins: [LinkedStateMixin],
-	
-	  getStateFromStore: function () {
-	    var note = NoteStore.find(parseInt(this.props.params.noteId));
-	    note = note || { id: 0, title: "", body: "" };
-	    return { id: note.id, title: note.title, body: note.body };
-	  },
-	
-	  getInitialState: function () {
-	    return this.getStateFromStore();
-	  },
-	
-	  _onChange: function () {
-	    this.setState(this.getStateFromStore());
-	  },
-	
-	  componentWillReceiveProps: function (newProps) {
-	    //with these new props, we fetch the new note
-	    ApiUtil.fetchSingleNote(parseInt(newProps.params.noteId));
-	  },
-	
-	  componentDidMount: function () {
-	    this.noteListener = NoteStore.addListener(this._onChange);
-	    ApiUtil.fetchSingleNote(parseInt(this.props.params.noteId));
-	  },
-	
-	  handleTitleChange: function (e) {
-	    this.setState({ title: e.target.value });
-	  },
-	
-	  handleBodyChange: function (e) {
-	    if (this.timer) {
-	      clearTimeout(this.timer);
-	    }
-	    this.timer = setTimeout(function () {
-	      var note = { id: this.state.id, title: this.state.title, body: this.state.body };
-	      ApiUtil.editNote(note, function () {
-	        console.log("Successfully edited!");
-	      });
-	    }.bind(this), 3000);
-	
-	    this.setState({ body: e.target.value });
-	  },
-	
-	  render: function () {
-	    //a form for that particular note
-	    //automatically update the note when input
-	    return React.createElement(
-	      'form',
-	      { className: 'note-detail-form' },
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement('label', { htmlFor: 'note-title' }),
-	        React.createElement('input', {
-	          onChange: this.handleTitleChange,
-	          type: 'text',
-	          id: 'note-title',
-	          value: this.state.title
-	        })
-	      ),
-	      React.createElement(
-	        'div',
-	        null,
-	        React.createElement('label', { htmlFor: 'note-body' }),
-	        React.createElement('textarea', {
-	          onChange: this.handleBodyChange,
-	          id: 'note-body',
-	          value: this.state.body
-	        })
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NoteDetail;
-
-/***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(236);
-
-/***/ },
-/* 236 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule LinkedStateMixin
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	var ReactLink = __webpack_require__(237);
-	var ReactStateSetters = __webpack_require__(238);
-	
-	/**
-	 * A simple mixin around ReactLink.forState().
-	 */
-	var LinkedStateMixin = {
-	  /**
-	   * Create a ReactLink that's linked to part of this component's state. The
-	   * ReactLink will have the current value of this.state[key] and will call
-	   * setState() when a change is requested.
-	   *
-	   * @param {string} key state key to update. Note: you may want to use keyOf()
-	   * if you're using Google Closure Compiler advanced mode.
-	   * @return {ReactLink} ReactLink instance linking to the state.
-	   */
-	  linkState: function (key) {
-	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
-	  }
-	};
-	
-	module.exports = LinkedStateMixin;
-
-/***/ },
-/* 237 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactLink
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	/**
-	 * ReactLink encapsulates a common pattern in which a component wants to modify
-	 * a prop received from its parent. ReactLink allows the parent to pass down a
-	 * value coupled with a callback that, when invoked, expresses an intent to
-	 * modify that value. For example:
-	 *
-	 * React.createClass({
-	 *   getInitialState: function() {
-	 *     return {value: ''};
-	 *   },
-	 *   render: function() {
-	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
-	 *     return <input valueLink={valueLink} />;
-	 *   },
-	 *   _handleValueChange: function(newValue) {
-	 *     this.setState({value: newValue});
-	 *   }
-	 * });
-	 *
-	 * We have provided some sugary mixins to make the creation and
-	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
-	 */
-	
-	var React = __webpack_require__(2);
-	
-	/**
-	 * @param {*} value current value of the link
-	 * @param {function} requestChange callback to request a change
-	 */
-	function ReactLink(value, requestChange) {
-	  this.value = value;
-	  this.requestChange = requestChange;
-	}
-	
-	/**
-	 * Creates a PropType that enforces the ReactLink API and optionally checks the
-	 * type of the value being passed inside the link. Example:
-	 *
-	 * MyComponent.propTypes = {
-	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
-	 * }
-	 */
-	function createLinkTypeChecker(linkType) {
-	  var shapes = {
-	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
-	    requestChange: React.PropTypes.func.isRequired
-	  };
-	  return React.PropTypes.shape(shapes);
-	}
-	
-	ReactLink.PropTypes = {
-	  link: createLinkTypeChecker
-	};
-	
-	module.exports = ReactLink;
-
-/***/ },
-/* 238 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactStateSetters
-	 */
-	
-	'use strict';
-	
-	var ReactStateSetters = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (component, funcReturningState) {
-	    return function (a, b, c, d, e, f) {
-	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
-	      if (partialState) {
-	        component.setState(partialState);
-	      }
-	    };
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (component, key) {
-	    // Memoize the setters.
-	    var cache = component.__keySetters || (component.__keySetters = {});
-	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
-	  }
-	};
-	
-	function createStateKeySetter(component, key) {
-	  // Partial state is allocated outside of the function closure so it can be
-	  // reused with every call, avoiding memory allocation when this function
-	  // is called.
-	  var partialState = {};
-	  return function stateKeySetter(value) {
-	    partialState[key] = value;
-	    component.setState(partialState);
-	  };
-	}
-	
-	ReactStateSetters.Mixin = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateSetter(function(xValue) {
-	   *     return {x: xValue};
-	   *   })(1);
-	   *
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (funcReturningState) {
-	    return ReactStateSetters.createStateSetter(this, funcReturningState);
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateKeySetter('x')(1);
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (key) {
-	    return ReactStateSetters.createStateKeySetter(this, key);
-	  }
-	};
-	
-	module.exports = ReactStateSetters;
-
-/***/ },
-/* 239 */,
-/* 240 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NoteStore = __webpack_require__(208);
-	var ApiUtil = __webpack_require__(231);
-	var NoteActions = __webpack_require__(232);
-	var NoteIndexItem = __webpack_require__(241);
-	var OptionsDropdown = __webpack_require__(243);
-	var History = __webpack_require__(159).History;
-	
-	var NotesIndex = React.createClass({
-	  displayName: 'NotesIndex',
-	
-	  mixins: [History],
-	  getInitialState: function () {
-	    return { notes: NoteStore.all(), optionsClicked: false };
-	  },
-	
-	  componentDidMount: function () {
-	    this.notesListener = NoteStore.addListener(this._onChange);
-	    ApiUtil.fetchAllNotes();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.notesListener.remove();
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ notes: NoteStore.all() });
-	    // var note = NoteStore.findLatest();
-	    // if (note) {
-	    //   this.history.pushState(null, 'api/notes/' + note.id, note);
-	    // }
-	  },
-	
-	  showOptions: function () {
-	    if (this.state.optionsClicked) {
-	      this.setState({ optionsClicked: false });
-	    } else {
-	      this.setState({ optionsClicked: true });
-	    }
-	  },
-	
-	  render: function () {
-	    var notes = this.state.notes.map(function (note, key) {
-	      return React.createElement(
-	        NoteIndexItem,
-	        { key: key, note: note },
-	        note.title
-	      );
-	    }.bind(this));
-	
-	    var optionsDropdown;
-	    if (this.state.optionsClicked) {
-	      optionsDropdown = React.createElement(OptionsDropdown, null);
-	    }
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'notes-index' },
-	      React.createElement(
-	        'div',
-	        { className: 'notes-index-header' },
-	        React.createElement(
-	          'div',
-	          { className: 'notes-index-title' },
-	          'NOTES'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'notes-index-header-bottom group' },
-	          React.createElement(
-	            'div',
-	            { className: 'number-of-notes' },
-	            '567 Notes'
-	          ),
-	          React.createElement(
-	            'div',
-	            { onClick: this.showOptions, className: 'options-dropdown-click' },
-	            'Options ⌄',
-	            optionsDropdown
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'note-index-items' },
-	        notes
-	      )
-	    );
-	  }
-	
-	});
-	
-	$(document).on("click", function () {});
-	module.exports = NotesIndex;
-
-/***/ },
-/* 241 */
+/* 233 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -31510,7 +31183,6 @@
 	
 	  showDetail: function () {
 	    this.selected = true;
-	    debugger;
 	    this.history.pushState(null, 'api/notes/' + this.props.note.id, this.state.note);
 	  },
 	
@@ -31552,8 +31224,7 @@
 	module.exports = NoteIndexItem;
 
 /***/ },
-/* 242 */,
-/* 243 */
+/* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -31630,13 +31301,12 @@
 	module.exports = OptionsDropdown;
 
 /***/ },
-/* 244 */,
-/* 245 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var MiniMenu = __webpack_require__(246);
-	var TextEditor = __webpack_require__(247);
+	var MiniMenu = __webpack_require__(236);
+	var TextEditor = __webpack_require__(237);
 	var ApiUtil = __webpack_require__(231);
 	
 	var NoteForm = React.createClass({
@@ -31674,17 +31344,7 @@
 	      React.createElement(
 	        'div',
 	        { className: 'note-form-header' },
-	        React.createElement(MiniMenu, null),
-	        React.createElement(
-	          'div',
-	          null,
-	          'Share'
-	        ),
-	        React.createElement(
-	          'div',
-	          null,
-	          'Done'
-	        )
+	        React.createElement(MiniMenu, null)
 	      ),
 	      React.createElement(TextEditor, { note: this.state.note })
 	    );
@@ -31694,7 +31354,7 @@
 	module.exports = NoteForm;
 
 /***/ },
-/* 246 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -31710,11 +31370,12 @@
 	module.exports = MiniMenu;
 
 /***/ },
-/* 247 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var ReactQuill = __webpack_require__(248);
+	var ReactQuill = __webpack_require__(238);
+	var ApiUtil = __webpack_require__(231);
 	// var ReactQuill = require('../../vendor/react-quill');
 	
 	var TextEditor = React.createClass({
@@ -31746,7 +31407,7 @@
 	      { className: 'text-editor' },
 	      React.createElement(ReactQuill, { theme: 'snow',
 	        value: this.state.body,
-	        onChange: this.handleChange })
+	        onChange: this.handleBodyChange })
 	    );
 	  }
 	});
@@ -31754,27 +31415,28 @@
 	module.exports = TextEditor;
 
 /***/ },
-/* 248 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/*
 	React-Quill v0.3.0
 	https://github.com/zenoamaro/react-quill
 	*/
-	module.exports = __webpack_require__(249);
-	module.exports.Mixin = __webpack_require__(251);
-	module.exports.Toolbar = __webpack_require__(250);
-
+	module.exports = __webpack_require__(239);
+	module.exports.Mixin = __webpack_require__(242);
+	module.exports.Toolbar = __webpack_require__(240);
+	module.exports.Quill = __webpack_require__(243);
 
 /***/ },
-/* 249 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1),
-		QuillToolbar = __webpack_require__(250),
-		QuillMixin = __webpack_require__(251),
+	  ReactDOM = __webpack_require__(158),
+		QuillToolbar = __webpack_require__(240),
+		QuillMixin = __webpack_require__(242),
 		T = React.PropTypes;
 	
 	// Support React 0.11 and 0.12
@@ -31838,7 +31500,8 @@
 				className: '',
 				theme: 'base',
 				modules: {
-					'link-tooltip': true
+					'link-tooltip': true,
+					'image-tooltip': true
 				}
 			};
 		},
@@ -31961,7 +31624,7 @@
 				// because it's shared between components.
 				config.modules = JSON.parse(JSON.stringify(config.modules));
 				config.modules.toolbar = {
-					container: this.refs.toolbar.getDOMNode()
+					container: ReactDOM.findDOMNode(this.refs.toolbar)
 				};
 			}
 			return config;
@@ -31972,7 +31635,7 @@
 		},
 	
 		getEditorElement: function() {
-			return this.refs.editor.getDOMNode();
+			return ReactDOM.findDOMNode(this.refs.editor);
 		},
 	
 		getEditorContents: function() {
@@ -32020,7 +31683,7 @@
 			return React.DOM.div({
 				id: this.props.id,
 				style: this.props.style,
-				className: 'quill ' + this.props.className,
+				className: ['quill'].concat(this.props.className).join(' '),
 				onKeyPress: this.props.onKeyPress,
 				onKeyDown: this.props.onKeyDown,
 				onKeyUp: this.props.onKeyUp,
@@ -32072,12 +31735,13 @@
 
 
 /***/ },
-/* 250 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
 	var React = __webpack_require__(1),
+	  ReactDOMServer = __webpack_require__(241),
 		T = React.PropTypes;
 	
 	var defaultColors = [
@@ -32219,7 +31883,7 @@
 	
 		render: function() {
 			var children = this.props.items.map(this.renderItem);
-			var html = children.map(React.renderToStaticMarkup).join('');
+			var html = children.map(ReactDOMServer.renderToStaticMarkup).join('');
 			return React.DOM.div({
 				className: this.getClassName(),
 				dangerouslySetInnerHTML: { __html:html }
@@ -32232,13 +31896,23 @@
 	QuillToolbar.defaultItems = defaultItems;
 	QuillToolbar.defaultColors = defaultColors;
 
+
 /***/ },
-/* 251 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	var Quill = __webpack_require__(252);
+	module.exports = __webpack_require__(148);
+
+
+/***/ },
+/* 242 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	
+	var Quill = __webpack_require__(243);
 	
 	var QuillMixin = {
 	
@@ -32302,14 +31976,14 @@
 
 
 /***/ },
-/* 252 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(253);
+	module.exports = __webpack_require__(244);
 
 
 /***/ },
-/* 253 */
+/* 244 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {/*! Quill Editor v0.20.1
@@ -43062,463 +42736,6 @@
 	},{"../../lib/color-picker":16,"../../lib/dom":17,"../../lib/picker":19,"../base":32,"lodash":1}]},{},[15])(15)
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
-
-/***/ },
-/* 254 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/*
-	React-Quill v0.2.2
-	https://github.com/zenoamaro/react-quill
-	*/
-	module.exports = __webpack_require__(255);
-	module.exports.Mixin = __webpack_require__(257);
-	module.exports.Toolbar = __webpack_require__(256);
-
-/***/ },
-/* 255 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1),
-	    QuillToolbar = __webpack_require__(256),
-	    QuillMixin = __webpack_require__(257),
-	    T = React.PropTypes;
-	
-	// Support React 0.11 and 0.12
-	// FIXME: Remove with React 0.13
-	if (React.createFactory) {
-		QuillToolbar = React.createFactory(QuillToolbar);
-	}
-	
-	// Support React 0.12 and 0.13+
-	// FIXME: Remove with React 0.13
-	if (React.cloneElement) {
-		var cloneElement = React.cloneElement;
-	} else if (React.addons && React.addons.cloneWithProps) {
-		var cloneElement = React.addons.cloneWithProps;
-	} else {
-		throw new Error('React addons are required when using React 0.12 or less.');
-	}
-	
-	var QuillComponent = React.createClass({
-	
-		displayName: 'Quill',
-	
-		mixins: [QuillMixin],
-	
-		propTypes: {
-			id: T.string,
-			className: T.string,
-			style: T.object,
-			value: T.string,
-			defaultValue: T.string,
-			readOnly: T.bool,
-			modules: T.object,
-			toolbar: T.array,
-			formats: T.array,
-			styles: T.oneOfType([T.object, T.oneOf([false])]),
-			theme: T.string,
-			pollInterval: T.number,
-			onKeyPress: T.func,
-			onKeyDown: T.func,
-			onKeyUp: T.func,
-			onChange: T.func,
-			onChangeSelection: T.func
-		},
-	
-		/*
-	 Changing one of these props should cause a re-render.
-	 */
-		dirtyProps: ['id', 'className', 'modules', 'toolbar', 'formats', 'styles', 'theme', 'pollInterval'],
-	
-		getDefaultProps: function () {
-			return {
-				className: '',
-				theme: 'base',
-				modules: {
-					'link-tooltip': true
-				}
-			};
-		},
-	
-		/*
-	 We consider the component to be controlled if
-	 whenever `value` is bein sent in props.
-	 */
-		isControlled: function () {
-			return 'value' in this.props;
-		},
-	
-		getInitialState: function () {
-			return {
-				value: this.isControlled() ? this.props.value : this.props.defaultValue
-			};
-		},
-	
-		componentWillReceiveProps: function (nextProps) {
-			var editor = this.state.editor;
-			// If the component is unmounted and mounted too quickly
-			// an error is thrown in setEditorContents since editor is
-			// still undefined. Must check if editor is undefined
-			// before performing this call.
-			if (editor) {
-				// Update only if we've been passed a new `value`.
-				// This leaves components using `defaultValue` alone.
-				if ('value' in nextProps) {
-					// NOTE: Seeing that Quill is missing a way to prevent
-					//       edits, we have to settle for a hybrid between
-					//       controlled and uncontrolled mode. We can't prevent
-					//       the change, but we'll still override content
-					//       whenever `value` differs from current state.
-					if (nextProps.value !== this.getEditorContents()) {
-						this.setEditorContents(editor, nextProps.value);
-					}
-				}
-				// We can update readOnly state in-place.
-				if ('readOnly' in nextProps) {
-					if (nextProps.readOnly !== this.props.readOnly) {
-						this.setEditorReadOnly(editor, nextProps.readOnly);
-					}
-				}
-			}
-		},
-	
-		componentDidMount: function () {
-			var editor = this.createEditor(this.getEditorElement(), this.getEditorConfig());
-	
-			this.setCustomFormats(editor);
-	
-			// NOTE: Custom formats will be stripped when creating
-			//       the editor, since they are not present there yet.
-			//       Therefore, we re-set the contents from the props
-			this.setState({ editor: editor }, function () {
-				this.setEditorContents(editor, this.props.value);
-			}.bind(this));
-		},
-	
-		componentWillUnmount: function () {
-			this.destroyEditor(this.state.editor);
-			// NOTE: Don't set the state to null here
-			//       as it would generate a loop.
-		},
-	
-		shouldComponentUpdate: function (nextProps, nextState) {
-			// Check if one of the changes should trigger a re-render.
-			for (var i = 0; i < this.dirtyProps.length; i++) {
-				var prop = this.dirtyProps[i];
-				if (nextProps[prop] !== this.props[prop]) {
-					return true;
-				}
-			}
-			// Never re-render otherwise.
-			return false;
-		},
-	
-		/*
-	 If for whatever reason we are rendering again,
-	 we should tear down the editor and bring it up
-	 again.
-	 */
-		componentWillUpdate: function () {
-			this.componentWillUnmount();
-		},
-	
-		componentDidUpdate: function () {
-			this.componentDidMount();
-		},
-	
-		setCustomFormats: function (editor) {
-			if (!this.props.formats) {
-				return;
-			}
-	
-			for (var i = 0; i < this.props.formats.length; i++) {
-				var format = this.props.formats[i];
-				editor.addFormat(format.name || format, format);
-			}
-		},
-	
-		getEditorConfig: function () {
-			var config = {
-				readOnly: this.props.readOnly,
-				theme: this.props.theme,
-				// Let Quill set the defaults, if no formats supplied
-				formats: this.props.formats ? [] : undefined,
-				styles: this.props.styles,
-				modules: this.props.modules,
-				pollInterval: this.props.pollInterval
-			};
-			// Unless we're redefining the toolbar,
-			// attach to the default one as a ref.
-			if (!config.modules.toolbar) {
-				// Don't mutate the original modules
-				// because it's shared between components.
-				config.modules = JSON.parse(JSON.stringify(config.modules));
-				config.modules.toolbar = {
-					container: this.refs.toolbar.getDOMNode()
-				};
-			}
-			return config;
-		},
-	
-		getEditorElement: function () {
-			return this.refs.editor.getDOMNode();
-		},
-	
-		getEditorContents: function () {
-			return this.state.value;
-		},
-	
-		getEditorSelection: function () {
-			return this.state.selection;
-		},
-	
-		/*
-	 Renders either the specified contents, or a default
-	 configuration of toolbar and contents area.
-	 */
-		renderContents: function () {
-			if (React.Children.count(this.props.children)) {
-				// Clone children to own their refs.
-				return React.Children.map(this.props.children, function (c) {
-					return cloneElement(c, { ref: c.ref });
-				});
-			} else {
-				return [
-				// Quill modifies these elements in-place,
-				// so we need to re-render them every time.
-				QuillToolbar({
-					key: 'toolbar-' + Math.random(),
-					ref: 'toolbar',
-					items: this.props.toolbar
-				}), React.DOM.div({
-					key: 'editor-' + Math.random(),
-					ref: 'editor',
-					className: 'quill-contents',
-					dangerouslySetInnerHTML: { __html: this.getEditorContents() }
-				})];
-			}
-		},
-	
-		render: function () {
-			return React.DOM.div({
-				id: this.props.id,
-				style: this.props.style,
-				className: 'quill ' + this.props.className,
-				onKeyPress: this.props.onKeyPress,
-				onKeyDown: this.props.onKeyDown,
-				onKeyUp: this.props.onKeyUp,
-				onChange: this.preventDefault }, this.renderContents());
-		},
-	
-		onEditorChange: function (value, delta, source) {
-			if (value !== this.getEditorContents()) {
-				this.setState({ value: value });
-				if (this.props.onChange) {
-					this.props.onChange(value, delta, source);
-				}
-			}
-		},
-	
-		onEditorChangeSelection: function (range, source) {
-			var s = this.getEditorSelection() || {};
-			var r = range || {};
-			if (r.start !== s.start || r.end !== s.end) {
-				this.setState({ selection: range });
-				if (this.props.onChangeSelection) {
-					this.props.onChangeSelection(range, source);
-				}
-			}
-		},
-	
-		focus: function () {
-			this.state.editor.focus();
-		},
-	
-		blur: function () {
-			this.setEditorSelection(this.state.editor, null);
-		},
-	
-		/*
-	 Stop change events from the toolbar from
-	 bubbling up outside.
-	 */
-		preventDefault: function (event) {
-			event.preventDefault();
-			event.stopPropagation();
-		}
-	
-	});
-	
-	module.exports = QuillComponent;
-
-/***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var React = __webpack_require__(1),
-	    T = React.PropTypes;
-	
-	var defaultColors = ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)', 'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)', 'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)', 'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)', 'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)', 'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)', 'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)', 'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)', 'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)', 'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)', 'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)', 'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)'].map(function (color) {
-		return { value: color };
-	});
-	
-	var defaultItems = [{ label: 'Formats', type: 'group', items: [{ label: 'Font', type: 'font', items: [{ label: 'Sans Serif', value: 'sans-serif' }, { label: 'Serif', value: 'serif' }, { label: 'Monospace', value: 'monospace' }, { label: 'Arial', value: 'arial' }, { label: 'Arvo', value: 'arvo' }, { label: 'Courier New', value: 'courirer-new' }, { label: 'Times New Roman', value: 'times-new-roman' }, { label: 'Comic Sans', value: 'comic-sans' }, { label: 'Georgia', value: 'georigia' }] }, { type: 'separator' }, { label: 'Size', type: 'size', items: [{ label: 'Normal', value: '10px' }, { label: 'Smaller', value: '13px' }, { label: 'Larger', value: '18px' }, { label: 'Huge', value: '32px' }] }, { type: 'separator' }, { label: 'Alignment', type: 'align', items: [{ label: '', value: 'center' }, { label: '', value: 'left' }, { label: '', value: 'right' }, { label: '', value: 'justify' }] }] }, { label: 'Text', type: 'group', items: [{ type: 'bold', label: 'Bold' }, { type: 'italic', label: 'Italic' }, { type: 'strike', label: 'Strike' }, { type: 'underline', label: 'Underline' }, { type: 'separator' }, { type: 'color', label: 'Color', items: defaultColors }, { type: 'background', label: 'Background color', items: defaultColors }, { type: 'separator' }, { type: 'link', label: 'Link' }] }, { label: 'Blocks', type: 'group', items: [{ type: 'bullet', label: 'Bullet' }, { type: 'separator' }, { type: 'list', label: 'List' }] }];
-	
-	var QuillToolbar = React.createClass({
-	
-		displayName: 'Quill Toolbar',
-	
-		propTypes: {
-			id: T.string,
-			className: T.string,
-			items: T.array
-		},
-	
-		getDefaultProps: function () {
-			return {
-				items: defaultItems
-			};
-		},
-	
-		renderSeparator: function (key) {
-			return React.DOM.span({
-				key: key,
-				className: 'ql-format-separator'
-			});
-		},
-	
-		renderGroup: function (item, key) {
-			return React.DOM.span({
-				key: item.label || key,
-				className: 'ql-format-group' }, item.items.map(this.renderItem));
-		},
-	
-		renderChoiceItem: function (item, key) {
-			return React.DOM.option({
-				key: item.label || item.value || key,
-				value: item.value }, item.label);
-		},
-	
-		renderChoices: function (item, key) {
-			return React.DOM.select({
-				key: item.label || key,
-				className: 'ql-' + item.type }, item.items.map(this.renderChoiceItem));
-		},
-	
-		renderAction: function (item, key) {
-			return React.DOM.span({
-				key: item.label || item.value || key,
-				className: 'ql-format-button ql-' + item.type,
-				title: item.label }, item.children);
-		},
-	
-		renderItem: function (item, key) {
-			switch (item.type) {
-				case 'separator':
-					return this.renderSeparator(key);
-				case 'group':
-					return this.renderGroup(item, key);
-				case 'font':
-				case 'align':
-				case 'size':
-				case 'color':
-				case 'background':
-					return this.renderChoices(item, key);
-				default:
-					return this.renderAction(item, key);
-			}
-		},
-	
-		getClassName: function () {
-			return 'quill-toolbar ' + (this.props.className || '');
-		},
-	
-		render: function () {
-			var children = this.props.items.map(this.renderItem);
-			var html = children.map(React.renderToStaticMarkup).join('');
-			return React.DOM.div({
-				className: this.getClassName(),
-				dangerouslySetInnerHTML: { __html: html }
-			});
-		}
-	
-	});
-	
-	module.exports = QuillToolbar;
-	QuillToolbar.defaultItems = defaultItems;
-	QuillToolbar.defaultColors = defaultColors;
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Quill = __webpack_require__(252);
-	
-	var QuillMixin = {
-	
-		/**
-	 Creates an editor on the given element. The editor will
-	 be passed the configuration, have its events bound,
-	 */
-		createEditor: function ($el, config) {
-			var editor = new Quill($el, config);
-			this.hookEditor(editor);
-			return editor;
-		},
-	
-		hookEditor: function (editor) {
-			editor.on('text-change', function (delta, source) {
-				if (this.onEditorChange) {
-					this.onEditorChange(editor.getHTML(), delta, source);
-				}
-			}.bind(this));
-	
-			editor.on('selection-change', function (range, source) {
-				if (this.onEditorChangeSelection) {
-					this.onEditorChangeSelection(range, source);
-				}
-			}.bind(this));
-		},
-	
-		destroyEditor: function (editor) {
-			editor.destroy();
-		},
-	
-		setEditorReadOnly: function (editor, value) {
-			value ? editor.editor.disable() : editor.editor.enable();
-		},
-	
-		/*
-	 Replace the contents of the editor, but keep
-	 the previous selection hanging around so that
-	 the cursor won't move.
-	 */
-		setEditorContents: function (editor, value) {
-			var sel = editor.getSelection();
-			editor.setHTML(value);
-			if (sel) this.setEditorSelection(editor, sel);
-		},
-	
-		setEditorSelection: function (editor, range) {
-			if (range) {
-				// Validate bounds before applying.
-				var length = editor.getLength();
-				range.start = Math.max(0, Math.min(range.start, length - 1));
-				range.end = Math.max(range.start, Math.min(range.end, length - 1));
-			}
-			editor.setSelection(range);
-		}
-	
-	};
-	
-	module.exports = QuillMixin;
 
 /***/ }
 /******/ ]);

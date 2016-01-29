@@ -27,6 +27,7 @@ var NotesIndex = React.createClass({
     // if (note) {
     //   this.history.pushState(null, 'api/notes/' + note.id, note);
     // }
+    // var note = NoteStore.findLatest();
   },
 
   showOptions: function() {

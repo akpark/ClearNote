@@ -8,9 +8,7 @@ var root = document.getElementById('root');
 var Navbar = require('./components/navbar');
 var NotesIndex = require('./components/notes_index/index');
 var NoteForm = require('./components/noteForm/noteForm');
-var NoteDetail = require('./components/notes/detail');
 var NoteStore = require('./stores/note');
-var ReactQuill = require('./vendor/react-quill');
 
 var App = React.createClass({
   render: function(){

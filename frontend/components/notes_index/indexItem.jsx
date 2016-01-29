@@ -11,7 +11,6 @@ var NoteIndexItem = React.createClass({
 
   showDetail: function() {
     this.selected = true;
-    debugger
     this.history.pushState(null, 'api/notes/' + this.props.note.id, this.state.note);
   },
 

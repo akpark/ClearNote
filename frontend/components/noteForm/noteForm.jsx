@@ -35,8 +35,7 @@ var NoteForm = React.createClass({
       <div className="note-form-outer">
         <div className="note-form-header">
           <MiniMenu />
-          <div>Share</div>
-          <div>Done</div>
+
         </div>
         <TextEditor note={this.state.note} />
       </div>
