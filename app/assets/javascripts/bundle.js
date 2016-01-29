@@ -31196,9 +31196,11 @@
 	  showDetail: function (e) {
 	    //use jquery to remove selected classes
 	    //then add this one as selected
-	    $('note-index-item').each(function (indexItem) {
-	      indexItem.removeClass('selected');
-	    });
+	    debugger;
+	    $(".note-index-item").removeClass("selected");
+	    // $(".note-index-item").each(function(item) {
+	    //   $(item).removeClass('.selected');
+	    // });
 	
 	    $(e.currentTarget).addClass('selected');
 	
@@ -31420,7 +31422,6 @@
 	  },
 	
 	  render: function () {
-	    debugger;
 	    return React.createElement(
 	      'div',
 	      { className: 'text-editor' },

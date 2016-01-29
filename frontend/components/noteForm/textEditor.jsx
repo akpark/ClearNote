@@ -24,7 +24,6 @@ var TextEditor = React.createClass({
   },
 
   render: function() {
-    debugger
     return (
       <div className="text-editor">
         <ReactQuill theme="snow"
