@@ -9,7 +9,7 @@
 
 .note-index-item-title {
   padding: 5px 0 2px 0;
-  font-family: caecilia, times, serif;
+  font-family: futura;
   font-size: 16px;
   font-weight: 400;
 }
@@ -24,7 +24,8 @@
 
 .note-index-item-body {
   padding-top: 10px;
-  font-family: gotham;
+  font-family: 'Gill Sans';
+  font-weight: 100;
   font-size: 14px;
 }
 
