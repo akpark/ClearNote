@@ -28,7 +28,7 @@ form {
   border-radius: 10px;
 }
 
-form > input {
+form input {
   display: block;
 }
 
@@ -36,7 +36,7 @@ form > input {
   padding-bottom: 20px;
 }
 
-.input > label {
+.input label {
   display: block;
   font-family: 'Century Gothic';
   font-weight: 500;
@@ -44,7 +44,7 @@ form > input {
   font-size: 13px;
 }
 
-.input > input {
+.input input {
   font-size: 15px;
   width: 93%;
   padding: 7px;

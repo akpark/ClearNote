@@ -11,33 +11,37 @@ var NoteForm = require('./components/noteForm/noteForm');
 var NoteStore = require('./stores/note');
 var SessionForm = require('./components/sessions/new');
 var UserForm = require('./components/users/user_form');
-
-var App = React.createClass({
-  render: function(){
-    return (
-        <div className="app group">
-          <Navbar />
-          <NotesIndex />
-          {this.props.children}
-        </div>
-    );
-  }
-});
+var CurrentUserStore = require('./stores/current_user_store');
+var SessionsApiUtil = require('./util/sessions_api_util');
+var App = require('./components/app');
+var Home = require('./components/home');
 
 var routes = (
-  <Route path="/" component={App}>
+  <Route path="/" component={App} >
+    <IndexRoute component={ Home } onEnter={_ensureLoggedIn}/>
     <Route path="login" component={ SessionForm } />
     <Route path="users/new" component={ UserForm } />
-    <Route path="api/notes/new" component={ NoteForm } />
-    <Route path="api/notes/:noteId" component={ NoteForm } />
+    <Route path="api/notes/new" component={ NoteForm } onEnter={_ensureLoggedIn}/>
+    <Route path="api/notes/:noteId" component={ NoteForm } onEnter={_ensureLoggedIn}/>
   </Route>
 );
 
+function _ensureLoggedIn(nextState, replace, callback) {
+  if (CurrentUserStore.userHasBeenFetched()) {
+    _redirectIfNotLoggedIn();
+  } else {
+    SessionsApiUtil.fetchCurrentUser(_redirectIfNotLoggedIn);
+  }
 
+  function _redirectIfNotLoggedIn() {
+    // debugger
+    if (!CurrentUserStore.isLoggedIn()) {
+      replace({}, "/login");
+    }
+    callback();
+  }
+}
 
 document.addEventListener("DOMContentLoaded", function() {
   ReactDOM.render(<Router>{routes}</Router>, root);
 });
-
-// var editor = new Quill('#editor');
-// editor.addModule('toolbar', { container: '#toolbar' });

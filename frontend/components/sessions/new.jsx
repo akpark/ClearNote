@@ -7,8 +7,6 @@ var SessionForm = React.createClass({
 
   submit: function (e) {
     e.preventDefault();
-    //TODO:what does serializing json do??
-    debugger;
     var credentials = $(e.currentTarget).serializeJSON();
     SessionsApiUtil.login(credentials, function () {
       this.history.pushState({}, "/");
@@ -16,7 +14,6 @@ var SessionForm = React.createClass({
   },
 
   render: function() {
-    debugger
     return (
       <div className="sign-in">
         <h1>Sign in</h1>
@@ -24,13 +21,13 @@ var SessionForm = React.createClass({
 
           <div className="input">
             <label>Email address or username
-            <input type="text" name="user[username]"/>
+            <input type="text" name="username"/>
             </label>
           </div>
 
           <div className="input">
             <label>Password
-            <input type="password" name="user[password]"/>
+            <input type="password" name="password"/>
             </label>
           </div>
 

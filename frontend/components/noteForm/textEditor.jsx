@@ -1,7 +1,6 @@
 var React = require('react');
 var ReactQuill = require('react-quill');
 var ApiUtil = require('../../util/apiUtil');
-// var ReactQuill = require('../../vendor/react-quill');
 
 var TextEditor = React.createClass({
   getInitialState: function() {
@@ -27,10 +26,15 @@ var TextEditor = React.createClass({
   render: function() {
     return (
       <div className="text-editor">
+        <div id="toolbar">
+        </div>
+
+        <div id="editor"></div>
         <ReactQuill theme="snow"
                     value={this.state.body}
                     onChange={this.handleBodyChange} />
       </div>
+      var editor = new Quill('#editor');
     );
   }
 });

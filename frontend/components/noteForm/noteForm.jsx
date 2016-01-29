@@ -20,17 +20,14 @@ var NoteForm = React.createClass({
   },
 
   componentWillReceiveProps: function(newProps) {
-    debugger
     ApiUtil.fetchSingleNote(parseInt(newProps.params.noteId));
   },
 
   _onChange: function() {
-    debugger
     this.setState(this.getStateFromStore());
   },
 
   render: function() {
-    debugger
     return (
       <div className="note-form-outer">
         <div className="note-form-header">

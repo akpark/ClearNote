@@ -23,16 +23,6 @@ var UsersApiUtil = {
     });
   },
 
-  createUser: function (attrs, callback) {
-    $.ajax({
-      url: '/users',
-      type: 'POST',
-      dataType: 'json',
-      data: attrs,
-      success: function (user) {
-        UserAction.receiveUser(user);
-        Curr
-      }
-    })
-  }
-}
+};
+
+module.exports = UsersApiUtil;
