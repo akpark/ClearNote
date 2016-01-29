@@ -9,12 +9,14 @@ var Navbar = require('./components/navbar');
 var NotesIndex = require('./components/notes_index/index');
 var NoteForm = require('./components/noteForm/noteForm');
 var NoteStore = require('./stores/note');
+var SessionForm = require('./components/sessions/new');
+var UserForm = require('./components/users/user_form');
 
 var App = React.createClass({
   render: function(){
     return (
         <div className="app group">
-          <Navbar history={this.props.history}/>
+          <Navbar />
           <NotesIndex />
           {this.props.children}
         </div>
@@ -24,10 +26,14 @@ var App = React.createClass({
 
 var routes = (
   <Route path="/" component={App}>
-    <Route path="api/notes/new" component={NoteForm} />
-    <Route path="api/notes/:noteId" component={NoteForm} />
+    <Route path="login" component={ SessionForm } />
+    <Route path="users/new" component={ UserForm } />
+    <Route path="api/notes/new" component={ NoteForm } />
+    <Route path="api/notes/:noteId" component={ NoteForm } />
   </Route>
 );
+
+
 
 document.addEventListener("DOMContentLoaded", function() {
   ReactDOM.render(<Router>{routes}</Router>, root);

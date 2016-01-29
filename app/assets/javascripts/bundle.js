@@ -55,6 +55,8 @@
 	var NotesIndex = __webpack_require__(207);
 	var NoteForm = __webpack_require__(235);
 	var NoteStore = __webpack_require__(208);
+	var SessionForm = __webpack_require__(244);
+	var UserForm = __webpack_require__(245);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -63,7 +65,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'app group' },
-	      React.createElement(Navbar, { history: this.props.history }),
+	      React.createElement(Navbar, null),
 	      React.createElement(NotesIndex, null),
 	      this.props.children
 	    );
@@ -73,6 +75,8 @@
 	var routes = React.createElement(
 	  Route,
 	  { path: '/', component: App },
+	  React.createElement(Route, { path: 'login', component: SessionForm }),
+	  React.createElement(Route, { path: 'users/new', component: UserForm }),
 	  React.createElement(Route, { path: 'api/notes/new', component: NoteForm }),
 	  React.createElement(Route, { path: 'api/notes/:noteId', component: NoteForm })
 	);
@@ -9345,6 +9349,7 @@
 	 */
 	var EventInterface = {
 	  type: null,
+	  target: null,
 	  // currentTarget is set when dispatching; no use in copying it here
 	  currentTarget: emptyFunction.thatReturnsNull,
 	  eventPhase: null,
@@ -9378,8 +9383,6 @@
 	  this.dispatchConfig = dispatchConfig;
 	  this.dispatchMarker = dispatchMarker;
 	  this.nativeEvent = nativeEvent;
-	  this.target = nativeEventTarget;
-	  this.currentTarget = nativeEventTarget;
 	
 	  var Interface = this.constructor.Interface;
 	  for (var propName in Interface) {
@@ -9390,7 +9393,11 @@
 	    if (normalize) {
 	      this[propName] = normalize(nativeEvent);
 	    } else {
-	      this[propName] = nativeEvent[propName];
+	      if (propName === 'target') {
+	        this.target = nativeEventTarget;
+	      } else {
+	        this[propName] = nativeEvent[propName];
+	      }
 	    }
 	  }
 	
@@ -13239,7 +13246,10 @@
 	      }
 	    });
 	
-	    nativeProps.children = content;
+	    if (content) {
+	      nativeProps.children = content;
+	    }
+	
 	    return nativeProps;
 	  }
 	
@@ -18712,7 +18722,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.6';
+	module.exports = '0.14.7';
 
 /***/ },
 /* 147 */
@@ -31423,9 +31433,9 @@
 	https://github.com/zenoamaro/react-quill
 	*/
 	module.exports = __webpack_require__(239);
-	module.exports.Mixin = __webpack_require__(242);
+	module.exports.Mixin = __webpack_require__(241);
 	module.exports.Toolbar = __webpack_require__(240);
-	module.exports.Quill = __webpack_require__(243);
+
 
 /***/ },
 /* 239 */
@@ -31434,9 +31444,8 @@
 	'use strict';
 	
 	var React = __webpack_require__(1),
-	  ReactDOM = __webpack_require__(158),
 		QuillToolbar = __webpack_require__(240),
-		QuillMixin = __webpack_require__(242),
+		QuillMixin = __webpack_require__(241),
 		T = React.PropTypes;
 	
 	// Support React 0.11 and 0.12
@@ -31500,8 +31509,7 @@
 				className: '',
 				theme: 'base',
 				modules: {
-					'link-tooltip': true,
-					'image-tooltip': true
+					'link-tooltip': true
 				}
 			};
 		},
@@ -31624,7 +31632,7 @@
 				// because it's shared between components.
 				config.modules = JSON.parse(JSON.stringify(config.modules));
 				config.modules.toolbar = {
-					container: ReactDOM.findDOMNode(this.refs.toolbar)
+					container: this.refs.toolbar.getDOMNode()
 				};
 			}
 			return config;
@@ -31635,7 +31643,7 @@
 		},
 	
 		getEditorElement: function() {
-			return ReactDOM.findDOMNode(this.refs.editor);
+			return this.refs.editor.getDOMNode();
 		},
 	
 		getEditorContents: function() {
@@ -31683,7 +31691,7 @@
 			return React.DOM.div({
 				id: this.props.id,
 				style: this.props.style,
-				className: ['quill'].concat(this.props.className).join(' '),
+				className: 'quill ' + this.props.className,
 				onKeyPress: this.props.onKeyPress,
 				onKeyDown: this.props.onKeyDown,
 				onKeyUp: this.props.onKeyUp,
@@ -31741,7 +31749,6 @@
 	'use strict';
 	
 	var React = __webpack_require__(1),
-	  ReactDOMServer = __webpack_require__(241),
 		T = React.PropTypes;
 	
 	var defaultColors = [
@@ -31883,7 +31890,7 @@
 	
 		render: function() {
 			var children = this.props.items.map(this.renderItem);
-			var html = children.map(ReactDOMServer.renderToStaticMarkup).join('');
+			var html = children.map(React.renderToStaticMarkup).join('');
 			return React.DOM.div({
 				className: this.getClassName(),
 				dangerouslySetInnerHTML: { __html:html }
@@ -31896,23 +31903,13 @@
 	QuillToolbar.defaultItems = defaultItems;
 	QuillToolbar.defaultColors = defaultColors;
 
-
 /***/ },
 /* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 	
-	module.exports = __webpack_require__(148);
-
-
-/***/ },
-/* 242 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	
-	var Quill = __webpack_require__(243);
+	var Quill = __webpack_require__(242);
 	
 	var QuillMixin = {
 	
@@ -31976,14 +31973,14 @@
 
 
 /***/ },
-/* 243 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(244);
+	module.exports = __webpack_require__(243);
 
 
 /***/ },
-/* 244 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var require;var require;/* WEBPACK VAR INJECTION */(function(global) {/*! Quill Editor v0.20.1
@@ -42736,6 +42733,168 @@
 	},{"../../lib/color-picker":16,"../../lib/dom":17,"../../lib/picker":19,"../base":32,"lodash":1}]},{},[15])(15)
 	});
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 244 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	var SessionsApiUtil = __webpack_require__(246);
+	
+	var SessionForm = React.createClass({
+	  displayName: 'SessionForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	    //TODO:what does serializing json do??
+	    debugger;
+	    var credentials = $(e.currentTarget).serializeJSON();
+	    SessionsApiUtil.login(credentials, function () {
+	      this.history.pushState({}, "/");
+	    }.bind(this));
+	  },
+	
+	  render: function () {
+	    debugger;
+	    return React.createElement(
+	      'div',
+	      { className: 'sign-in' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Sign in'
+	      ),
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submit },
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'Email address or username',
+	            React.createElement('input', { type: 'text', name: 'user[username]' })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'Password',
+	            React.createElement('input', { type: 'password', name: 'user[password]' })
+	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          null,
+	          'Log In!'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = SessionForm;
+
+/***/ },
+/* 245 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	var UserForm = React.createClass({
+	  displayName: 'UserForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { 'class': 'sign-up' },
+	      React.createElement(
+	        'h1',
+	        null,
+	        'Create Account'
+	      ),
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submit },
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'Your Email Address',
+	            React.createElement('input', { type: 'text', name: 'user[username]' })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement(
+	            'label',
+	            null,
+	            'Create a password',
+	            React.createElement('input', { type: 'password', name: 'user[password]' })
+	          )
+	        ),
+	        React.createElement(
+	          'button',
+	          null,
+	          'Create Account'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = UserForm;
+
+/***/ },
+/* 246 */
+/***/ function(module, exports) {
+
+	var SessionsApiUtil = {
+	  login: function (credentials, success) {
+	    $.ajax({
+	      url: '/api/session',
+	      type: 'POST',
+	      dataType: 'json',
+	      data: credentials,
+	      success: function (currentUser) {
+	        CurrentUserActions.receiveCurrentUser(currentUser);
+	        //success!!, send user to root url!
+	        success && success();
+	      }
+	    });
+	  },
+	
+	  logout: function () {
+	    $.ajax({
+	      url: 'api/session/',
+	      type: 'DELETE',
+	      dataType: 'json',
+	      success: function (currentUser) {
+	        CurrentUserActions.deleteCurrentUser(currentUser);
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = SessionsApiUtil;
 
 /***/ }
 /******/ ]);
