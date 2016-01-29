@@ -4,7 +4,7 @@ var ApiUtil = require('../../util/apiUtil');
 
 var TextEditor = React.createClass({
   getInitialState: function() {
-    return {body: this.props.note.body};
+    return {note: this.props.note};
   },
 
   handleBodyChange: function(e) {
@@ -23,18 +23,18 @@ var TextEditor = React.createClass({
     this.setState({body: e.target.value});
   },
 
+  componentDidMount: function() {
+    var editor = new Quill('#editor', {
+      theme: 'snow'
+    });
+  },
+
   render: function() {
     return (
       <div className="text-editor">
-        <div id="toolbar">
+        <div id="editor">
         </div>
-
-        <div id="editor"></div>
-        <ReactQuill theme="snow"
-                    value={this.state.body}
-                    onChange={this.handleBodyChange} />
       </div>
-      var editor = new Quill('#editor');
     );
   }
 });

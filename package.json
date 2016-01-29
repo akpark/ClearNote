@@ -10,6 +10,7 @@
     "flux": "^2.1.1",
     "history": "^1.17.0",
     "jquery-serializejson": "^2.6.2",
+    "quill": "^0.20.1",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-quill": "^0.3.0",

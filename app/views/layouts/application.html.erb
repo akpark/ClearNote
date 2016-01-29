@@ -4,13 +4,14 @@
   <title>ClearNote</title>
   <%= stylesheet_link_tag 'application', media: 'all' %>
   <%= csrf_meta_tags %>
+  <link rel="stylesheet" href="//cdn.quilljs.com/0.20.1/quill.snow.css" />
 </head>
 <body>
 
 <%= yield %>
 
-  <script src="http://cdn.quilljs.com/latest/quill.js"></script>
   <%= javascript_include_tag 'application' %>
 
+  <script src="//cdn.quilljs.com/0.20.1/quill.js"></script>
 </body>
 </html>
