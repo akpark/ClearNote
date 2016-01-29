@@ -9,7 +9,15 @@ var NoteIndexItem = React.createClass({
     return {note: this.props.note};
   },
 
-  showDetail: function() {
+  showDetail: function(e) {
+    //use jquery to remove selected classes
+    //then add this one as selected
+    $('note-index-item').each(function(indexItem) {
+      indexItem.removeClass('selected');
+    });
+
+    $(e.currentTarget).addClass('selected');
+
     this.selected = true;
     this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
   },
@@ -30,7 +38,7 @@ var NoteIndexItem = React.createClass({
       klass = "note-index-item selected";
     }
     return (
-      <div className={klass} onClick={this.showDetail}>
+      <div className="note-index-item" onClick={this.showDetail}>
         <div className="note-index-item-inner">
           <div className="note-index-item-title">{this.state.note.title}</div>
           <div className="note-index-item-date">Date Created</div>

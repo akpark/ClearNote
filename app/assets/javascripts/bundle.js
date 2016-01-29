@@ -56,8 +56,8 @@
 	var NoteForm = __webpack_require__(235);
 	var NoteStore = __webpack_require__(208);
 	var SessionForm = __webpack_require__(244);
-	var UserForm = __webpack_require__(246);
-	var CurrentUserStore = __webpack_require__(247);
+	var UserForm = __webpack_require__(248);
+	var CurrentUserStore = __webpack_require__(249);
 	var SessionsApiUtil = __webpack_require__(245);
 	var App = __webpack_require__(250);
 	var Home = __webpack_require__(251);
@@ -31193,7 +31193,15 @@
 	    return { note: this.props.note };
 	  },
 	
-	  showDetail: function () {
+	  showDetail: function (e) {
+	    //use jquery to remove selected classes
+	    //then add this one as selected
+	    $('note-index-item').each(function (indexItem) {
+	      indexItem.removeClass('selected');
+	    });
+	
+	    $(e.currentTarget).addClass('selected');
+	
 	    this.selected = true;
 	    this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
 	  },
@@ -31215,7 +31223,7 @@
 	    }
 	    return React.createElement(
 	      'div',
-	      { className: klass, onClick: this.showDetail },
+	      { className: 'note-index-item', onClick: this.showDetail },
 	      React.createElement(
 	        'div',
 	        { className: 'note-index-item-inner' },
@@ -42805,7 +42813,7 @@
 /* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(249);
+	var CurrentUserActions = __webpack_require__(246);
 	
 	var SessionsApiUtil = {
 	  login: function (credentials, success) {
@@ -42842,6 +42850,34 @@
 
 /***/ },
 /* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var AppDispatcher = __webpack_require__(228);
+	var CurrentUserConstants = __webpack_require__(247);
+	
+	var CurrentUserActions = {
+	  receiveCurrentUser: function (currentUser) {
+	    AppDispatcher.dispatch({
+	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
+	      currentUser: currentUser
+	    });
+	  }
+	};
+	
+	module.exports = CurrentUserActions;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports) {
+
+	var CurrentUserConstants = {
+	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
+	};
+	
+	module.exports = CurrentUserConstants;
+
+/***/ },
+/* 248 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -42901,12 +42937,12 @@
 	module.exports = UserForm;
 
 /***/ },
-/* 247 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(209).Store;
 	var AppDispatcher = __webpack_require__(228);
-	var CurrentUserConstants = __webpack_require__(248);
+	var CurrentUserConstants = __webpack_require__(247);
 	
 	var _currentUser = {};
 	var _currentUserHasBeenFetched = false;
@@ -42935,39 +42971,11 @@
 	module.exports = CurrentUserStore;
 
 /***/ },
-/* 248 */
-/***/ function(module, exports) {
-
-	var CurrentUserConstants = {
-	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER"
-	};
-	
-	module.exports = CurrentUserConstants;
-
-/***/ },
-/* 249 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var AppDispatcher = __webpack_require__(228);
-	var CurrentUserConstants = __webpack_require__(248);
-	
-	var CurrentUserActions = {
-	  receiveCurrentUser: function (currentUser) {
-	    AppDispatcher.dispatch({
-	      actionType: CurrentUserConstants.RECEIVE_CURRENT_USER,
-	      currentUser: currentUser
-	    });
-	  }
-	};
-	
-	module.exports = CurrentUserActions;
-
-/***/ },
 /* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(247);
+	var CurrentUserStore = __webpack_require__(249);
 	var SessionsApiUtil = __webpack_require__(245);
 	var Navbar = __webpack_require__(206);
 	var NotesIndex = __webpack_require__(207);
@@ -43006,7 +43014,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(247);
+	var CurrentUserStore = __webpack_require__(249);
 	var SessionsApiUtil = __webpack_require__(245);
 	var Navbar = __webpack_require__(206);
 	var NotesIndex = __webpack_require__(207);
