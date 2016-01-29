@@ -23,17 +23,13 @@ var TextEditor = React.createClass({
     this.setState({body: e.target.value});
   },
 
-  componentDidMount: function() {
-    var editor = new Quill('#editor', {
-      theme: 'snow'
-    });
-  },
-
   render: function() {
     return (
       <div className="text-editor">
-        <div id="editor">
-        </div>
+        <ReactQuill theme="snow"
+                    value={this.state.note.body}
+                    onChange={this.onTextChange}
+                    className="react-quill" />
       </div>
     );
   }

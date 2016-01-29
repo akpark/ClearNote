@@ -14,6 +14,10 @@ var SessionsApiUtil = {
     });
   },
 
+  logout: function() {
+
+  },
+
   fetchCurrentUser: function (cb) {
     $.ajax({
       url: '/api/session',

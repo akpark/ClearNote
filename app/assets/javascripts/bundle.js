@@ -66,7 +66,6 @@
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: Home, onEnter: _ensureLoggedIn }),
-	  '//use notes!',
 	  React.createElement(
 	    Route,
 	    { path: 'notes', component: Home },
@@ -24149,11 +24148,6 @@
 	
 	  _onChange: function () {
 	    this.setState({ notes: NoteStore.all() });
-	    // var note = NoteStore.findLatest();
-	    // if (note) {
-	    //   this.history.pushState(null, 'api/notes/' + note.id, note);
-	    // }
-	    // var note = NoteStore.findLatest();
 	  },
 	
 	  showOptions: function () {
@@ -31201,7 +31195,6 @@
 	
 	  showDetail: function () {
 	    this.selected = true;
-	    debugger;
 	    this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
 	  },
 	
@@ -31363,15 +31356,8 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'note-form-outer' },
-	      React.createElement(
-	        'div',
-	        { className: 'note-form-header' },
-	        React.createElement(
-	          'p',
-	          null,
-	          this.state.note.body
-	        )
-	      )
+	      React.createElement('div', { className: 'note-form-header' }),
+	      React.createElement(TextEditor, { note: this.state.note })
 	    );
 	  }
 	});
@@ -31425,17 +31411,14 @@
 	    this.setState({ body: e.target.value });
 	  },
 	
-	  componentDidMount: function () {
-	    var editor = new Quill('#editor', {
-	      theme: 'snow'
-	    });
-	  },
-	
 	  render: function () {
 	    return React.createElement(
 	      'div',
 	      { className: 'text-editor' },
-	      React.createElement('div', { id: 'editor' })
+	      React.createElement(ReactQuill, { theme: 'snow',
+	        value: this.state.note.body,
+	        onChange: this.onTextChange,
+	        className: 'react-quill' })
 	    );
 	  }
 	});
@@ -42837,6 +42820,8 @@
 	    });
 	  },
 	
+	  logout: function () {},
+	
 	  fetchCurrentUser: function (cb) {
 	    $.ajax({
 	      url: '/api/session',
@@ -43002,6 +42987,7 @@
 	        'Please Wait'
 	      );
 	    }
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'home group' },

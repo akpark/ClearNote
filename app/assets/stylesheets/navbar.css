@@ -1,8 +1,8 @@
 .navbar {
   height: 100%;
   float: left;
-  margin-left: 10px;
-  border: 1px solid black;
+  width: 75px;
+  background: #f7f7f7;
 }
 
 .navbar-link {

@@ -16,6 +16,7 @@ var Home = React.createClass({
     if (!CurrentUserStore.userHasBeenFetched()) {
       return <p>Please Wait</p>;
     }
+    
     return (
       <div className="home group">
         <Navbar />

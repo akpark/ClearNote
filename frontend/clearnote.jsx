@@ -20,7 +20,6 @@ var routes = (
 
   <Route path="/" component={App}>
     <IndexRoute component={ Home } onEnter={_ensureLoggedIn}/>
-    //use notes!
     <Route path="notes" component={ Home }>
       <Route path="new" component={ NoteForm }/>
       <Route path=":noteId" component={ NoteForm }/>
