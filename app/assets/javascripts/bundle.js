@@ -66,10 +66,15 @@
 	  Route,
 	  { path: '/', component: App },
 	  React.createElement(IndexRoute, { component: Home, onEnter: _ensureLoggedIn }),
+	  '//use notes!',
+	  React.createElement(
+	    Route,
+	    { path: 'notes', component: Home },
+	    React.createElement(Route, { path: 'new', component: NoteForm }),
+	    React.createElement(Route, { path: ':noteId', component: NoteForm })
+	  ),
 	  React.createElement(Route, { path: 'login', component: SessionForm }),
-	  React.createElement(Route, { path: 'users/new', component: UserForm }),
-	  React.createElement(Route, { path: 'api/notes/new', component: NoteForm, onEnter: _ensureLoggedIn }),
-	  React.createElement(Route, { path: 'api/notes/:noteId', component: NoteForm, onEnter: _ensureLoggedIn })
+	  React.createElement(Route, { path: 'users/new', component: UserForm })
 	);
 	
 	function _ensureLoggedIn(nextState, replace, callback) {
@@ -80,7 +85,6 @@
 	  }
 	
 	  function _redirectIfNotLoggedIn() {
-	    // debugger
 	    if (!CurrentUserStore.isLoggedIn()) {
 	      replace({}, "/login");
 	    }
@@ -24234,7 +24238,7 @@
 	  });
 	};
 	
-	NoteStore.findLatest = function () {
+	NoteStore.findFirst = function () {
 	  return _notes[0];
 	};
 	
@@ -31197,7 +31201,14 @@
 	
 	  showDetail: function () {
 	    this.selected = true;
-	    this.history.pushState(null, 'api/notes/' + this.props.note.id, this.state.note);
+	    debugger;
+	    this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
+	  },
+	
+	  componentDidMount: function () {
+	    if (this.state.note === NoteStore.findFirst()) {
+	      this.history.pushState(null, 'notes/' + this.state.note.id, this.state.note);
+	    }
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31355,9 +31366,12 @@
 	      React.createElement(
 	        'div',
 	        { className: 'note-form-header' },
-	        React.createElement(MiniMenu, null)
-	      ),
-	      React.createElement(TextEditor, { note: this.state.note })
+	        React.createElement(
+	          'p',
+	          null,
+	          this.state.note.body
+	        )
+	      )
 	    );
 	  }
 	});
@@ -42972,6 +42986,44 @@
 	var Navbar = __webpack_require__(206);
 	var NotesIndex = __webpack_require__(207);
 	
+	var Home = React.createClass({
+	  displayName: 'Home',
+	
+	  componentDidMount: function () {
+	    CurrentUserStore.addListener(this.forceUpdate.bind(this));
+	    SessionsApiUtil.fetchCurrentUser();
+	  },
+	
+	  render: function () {
+	    if (!CurrentUserStore.userHasBeenFetched()) {
+	      return React.createElement(
+	        'p',
+	        null,
+	        'Please Wait'
+	      );
+	    }
+	    return React.createElement(
+	      'div',
+	      { className: 'home group' },
+	      React.createElement(Navbar, null),
+	      React.createElement(NotesIndex, null),
+	      this.props.children
+	    );
+	  }
+	});
+	
+	module.exports = Home;
+
+/***/ },
+/* 251 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var CurrentUserStore = __webpack_require__(247);
+	var SessionsApiUtil = __webpack_require__(245);
+	var Navbar = __webpack_require__(206);
+	var NotesIndex = __webpack_require__(207);
+	
 	var App = React.createClass({
 	  displayName: 'App',
 	
@@ -42998,43 +43050,6 @@
 	});
 	
 	module.exports = App;
-
-/***/ },
-/* 251 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(247);
-	var SessionsApiUtil = __webpack_require__(245);
-	var Navbar = __webpack_require__(206);
-	var NotesIndex = __webpack_require__(207);
-	
-	var Home = React.createClass({
-	  displayName: 'Home',
-	
-	  componentDidMount: function () {
-	    CurrentUserStore.addListener(this.forceUpdate.bind(this));
-	    SessionsApiUtil.fetchCurrentUser();
-	  },
-	
-	  render: function () {
-	    if (!CurrentUserStore.userHasBeenFetched()) {
-	      return React.createElement(
-	        'p',
-	        null,
-	        'Please Wait'
-	      );
-	    }
-	    return React.createElement(
-	      'div',
-	      { className: 'home group' },
-	      React.createElement(Navbar, null),
-	      React.createElement(NotesIndex, null)
-	    );
-	  }
-	});
-	
-	module.exports = Home;
 
 /***/ }
 /******/ ]);

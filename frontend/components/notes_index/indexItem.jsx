@@ -11,7 +11,14 @@ var NoteIndexItem = React.createClass({
 
   showDetail: function() {
     this.selected = true;
-    this.history.pushState(null, 'api/notes/' + this.props.note.id, this.state.note);
+    debugger
+    this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
+  },
+
+  componentDidMount: function() {
+    if (this.state.note === NoteStore.findFirst()) {
+      this.history.pushState(null, 'notes/' + this.state.note.id, this.state.note);
+    }
   },
 
   componentWillUnmount: function() {

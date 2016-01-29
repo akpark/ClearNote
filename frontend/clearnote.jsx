@@ -17,13 +17,19 @@ var App = require('./components/app');
 var Home = require('./components/home');
 
 var routes = (
-  <Route path="/" component={App} >
+
+  <Route path="/" component={App}>
     <IndexRoute component={ Home } onEnter={_ensureLoggedIn}/>
+    //use notes!
+    <Route path="notes" component={ Home }>
+      <Route path="new" component={ NoteForm }/>
+      <Route path=":noteId" component={ NoteForm }/>
+    </Route>
+
     <Route path="login" component={ SessionForm } />
     <Route path="users/new" component={ UserForm } />
-    <Route path="api/notes/new" component={ NoteForm } onEnter={_ensureLoggedIn}/>
-    <Route path="api/notes/:noteId" component={ NoteForm } onEnter={_ensureLoggedIn}/>
   </Route>
+
 );
 
 function _ensureLoggedIn(nextState, replace, callback) {
@@ -34,7 +40,6 @@ function _ensureLoggedIn(nextState, replace, callback) {
   }
 
   function _redirectIfNotLoggedIn() {
-    // debugger
     if (!CurrentUserStore.isLoggedIn()) {
       replace({}, "/login");
     }

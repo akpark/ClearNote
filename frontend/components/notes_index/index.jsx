@@ -66,7 +66,6 @@ var NotesIndex = React.createClass({
         <div className="note-index-items">
           {notes}
         </div>
-
       </div>
     );
   }

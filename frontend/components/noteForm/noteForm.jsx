@@ -31,10 +31,8 @@ var NoteForm = React.createClass({
     return (
       <div className="note-form-outer">
         <div className="note-form-header">
-          <MiniMenu />
-
+          <p>{this.state.note.body}</p>
         </div>
-        <TextEditor note={this.state.note} />
       </div>
     );
   }

@@ -4,23 +4,26 @@ var SessionsApiUtil = require('../util/sessions_api_util');
 var Navbar = require('./navbar');
 var NotesIndex = require('./notes_index/index');
 
-var App = React.createClass({
+
+var Home = React.createClass({
+
   componentDidMount: function () {
     CurrentUserStore.addListener(this.forceUpdate.bind(this));
     SessionsApiUtil.fetchCurrentUser();
   },
 
-  render: function(){
+  render: function () {
     if (!CurrentUserStore.userHasBeenFetched()) {
       return <p>Please Wait</p>;
     }
-
     return (
-        <div>
-          {this.props.children}
-        </div>
+      <div className="home group">
+        <Navbar />
+        <NotesIndex />
+        {this.props.children}
+      </div>
     );
   }
 });
 
-module.exports = App;
+module.exports = Home;

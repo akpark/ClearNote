@@ -14,7 +14,7 @@ NoteStore.find = function(id) {
   });
 };
 
-NoteStore.findLatest = function() {
+NoteStore.findFirst = function() {
   return _notes[0];
 };
 
