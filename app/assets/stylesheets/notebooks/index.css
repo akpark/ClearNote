@@ -1,0 +1,42 @@
+.notebook-index {
+  height: 100%;
+  border-right: 1px solid #ccc;
+  width: 400px;
+  background: white;
+  float: left;
+}
+
+.notebook-index-header {
+  display: block;
+  padding: 20px 20px 15px 10px;
+}
+
+.slideout {
+  width: 400px;
+  z-index: 0.1;
+  position: fixed;
+  float: left;
+  height: 100%;
+}
+
+.notebook-index-title {
+  text-transform: uppercase;
+  float: left;
+}
+
+.add-notebook-button {
+  float: right;
+}
+
+.add-notebook-button:hover {
+  cursor: pointer;
+}
+
+.example-enter {
+  opacity: 0.01;
+  transition: opacity .5s ease-in;
+}
+
+.example-enter.example-enter-active {
+  opacity: 1;
+}

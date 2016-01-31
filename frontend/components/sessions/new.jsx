@@ -9,7 +9,7 @@ var SessionForm = React.createClass({
     e.preventDefault();
     var credentials = $(e.currentTarget).serializeJSON();
     SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, "/notes");
+      this.history.pushState({}, "home");
     }.bind(this));
   },
 

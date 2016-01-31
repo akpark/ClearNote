@@ -1,0 +1,39 @@
+.notebook-index-item {
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  overflow-y: hidden;
+}
+
+.selected {
+  border: 3px solid #ccc;
+}
+
+.note-index-item-inner {
+  border-bottom: 1px solid #ccc;
+  padding: 5px 10px;
+  height: 100px;
+}
+
+.notebook-index-item-title {
+  padding: 5px 0 2px 0;
+  font-family: futura;
+  font-size: 16px;
+  font-weight: 400;
+}
+
+.notebook-index-item:hover {
+  background: #2dbe60;
+  cursor: pointer;
+}
+
+.search-notebook-input {
+  display: block;
+  width: 100%;
+  margin-top: 25px;
+  padding: 5px 0;
+  font-size: 14px;
+}
+
+::-webkit-input-placeholder {
+  text-align: center;
+}

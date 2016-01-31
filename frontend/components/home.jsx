@@ -18,7 +18,7 @@ var Home = React.createClass({
 
   componentWillMount: function() {
     if (CurrentUserStore.isLoggedIn()) {
-      this.history.pushState(null, 'notes');
+      this.history.pushState(null, 'home');
     }
   },
 

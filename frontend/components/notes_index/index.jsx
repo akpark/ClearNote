@@ -1,6 +1,6 @@
 var React = require('react');
 var NoteStore = require('../../stores/note_store');
-var ApiUtil = require('../../util/notes_api_util');
+var NotesApiUtil = require('../../util/notes_api_util');
 var NoteActions = require('../../actions/note_actions');
 var NoteIndexItem = require('./index_item');
 var OptionsDropdown = require('./options_dropdown');
@@ -14,7 +14,7 @@ var NotesIndex = React.createClass({
 
   componentDidMount: function() {
     this.notesListener = NoteStore.addListener(this._onChange);
-    ApiUtil.fetchAllNotes();
+    NotesApiUtil.fetchAllNotes();
   },
 
   componentWillUnmount: function() {

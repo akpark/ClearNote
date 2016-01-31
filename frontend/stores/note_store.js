@@ -29,7 +29,6 @@ var resetNotes = function(notes) {
 
 var resetNote = function(newNote) {
   _notes[newNote.id] = newNote;
-  debugger
 };
 
 var deleteNote = function(note) {
@@ -74,4 +73,5 @@ NoteStore.__onDispatch = function(payload) {
   }
 };
 
+window.NoteStore = NoteStore;
 module.exports = NoteStore;

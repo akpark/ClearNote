@@ -4,24 +4,18 @@ class Api::NotebooksController < ApplicationController
     @notebooks = Notebook.all
   end
 
-  def new
-    
-  end
-
   def show
     @notebook = Notebook.find(params[:id])
   end
 
   def create
-    @notebook.create(notebook_params)
-  end
-
-  def update
-
-  end
-
-  def destroy
-
+    @notebook = Notebook.new(notebook_params)
+    @notebook.author_id = current_user.id
+    if @notebook.save
+      render :show
+    else
+      render json: @notebook.errors.full_messages, status: 422
+    end
   end
 
   private

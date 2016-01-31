@@ -15,19 +15,26 @@ var CurrentUserStore = require('./stores/current_user_store');
 var SessionsApiUtil = require('./util/sessions_api_util');
 var App = require('./components/app');
 var Home = require('./components/home');
+var Slideout = require('./components/slideout/slideout');
+var NotebooksIndex = require('./components/slideout/notebooks/index');
 
 var router = (
   <Router>
     <Route path="/" component={ Home } onEnter={_ensureLoggedIn}/>
-    <Route path="notes" component={ App } onEnter={_ensureLoggedIn}>
-      <Route path=":noteId" component={ NoteForm }/>
-      <Route path="notes/new" component={ NoteForm }/>
+    <Route path="home" component={ App } onEnter={_ensureLoggedIn}>
+      <Route path="notes">
+        <Route path=":noteId" component={ NoteForm }/>
+        <Route path="new" component={ NoteForm }/>
+      </Route>
+      <Route path="notebooks" component={ NotebooksIndex } />
     </Route>
     <Route path="login" component={ SessionForm } />
     <Route path="register" component={ UserForm } />
   </Router>
-
 );
+
+//options:
+//make
 
 function _ensureLoggedIn(nextState, replace, callback) {
   if (CurrentUserStore.userHasBeenFetched()) {

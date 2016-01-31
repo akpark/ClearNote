@@ -7,7 +7,7 @@ var NavBar = React.createClass({
   handleNewNoteClick: function() {
     $('.notes-index').hide("slow");
     $('.navbar').hide("slow");
-    this.history.pushState(null, "notes/new", {title: "Untitled", body: "Input text here"});
+    this.history.pushState(null, "home/notes/new", {title: "Untitled", body: "Input text here"});
   },
 
   handleNotesClick: function() {
@@ -15,7 +15,10 @@ var NavBar = React.createClass({
   },
 
   handleNotebooksClick: function() {
-    this.history.pushState(null, "");
+    $('.notes-index').hide();
+    // $('.slideout').show("slow");
+    // $('.notebooks-index').show("slow");
+    this.history.pushState(null, "home/notebooks", {});
   },
 
   render: function() {
