@@ -55,12 +55,12 @@
 	var NotesIndex = __webpack_require__(209);
 	var NoteForm = __webpack_require__(237);
 	var NoteStore = __webpack_require__(210);
-	var SessionForm = __webpack_require__(245);
-	var UserForm = __webpack_require__(249);
-	var CurrentUserStore = __webpack_require__(250);
-	var SessionsApiUtil = __webpack_require__(246);
-	var App = __webpack_require__(251);
-	var Home = __webpack_require__(252);
+	var SessionForm = __webpack_require__(249);
+	var UserForm = __webpack_require__(253);
+	var CurrentUserStore = __webpack_require__(254);
+	var SessionsApiUtil = __webpack_require__(250);
+	var App = __webpack_require__(255);
+	var Home = __webpack_require__(256);
 	
 	var router = React.createElement(
 	  Router,
@@ -24167,6 +24167,8 @@
 	  mixins: [History],
 	
 	  handleNewNoteClick: function () {
+	    $('.notes-index').hide("slow");
+	    $('.navbar').hide("slow");
 	    this.history.pushState(null, "notes/new", { title: "Untitled", body: "Input text here" });
 	  },
 	
@@ -24313,35 +24315,37 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(211).Store;
-	var _notes = [];
+	var _notes = {};
 	var NoteConstants = __webpack_require__(229);
 	var AppDispatcher = __webpack_require__(230);
 	var NoteStore = new Store(AppDispatcher);
 	
 	NoteStore.all = function () {
-	  return _notes.slice(0);
+	  var notes = [];
+	  for (var id in _notes) {
+	    notes.push(_notes[id]);
+	  }
+	  return notes;
 	};
 	
 	NoteStore.find = function (id) {
-	  return _notes.find(function (note) {
-	    return note.id == id;
-	  });
+	  return _notes[id];
 	};
 	
 	NoteStore.findFirst = function () {
-	  return _notes[0];
+	  return Object.key(_notes)[0];
 	};
 	
 	var resetNotes = function (notes) {
-	  _notes = notes.slice(0);
+	  _notes = {};
+	  notes.forEach(function (note) {
+	    _notes[note.id] = note;
+	  });
 	};
 	
 	var resetNote = function (newNote) {
-	  _notes.forEach(function (note) {
-	    if (note.id == newNote.id) {
-	      note = newNote;
-	    }
-	  });
+	  _notes[newNote.id] = newNote;
+	  debugger;
 	};
 	
 	var deleteNote = function (note) {
@@ -24386,7 +24390,6 @@
 	  }
 	};
 	
-	window.NoteStore = NoteStore;
 	module.exports = NoteStore;
 
 /***/ },
@@ -31174,7 +31177,7 @@
 	var NoteStore = __webpack_require__(210);
 	var NoteActions = __webpack_require__(234);
 	
-	var ApiUtil = {
+	var NotesApiUtil = {
 	  fetchAllNotes: function () {
 	    $.ajax({
 	      method: "GET",
@@ -31205,6 +31208,7 @@
 	      dataType: "json",
 	      success: function (note) {
 	        NoteActions.receiveSingleNote(note);
+	        alert("note has been created!");
 	      }
 	    });
 	  },
@@ -31223,7 +31227,7 @@
 	
 	};
 	
-	module.exports = ApiUtil;
+	module.exports = NotesApiUtil;
 
 /***/ },
 /* 234 */
@@ -31413,63 +31417,95 @@
 	var TextEditor = __webpack_require__(238);
 	var NotesApiUtil = __webpack_require__(233);
 	var ReactQuill = __webpack_require__(239);
+	var LinkedStateMixin = __webpack_require__(245);
+	var History = __webpack_require__(159).History;
+	
+	var quillEditor;
+	var edit;
 	
 	var NoteForm = React.createClass({
 	  displayName: 'NoteForm',
 	
+	  mixins: [History, LinkedStateMixin],
+	
 	  getInitialState: function () {
-	    var note;
-	    var id = this.props.params.noteId;
-	    if (id === "new") {
-	      note = {};
+	    var note = this.props.location.query;
+	    if (this.props.params.noteId === "new") {
+	      note = { title: "", body: "" };
+	      edit = false;
 	    } else {
-	      note = NoteStore.find(parseInt(this.props.params.noteId));
+	      note = this.props.location.query;
+	      edit = true;
 	    }
-	    return { note: note };
+	    return { title: note.title, body: note.body };
 	  },
 	
 	  componentDidMount: function () {
 	    this.noteListener = NoteStore.addListener(this._onChange);
+	    this.setUpEditor();
 	  },
 	
+	  //when we change index item
 	  componentWillReceiveProps: function (newProps) {
 	    var id = newProps.params.noteId;
 	    if (id === "new") {
-	      this.setState({ note: {} });
+	      var note = { title: "", body: "" };
+	      this.setState({ title: note.title, body: note.body });
+	      edit = false;
 	    } else {
-	      NotesApiUtil.fetchSingleNote(parseInt(newProps.params.noteId));
+	      var note = newProps.location.query;
+	      this.setState({ title: note.title, body: note.body });
+	      edit = true;
 	    }
+	  },
+	
+	  componentWillMount: function () {
+	    var note = this.props.location.query;
+	    this.setState({ title: note.title, body: note.body });
 	  },
 	
 	  componentWillUnmount: function () {
 	    this.noteListener.remove();
 	  },
 	
-	  _onChange: function () {
-	    var id = this.props.params.noteId;
-	    var note;
-	    if (id === "new") {
-	      note = {};
-	    } else {
-	      note = NoteStore.find(parseInt(this.props.params.noteId));
-	    }
-	    this.setState({ note: note });
-	  },
-	
 	  handleNewNoteDoneClick: function (e) {
-	    NotesApiUtil.createNote();
+	    this.showHome();
+	    var title = this.state.title;
+	    var body = quillEditor.getText();
+	    var note = { title: title, body: body };
+	    debugger;
+	    NotesApiUtil.createNote(note);
 	  },
 	
-	  onTextChange: function () {},
+	  onTextChange: function (e) {
+	    var title = e.target.value;
+	    this.setState({ title: title });
+	    if (edit) {} else {}
+	  },
+	
+	  // handleTextChange: function(text) {
+	  //   if (this.timer) {
+	  //     clearTimeout(this.timer);
+	  //   }
+	  //
+	  //   this.timer = setTimeout(function() {
+	  //     var note = this.props.note;
+	  //     note.body = this.state.body;
+	  //     ApiUtil.editNote(note, function() {
+	  //       console.log("Successfully edited!");
+	  //     });
+	  //   }.bind(this), 3000);
+	  //
+	  //   this.setState({body: e.target.value});
+	  // },
+	
+	  showHome: function () {
+	    $('.notes-index').show("slow");
+	    $('.navbar').show("slow");
+	  },
 	
 	  setUpHeader: function () {
-	    if (!this.state.note.id) {
-	      return React.createElement(
-	        'div',
-	        { onClick: this.handleNewNoteDoneClick, className: 'done-button' },
-	        'Done'
-	      );
-	    } else {
+	    if (edit) {
 	      return React.createElement(
 	        'div',
 	        null,
@@ -31479,11 +31515,73 @@
 	          'Expand'
 	        )
 	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        null,
+	        React.createElement(
+	          'div',
+	          { onClick: this.handleCancelClick },
+	          'Cancel'
+	        ),
+	        React.createElement(
+	          'div',
+	          { onClick: this.handleNewNoteDoneClick, className: 'done-button' },
+	          'Done'
+	        )
+	      );
 	    }
+	  },
+	
+	  handleCancelClick: function () {
+	    this.showHome();
+	    // this.history.pushState(null, "/");
+	  },
+	
+	  setUpToolbar: function () {
+	    return React.createElement(
+	      'div',
+	      { id: 'toolbar', className: 'ql-toolbar-container toolbar' },
+	      React.createElement(
+	        'div',
+	        { className: 'ql-format-group' },
+	        React.createElement('span', { className: 'ql-bold ql-format-button' }),
+	        React.createElement('span', { className: 'ql-italic ql-format-button' }),
+	        React.createElement('span', { className: 'ql-strike ql-format-button' }),
+	        React.createElement('span', { className: 'ql-underline ql-format-button' }),
+	        React.createElement('span', { className: 'ql-link ql-format-button' }),
+	        React.createElement('span', { className: 'ql-format-separator' })
+	      )
+	    );
+	  },
+	
+	  setUpBody: function () {},
+	
+	  setUpEditor: function () {
+	    quillEditor = new Quill('#editor', {
+	      modules: {
+	        'toolbar': { container: '#toolbar' },
+	        'link-tooltip': true
+	      },
+	      theme: 'snow'
+	    });
+	    quillEditor.setText(this.state.body);
+	    quillEditor.on('text-change', function (delta, source) {
+	      console.log("Editor contents have changed");
+	    });
 	  },
 	
 	  render: function () {
 	    var header = this.setUpHeader();
+	    var toolbar = this.setUpToolbar();
+	    if (quillEditor) {
+	      quillEditor.setText(this.state.body);
+	    }
+	
+	    var placeholderText = "";
+	    if (!edit) {
+	      placeholderText = "Title your note";
+	    }
 	
 	    return React.createElement(
 	      'div',
@@ -31493,13 +31591,32 @@
 	        { className: 'note-form-header' },
 	        header
 	      ),
-	      React.createElement(ReactQuill, {
-	        theme: 'snow',
-	        value: this.state.note.body,
-	        onChange: this.onTextChange })
+	      React.createElement(
+	        'div',
+	        { className: 'editor-outer' },
+	        toolbar,
+	        React.createElement('input', {
+	          className: 'note-form-title',
+	          type: 'text',
+	          valueLink: this.linkState('title'),
+	          onChange: this.handleTitleChange,
+	          placeholder: placeholderText }),
+	        React.createElement('div', { id: 'editor' })
+	      )
 	    );
 	  }
 	});
+	
+	// _onChange: function() {
+	//   var id = this.props.params.noteId;
+	//   var note;
+	//   if (id === "new") {
+	//     note = {};
+	//   } else {
+	//     note = NoteStore.find(parseInt(this.props.params.noteId));
+	//   }
+	//   this.setState({note: note});
+	// },
 	
 	module.exports = NoteForm;
 
@@ -42854,9 +42971,239 @@
 /* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
+	module.exports = __webpack_require__(246);
+
+/***/ },
+/* 246 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	var ReactLink = __webpack_require__(247);
+	var ReactStateSetters = __webpack_require__(248);
+	
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function (key) {
+	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+	  }
+	};
+	
+	module.exports = LinkedStateMixin;
+
+/***/ },
+/* 247 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   _handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+	
+	var React = __webpack_require__(2);
+	
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+	
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+	
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+	
+	module.exports = ReactLink;
+
+/***/ },
+/* 248 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+	
+	'use strict';
+	
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (component, funcReturningState) {
+	    return function (a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+	
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+	
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+	
+	module.exports = ReactStateSetters;
+
+/***/ },
+/* 249 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var SessionsApiUtil = __webpack_require__(246);
+	var SessionsApiUtil = __webpack_require__(250);
 	
 	var SessionForm = React.createClass({
 	  displayName: 'SessionForm',
@@ -42916,10 +43263,10 @@
 	module.exports = SessionForm;
 
 /***/ },
-/* 246 */
+/* 250 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(247);
+	var CurrentUserActions = __webpack_require__(251);
 	
 	var SessionsApiUtil = {
 	  login: function (credentials, success) {
@@ -42955,11 +43302,11 @@
 	module.exports = SessionsApiUtil;
 
 /***/ },
-/* 247 */
+/* 251 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(230);
-	var CurrentUserConstants = __webpack_require__(248);
+	var CurrentUserConstants = __webpack_require__(252);
 	
 	var CurrentUserActions = {
 	  receiveCurrentUser: function (currentUser) {
@@ -42973,7 +43320,7 @@
 	module.exports = CurrentUserActions;
 
 /***/ },
-/* 248 */
+/* 252 */
 /***/ function(module, exports) {
 
 	var CurrentUserConstants = {
@@ -42983,7 +43330,7 @@
 	module.exports = CurrentUserConstants;
 
 /***/ },
-/* 249 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -43044,12 +43391,12 @@
 	module.exports = UserForm;
 
 /***/ },
-/* 250 */
+/* 254 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(211).Store;
 	var AppDispatcher = __webpack_require__(230);
-	var CurrentUserConstants = __webpack_require__(248);
+	var CurrentUserConstants = __webpack_require__(252);
 	
 	var _currentUser = {};
 	var _currentUserHasBeenFetched = false;
@@ -43079,12 +43426,12 @@
 	window.CurrentUserStore = CurrentUserStore;
 
 /***/ },
-/* 251 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(250);
-	var SessionsApiUtil = __webpack_require__(246);
+	var CurrentUserStore = __webpack_require__(254);
+	var SessionsApiUtil = __webpack_require__(250);
 	var Navbar = __webpack_require__(208);
 	var NotesIndex = __webpack_require__(209);
 	
@@ -43118,12 +43465,12 @@
 	module.exports = App;
 
 /***/ },
-/* 252 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(250);
-	var SessionsApiUtil = __webpack_require__(246);
+	var CurrentUserStore = __webpack_require__(254);
+	var SessionsApiUtil = __webpack_require__(250);
 	var Navbar = __webpack_require__(208);
 	var NotesIndex = __webpack_require__(209);
 	var History = __webpack_require__(159).History;

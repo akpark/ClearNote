@@ -5,6 +5,8 @@ var NavBar = React.createClass({
   mixins: [History],
 
   handleNewNoteClick: function() {
+    $('.notes-index').hide("slow");
+    $('.navbar').hide("slow");
     this.history.pushState(null, "notes/new", {title: "Untitled", body: "Input text here"});
   },
 

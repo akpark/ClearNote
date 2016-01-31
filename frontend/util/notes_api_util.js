@@ -1,7 +1,7 @@
 var NoteStore = require('../stores/note_store');
 var NoteActions = require('../actions/note_actions');
 
-var ApiUtil = {
+var NotesApiUtil = {
   fetchAllNotes: function() {
     $.ajax({
       method: "GET",
@@ -32,6 +32,7 @@ var ApiUtil = {
       dataType: "json",
       success: function (note) {
         NoteActions.receiveSingleNote(note);
+        alert("note has been created!");
       }
     });
   },
@@ -50,4 +51,4 @@ var ApiUtil = {
 
 };
 
-module.exports = ApiUtil;
+module.exports = NotesApiUtil;

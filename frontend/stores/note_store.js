@@ -1,33 +1,35 @@
 var Store = require('flux/utils').Store;
-var _notes = [];
+var _notes = {};
 var NoteConstants = require('../constants/note_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
 var NoteStore = new Store(AppDispatcher);
 
 NoteStore.all = function() {
-  return _notes.slice(0);
+  var notes = [];
+  for (var id in _notes) {
+    notes.push(_notes[id]);
+  }
+  return notes;
 };
 
 NoteStore.find = function(id) {
-  return _notes.find(function(note) {
-    return note.id == id;
-  });
+  return _notes[id];
 };
 
 NoteStore.findFirst = function() {
-  return _notes[0];
+  return Object.key(_notes)[0];
 };
 
 var resetNotes = function(notes) {
-  _notes = notes.slice(0);
+  _notes = {};
+  notes.forEach(function (note) {
+    _notes[note.id] = note;
+  });
 };
 
 var resetNote = function(newNote) {
-  _notes.forEach(function(note) {
-    if (note.id == newNote.id) {
-      note = newNote;
-    }
-  });
+  _notes[newNote.id] = newNote;
+  debugger
 };
 
 var deleteNote = function(note) {
@@ -72,5 +74,4 @@ NoteStore.__onDispatch = function(payload) {
   }
 };
 
-window.NoteStore = NoteStore;
 module.exports = NoteStore;

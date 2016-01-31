@@ -21,12 +21,23 @@
   cursor: pointer;
 }
 
-.quill {
+.editor-outer {
   height: 100%;
 }
 
-.quill-contents {
-  background: green;
+.note-form-title {
+  width: 100%;
+  margin: 0 10px;
+  padding: 10px;
+  border: none;
+  outline: none;
+  font-size: 36px;
+
+}
+
+.ql-editor {
   height: 100%;
   padding: 20px;
+  box-shadow: 2px 1px 5px rgba(0,0,0,0.2);
+  border: 1px solid #e5e5e5;
 }

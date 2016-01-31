@@ -5,17 +5,16 @@ class Api::NotesController < ApplicationController
   end
 
   def new
-    @note = Note.new(note_params)
-    if @note.save
-      redirect_to root_url
-    else
-      flash.now[:errors] = @note.errors.full_messages
-      redirect_to root_url
-    end
+    @note = Note.new
   end
 
   def create
-    @note = Note.create(note_params)
+    @note = current_user.notes.new(note_params)
+    if @note.save
+      render :show
+    else
+      render json: @note.errors.full_messages, status: 422
+    end
   end
 
   def show
