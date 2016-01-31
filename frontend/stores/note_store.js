@@ -1,6 +1,6 @@
 var Store = require('flux/utils').Store;
 var _notes = [];
-var NoteConstants = require('../constants/noteConstants');
+var NoteConstants = require('../constants/note_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
 var NoteStore = new Store(AppDispatcher);
 

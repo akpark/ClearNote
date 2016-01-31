@@ -3,24 +3,34 @@ var CurrentUserStore = require('../stores/current_user_store');
 var SessionsApiUtil = require('../util/sessions_api_util');
 var Navbar = require('./navbar');
 var NotesIndex = require('./notes_index/index');
+var History = require('react-router').History;
 
-var App = React.createClass({
-  componentDidMount: function () {
-    CurrentUserStore.addListener(this.forceUpdate.bind(this));
-    SessionsApiUtil.fetchCurrentUser();
+var Home = React.createClass({
+  mixins: [History],
+
+  handleSignInClick: function() {
+    this.history.pushState(null, 'login');
   },
 
-  render: function(){
-    if (!CurrentUserStore.userHasBeenFetched()) {
-      return <p>Please Wait</p>;
-    }
+  handleSignUpClick: function() {
+    this.history.pushState(null, 'register')
+  },
 
+  componentWillMount: function() {
+    if (CurrentUserStore.isLoggedIn()) {
+      this.history.pushState(null, 'notes');
+    }
+  },
+
+  render: function() {
     return (
-        <div>
-          {this.props.children}
+        <div className="welcome-page">
+          <div>Welcome to ClearNote!</div>
+          <button className="" onClick={this.handleSignUpClick}>Sign Up</button>
+          <button className="" onClick={this.handleSignInClick}>Sign In</button>
         </div>
     );
   }
 });
 
-module.exports = App;
+module.exports = Home;

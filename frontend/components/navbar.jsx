@@ -1,33 +1,19 @@
 var React = require('react');
+var History = require('react-router').History;
 
 var NavBar = React.createClass({
+  mixins: [History],
 
   handleNewNoteClick: function() {
-    this.props.history.pushState(null, "api/notes/new");
-  },
-
-  handleSearchClick: function() {
-
-  },
-
-  handleWorkChatClick: function() {
-
-  },
-
-  handleShortcutsClick: function() {
-
+    this.history.pushState(null, "notes/new", {title: "Untitled", body: "Input text here"});
   },
 
   handleNotesClick: function() {
-    this.props.history.pushState(null, "/");
+    this.history.pushState(null, "/");
   },
 
   handleNotebooksClick: function() {
-    this.props.history.pushState(null, "/api/notebooks");
-  },
-
-  handleTagsClick: function() {
-
+    this.history.pushState(null, "");
   },
 
   render: function() {
@@ -37,14 +23,10 @@ var NavBar = React.createClass({
 
         <div className="top-bar">
           <div className="navbar-link" onClick={this.handleNewNoteClick}>New Note</div>
-          <div className="navbar-link" onClick={this.handleSearchClick}>Search</div>
-          <div className="navbar-link" onClick={this.handleWorkChatClick}>Work Chat</div>
         </div>
         <div className="bottom-bar">
-          <div className="navbar-link" onClick={this.handleShortcutsClick}>Shortcuts</div>
           <div className="navbar-link" onClick={this.handleNotesClick}>Notes</div>
           <div className="navbar-link" onClick={this.handleNotebooksClick}>Notebooks</div>
-          <div className="navbar-link" onClick={this.handleTagsClick}>Tags</div>
         </div>
 
         <img className="profile-pic" />

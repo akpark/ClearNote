@@ -5,8 +5,7 @@ var Navbar = require('./navbar');
 var NotesIndex = require('./notes_index/index');
 
 
-var Home = React.createClass({
-
+var App = React.createClass({
   componentDidMount: function () {
     CurrentUserStore.addListener(this.forceUpdate.bind(this));
     SessionsApiUtil.fetchCurrentUser();
@@ -16,7 +15,7 @@ var Home = React.createClass({
     if (!CurrentUserStore.userHasBeenFetched()) {
       return <p>Please Wait</p>;
     }
-    
+
     return (
       <div className="home group">
         <Navbar />
@@ -27,4 +26,4 @@ var Home = React.createClass({
   }
 });
 
-module.exports = Home;
+module.exports = App;

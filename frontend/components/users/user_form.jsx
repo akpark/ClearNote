@@ -6,11 +6,12 @@ var UserForm = React.createClass({
 
   submit: function (e) {
     e.preventDefault();
+    this.history.pushState(null, 'notes');
   },
 
   render: function() {
     return (
-      <div class="sign-up">
+      <div className="sign-up">
         <h1>Create Account</h1>
         <form onSubmit={ this.submit }>
           <div className="input">

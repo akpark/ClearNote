@@ -1,0 +1,32 @@
+.note-form-outer {
+  margin-right: auto;
+  margin-left: auto;
+  background: white;
+  overflow: hidden;
+  height: 100%;
+}
+
+.note-form-header {
+  text-align: right;
+  padding: 10px;
+}
+
+.done-button {
+  display: inline;
+  border: 1px solid #aaa;
+  margin-left: 0;
+}
+
+.done-button:hover {
+  cursor: pointer;
+}
+
+.quill {
+  height: 100%;
+}
+
+.quill-contents {
+  background: green;
+  height: 100%;
+  padding: 20px;
+}

@@ -1,12 +1,8 @@
 var React = require('react');
 var ReactQuill = require('react-quill');
-var ApiUtil = require('../../util/apiUtil');
+var ApiUtil = require('../../util/notes_api_util');
 
 var TextEditor = React.createClass({
-  getInitialState: function() {
-    return {note: this.props.note};
-  },
-
   handleBodyChange: function(e) {
     if (this.timer) {
       clearTimeout(this.timer);
@@ -24,12 +20,14 @@ var TextEditor = React.createClass({
   },
 
   render: function() {
+    var note = this.props.note;
+    if (!note.id) {
+
+    }
+
     return (
       <div className="text-editor">
-        <ReactQuill theme="snow"
-                    value={this.state.note.body}
-                    onChange={this.onTextChange}
-                    className="react-quill" />
+
       </div>
     );
   }

@@ -1,4 +1,4 @@
-var NoteConstants = require('../constants/noteConstants');
+var NoteConstants = require('../constants/note_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
 
 var NoteActions = {

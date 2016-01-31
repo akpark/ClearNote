@@ -7,8 +7,8 @@ var IndexRoute = ReactRouter.IndexRoute;
 var root = document.getElementById('root');
 var Navbar = require('./components/navbar');
 var NotesIndex = require('./components/notes_index/index');
-var NoteForm = require('./components/noteForm/noteForm');
-var NoteStore = require('./stores/note');
+var NoteForm = require('./components/note_form/note_form');
+var NoteStore = require('./stores/note_store');
 var SessionForm = require('./components/sessions/new');
 var UserForm = require('./components/users/user_form');
 var CurrentUserStore = require('./stores/current_user_store');
@@ -16,18 +16,16 @@ var SessionsApiUtil = require('./util/sessions_api_util');
 var App = require('./components/app');
 var Home = require('./components/home');
 
-var routes = (
-
-  <Route path="/" component={App}>
-    <IndexRoute component={ Home } onEnter={_ensureLoggedIn}/>
-    <Route path="notes" component={ Home }>
-      <Route path="new" component={ NoteForm }/>
+var router = (
+  <Router>
+    <Route path="/" component={ Home } onEnter={_ensureLoggedIn}/>
+    <Route path="notes" component={ App } onEnter={_ensureLoggedIn}>
       <Route path=":noteId" component={ NoteForm }/>
+      <Route path="notes/new" component={ NoteForm }/>
     </Route>
-
     <Route path="login" component={ SessionForm } />
-    <Route path="users/new" component={ UserForm } />
-  </Route>
+    <Route path="register" component={ UserForm } />
+  </Router>
 
 );
 
@@ -40,12 +38,12 @@ function _ensureLoggedIn(nextState, replace, callback) {
 
   function _redirectIfNotLoggedIn() {
     if (!CurrentUserStore.isLoggedIn()) {
-      replace({}, "/login");
+      replace({}, "login");
     }
     callback();
   }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  ReactDOM.render(<Router>{routes}</Router>, root);
+  ReactDOM.render(router, root);
 });

@@ -1,9 +1,9 @@
 var React = require('react');
-var NoteStore = require('../../stores/note');
-var ApiUtil = require('../../util/apiUtil');
-var NoteActions = require('../../actions/noteActions');
-var NoteIndexItem = require('./indexItem');
-var OptionsDropdown = require('./optionsDropdown');
+var NoteStore = require('../../stores/note_store');
+var ApiUtil = require('../../util/notes_api_util');
+var NoteActions = require('../../actions/note_actions');
+var NoteIndexItem = require('./index_item');
+var OptionsDropdown = require('./options_dropdown');
 var History = require('react-router').History;
 
 var NotesIndex = React.createClass({
@@ -47,7 +47,6 @@ var NotesIndex = React.createClass({
 
     return(
       <div className="notes-index">
-
         <div className="notes-index-header">
           <div className="notes-index-title">NOTES</div>
           <div className="notes-index-header-bottom group">

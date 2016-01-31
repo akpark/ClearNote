@@ -1,5 +1,5 @@
 var React = require('react');
-var NoteStore = require('../../stores/note');
+var NoteStore = require('../../stores/note_store');
 var History = require('react-router').History;
 
 var NoteIndexItem = React.createClass({
@@ -10,24 +10,10 @@ var NoteIndexItem = React.createClass({
   },
 
   showDetail: function(e) {
-    //use jquery to remove selected classes
-    //then add this one as selected
-    debugger
     $(".note-index-item").removeClass("selected");
-    // $(".note-index-item").each(function(item) {
-    //   $(item).removeClass('.selected');
-    // });
-
     $(e.currentTarget).addClass('selected');
 
-    this.selected = true;
     this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
-  },
-
-  componentDidMount: function() {
-    if (this.state.note === NoteStore.findFirst()) {
-      this.history.pushState(null, 'notes/' + this.state.note.id, this.state.note);
-    }
   },
 
   componentWillUnmount: function() {
@@ -35,10 +21,6 @@ var NoteIndexItem = React.createClass({
   },
 
   render: function() {
-    var klass = "note-index-item";
-    if (this.selected) {
-      klass = "note-index-item selected";
-    }
     return (
       <div className="note-index-item" onClick={this.showDetail}>
         <div className="note-index-item-inner">

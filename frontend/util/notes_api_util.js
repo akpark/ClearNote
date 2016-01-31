@@ -1,5 +1,5 @@
-var NoteStore = require('../stores/note');
-var NoteActions = require('../actions/noteActions');
+var NoteStore = require('../stores/note_store');
+var NoteActions = require('../actions/note_actions');
 
 var ApiUtil = {
   fetchAllNotes: function() {
@@ -14,7 +14,6 @@ var ApiUtil = {
   },
 
   fetchSingleNote: function(id) {
-    console.log("single");
     $.ajax({
       method: "GET",
       url: "api/notes/" + id,
