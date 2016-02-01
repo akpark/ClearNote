@@ -31309,11 +31309,19 @@
 	    $(".note-index-item").removeClass("selected");
 	    $(e.currentTarget).addClass('selected');
 	
-	    this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
+	    this.history.pushState(null, 'home/notes/' + this.props.note.id, this.state.note);
 	  },
 	
 	  componentWillUnmount: function () {
-	    this.setState({ selected: false });
+	    this.noteIndexItemListener.remove();
+	  },
+	
+	  componentDidMount: function () {
+	    this.noteIndexItemListener = NoteStore.addListener(this._onChange);
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ note: NoteStore.find(this.state.note.id) });
 	  },
 	
 	  render: function () {
@@ -31434,9 +31442,11 @@
 	var History = __webpack_require__(159).History;
 	var NoteStore = __webpack_require__(210);
 	var NotebookStore = __webpack_require__(249);
+	var NotebooksApiUtil = __webpack_require__(262);
 	
 	var quillEditor;
 	var edit;
+	var sameEditor = false;
 	
 	var NoteForm = React.createClass({
 	  displayName: 'NoteForm',
@@ -31448,9 +31458,8 @@
 	  },
 	
 	  componentDidMount: function () {
-	    //TODO! make sure that quill editor is "NEW" component by giving it a key
-	    // this.noteListener = NoteStore.addListener(this._onChange);
 	    this.setUpQuillEditor();
+	    console.log("componentdidmount");
 	  },
 	
 	  setUpNote: function (id, noteProps) {
@@ -31475,6 +31484,8 @@
 	  componentWillMount: function () {
 	    var note = this.props.location.query;
 	    this.setState({ title: note.title, body: note.body });
+	    NotebooksApiUtil.fetchAllNotebooks();
+	    console.log("componentwillmount");
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31485,26 +31496,26 @@
 	    this.showHome();
 	    var title = this.state.title;
 	    var body = quillEditor.getText();
-	    var note = { title: title, body: body };
+	    var notebook_id = $('.notebook-selection-dropdown option:selected').val();
+	    var note = { title: title, body: body, notebook_id: parseInt(notebook_id) };
 	    NotesApiUtil.createNote(note);
 	  },
 	
-	  // handleTextChange: function() {
-	  //   if (this.timer) {
-	  //     clearTimeout(this.timer);
-	  //   }
-	  //
-	  //   this.timer = setTimeout(function() {
-	  //     body = quillEditor.getText();
-	  //     var note = { id: this.state.id, title: this.state.title, body: body }
-	  //     NotesApiUtil.editNote(note, function() {
-	  //       //some animation
-	  //       console.log("Successfully edited!");
-	  //     });
-	  //   }.bind(this), 3000);
-	  //
-	  //   // this.setState({body: e.target.value});
-	  // },
+	  handleTextChange: function () {
+	    if (this.timer) {
+	      clearTimeout(this.timer);
+	    }
+	
+	    this.timer = setTimeout(function () {
+	      body = quillEditor.getText();
+	      var note = { id: this.state.id, title: this.state.title, body: body };
+	      NotesApiUtil.editNote(note, function () {
+	        //some animation
+	        console.log("Successfully edited!");
+	        this.setState({ body: note.body });
+	      }.bind(this));
+	    }.bind(this), 3000);
+	  },
 	
 	  showHome: function () {
 	    $('.notes-index').show("slow");
@@ -31533,7 +31544,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { onClick: this.handleNewNoteDoneClick, className: 'done-button' },
+	          { onClick: this.handleNewNoteDoneClick, className: 'new-note-done-button' },
 	          'Done'
 	        )
 	      );
@@ -31542,7 +31553,6 @@
 	
 	  handleCancelClick: function () {
 	    this.showHome();
-	    // this.history.pushState(null, "/");
 	  },
 	
 	  setUpToolbar: function () {
@@ -31562,8 +31572,6 @@
 	    );
 	  },
 	
-	  setUpBody: function () {},
-	
 	  setUpQuillEditor: function () {
 	    quillEditor = new Quill('#editor', {
 	      modules: {
@@ -31574,33 +31582,35 @@
 	    });
 	    quillEditor.setText(this.state.body);
 	    quillEditor.on('text-change', function (delta, source) {
+	      if (edit && !sameEditor) {
+	        console.log("handle text change");
+	        this.handleTextChange();
+	      }
 	      console.log("Editor contents have changed");
 	    }.bind(this));
 	  },
 	
-	  // setUpNotebooks: function () {
-	  //   var notebooks = NotebookStore.all();
-	  //   return (
-	  //     <select>
-	  //       {notebooks.map(function (notebook) {
-	  //         return <option value={notebook}>{notebook.title}</option>
-	  //       })}
-	  //     </select>
-	  //   )
-	  // },
-	
 	  render: function () {
 	    var header = this.setUpHeader();
 	    var toolbar = this.setUpToolbar();
-	    var notebooks = this.setUpNotebooks();
-	
-	    if (quillEditor) {
-	      quillEditor.setText(this.state.body);
-	    }
+	    var notebooks = NotebookStore.all().map(function (notebook, key) {
+	      return React.createElement(
+	        'option',
+	        { key: key, value: notebook.id },
+	        notebook.title
+	      );
+	    });
 	
 	    var placeholderText = "";
 	    if (!edit) {
 	      placeholderText = "Title your note";
+	    }
+	    console.log("render");
+	    if (quillEditor) {
+	      console.log("inside quilleditor");
+	      sameEditor = true;
+	      quillEditor.setText(this.state.body);
+	      sameEditor = false;
 	    }
 	
 	    return React.createElement(
@@ -31614,30 +31624,28 @@
 	      React.createElement(
 	        'div',
 	        { className: 'editor-outer' },
-	        notebooks,
+	        React.createElement(
+	          'label',
+	          { htmlFor: 'notebook-selection-dropdown' },
+	          'Notebook '
+	        ),
+	        React.createElement(
+	          'select',
+	          { className: 'notebook-selection-dropdown' },
+	          notebooks
+	        ),
 	        toolbar,
 	        React.createElement('input', {
 	          className: 'note-form-title',
 	          type: 'text',
+	          onKeyUp: this.handleTextChange,
 	          valueLink: this.linkState('title'),
-	          onChange: this.handleTitleChange,
 	          placeholder: placeholderText }),
 	        React.createElement('div', { id: 'editor' })
 	      )
 	    );
 	  }
 	});
-	
-	// _onChange: function() {
-	//   var id = this.props.params.noteId;
-	//   var note;
-	//   if (id === "new") {
-	//     note = {};
-	//   } else {
-	//     note = NoteStore.find(parseInt(this.props.params.noteId));
-	//   }
-	//   this.setState({note: note});
-	// },
 	
 	module.exports = NoteForm;
 
@@ -43666,6 +43674,13 @@
 	    this.setState({ modalIsOpen: false });
 	  },
 	
+	  handleNewNotebookClick: function (e) {
+	    var title = $('.new-notebook-title-input').val();
+	    var notebook = { title: title };
+	    NotebooksApiUtil.createNotebook(notebook);
+	    this.closeModal();
+	  },
+	
 	  render: function () {
 	    $('.notes-index').hide();
 	    var notebooks = this.state.notebooks.map(function (notebook, key) {
@@ -43707,23 +43722,33 @@
 	      React.createElement(
 	        Modal,
 	        {
+	          className: 'new-notebook-modal',
 	          isOpen: this.state.modalIsOpen,
 	          onRequestClose: this.closeModal,
 	          style: customStyles },
 	        React.createElement(
 	          'h2',
-	          null,
+	          { className: 'new-notebook-modal-title' },
 	          'Create Notebook'
 	        ),
+	        React.createElement('input', {
+	          className: 'new-notebook-title-input',
+	          type: 'text',
+	          placeholder: 'Title your notebook'
+	        }),
 	        React.createElement(
-	          'button',
-	          { onClick: this.closeModal },
-	          'Cancel'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.handleNewNotebookClick },
-	          'Create Notebook'
+	          'div',
+	          { className: 'new-notebook-modal-bottom group' },
+	          React.createElement(
+	            'button',
+	            { className: 'new-notebook-cancel-button', onClick: this.closeModal },
+	            'Cancel'
+	          ),
+	          React.createElement(
+	            'button',
+	            { className: 'new-notebook-create-button', onClick: this.handleNewNotebookClick },
+	            'Create Notebook'
+	          )
 	        )
 	      ),
 	      React.createElement(

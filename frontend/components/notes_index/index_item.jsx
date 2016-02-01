@@ -13,11 +13,19 @@ var NoteIndexItem = React.createClass({
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
 
-    this.history.pushState(null, '/notes/' + this.props.note.id, this.state.note);
+    this.history.pushState(null, 'home/notes/' + this.props.note.id, this.state.note);
   },
 
-  componentWillUnmount: function() {
-    this.setState({selected: false});
+  componentWillUnmount: function () {
+    this.noteIndexItemListener.remove();
+  },
+
+  componentDidMount: function () {
+    this.noteIndexItemListener = NoteStore.addListener(this._onChange);
+  },
+
+  _onChange: function () {
+    this.setState({note: NoteStore.find(this.state.note.id)});
   },
 
   render: function() {

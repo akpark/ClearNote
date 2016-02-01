@@ -43,6 +43,13 @@ var NotebooksIndex = React.createClass({
     this.setState({modalIsOpen: false})
   },
 
+  handleNewNotebookClick: function (e) {
+    var title = $('.new-notebook-title-input').val();
+    var notebook = {title: title};
+    NotebooksApiUtil.createNotebook(notebook);
+    this.closeModal();
+  },
+
   render: function () {
     $('.notes-index').hide();
     var notebooks = this.state.notebooks.map(function (notebook, key) {
@@ -68,13 +75,21 @@ var NotebooksIndex = React.createClass({
           </div>
         </div>
         <Modal
+          className="new-notebook-modal"
           isOpen={this.state.modalIsOpen}
           onRequestClose={this.closeModal}
           style={customStyles} >
 
-          <h2>Create Notebook</h2>
-          <button onClick={this.closeModal}>Cancel</button>
-          <button onClick={this.handleNewNotebookClick}>Create Notebook</button>
+          <h2 className="new-notebook-modal-title">Create Notebook</h2>
+          <input
+            className="new-notebook-title-input"
+            type="text"
+            placeholder="Title your notebook"
+          />
+          <div className="new-notebook-modal-bottom group">
+            <button className="new-notebook-cancel-button" onClick={this.closeModal}>Cancel</button>
+            <button className="new-notebook-create-button" onClick={this.handleNewNotebookClick}>Create Notebook</button>
+          </div>
         </Modal>
         <div className="notebook-index-items">
           {notebooks}

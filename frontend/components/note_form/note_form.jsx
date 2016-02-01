@@ -6,9 +6,11 @@ var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var History = require('react-router').History;
 var NoteStore = require('../../stores/note_store');
 var NotebookStore = require('../../stores/notebook_store');
+var NotebooksApiUtil = require('../../util/notebooks_api_util');
 
 var quillEditor;
 var edit;
+var sameEditor = false;
 
 var NoteForm = React.createClass({
   mixins: [History, LinkedStateMixin],
@@ -18,9 +20,8 @@ var NoteForm = React.createClass({
   },
 
   componentDidMount: function() {
-    //TODO! make sure that quill editor is "NEW" component by giving it a key 
-    // this.noteListener = NoteStore.addListener(this._onChange);
     this.setUpQuillEditor();
+    console.log("componentdidmount");
   },
 
   setUpNote: function(id, noteProps) {
@@ -45,6 +46,8 @@ var NoteForm = React.createClass({
   componentWillMount: function () {
     var note = this.props.location.query;
     this.setState({title: note.title, body: note.body});
+    NotebooksApiUtil.fetchAllNotebooks();
+    console.log("componentwillmount");
   },
 
   componentWillUnmount: function() {
@@ -55,26 +58,26 @@ var NoteForm = React.createClass({
     this.showHome();
     var title = this.state.title;
     var body = quillEditor.getText();
-    var note = {title: title, body: body};
+    var notebook_id = $('.notebook-selection-dropdown option:selected').val();
+    var note = {title: title, body: body, notebook_id: parseInt(notebook_id)};
     NotesApiUtil.createNote(note);
   },
 
-  // handleTextChange: function() {
-  //   if (this.timer) {
-  //     clearTimeout(this.timer);
-  //   }
-  //
-  //   this.timer = setTimeout(function() {
-  //     body = quillEditor.getText();
-  //     var note = { id: this.state.id, title: this.state.title, body: body }
-  //     NotesApiUtil.editNote(note, function() {
-  //       //some animation
-  //       console.log("Successfully edited!");
-  //     });
-  //   }.bind(this), 3000);
-  //
-  //   // this.setState({body: e.target.value});
-  // },
+  handleTextChange: function() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+    }
+
+    this.timer = setTimeout(function() {
+      body = quillEditor.getText();
+      var note = { id: this.state.id, title: this.state.title, body: body }
+      NotesApiUtil.editNote(note, function () {
+        //some animation
+        console.log("Successfully edited!");
+        this.setState({body: note.body});
+      }.bind(this));
+    }.bind(this), 3000);
+  },
 
   showHome: function () {
     $('.notes-index').show("slow");
@@ -90,7 +93,7 @@ var NoteForm = React.createClass({
       return (
         <div>
           <div onClick={this.handleCancelClick}>Cancel</div>
-          <div onClick={this.handleNewNoteDoneClick} className="done-button">Done</div>
+          <div onClick={this.handleNewNoteDoneClick} className="new-note-done-button">Done</div>
         </div>
       )
     }
@@ -98,7 +101,6 @@ var NoteForm = React.createClass({
 
   handleCancelClick: function () {
     this.showHome();
-    // this.history.pushState(null, "/");
   },
 
   setUpToolbar: function () {
@@ -116,10 +118,6 @@ var NoteForm = React.createClass({
     );
   },
 
-  setUpBody: function () {
-
-  },
-
   setUpQuillEditor: function () {
     quillEditor = new Quill('#editor', {
       modules: {
@@ -129,70 +127,57 @@ var NoteForm = React.createClass({
       theme: 'snow'
     });
     quillEditor.setText(this.state.body);
-    quillEditor.on('text-change', function(delta, source) {
+    quillEditor.on('text-change', function (delta, source) {
+      if (edit && !sameEditor) {
+        console.log("handle text change");
+        this.handleTextChange();
+      }
       console.log("Editor contents have changed");
     }.bind(this));
   },
 
-  // setUpNotebooks: function () {
-  //   var notebooks = NotebookStore.all();
-  //   return (
-  //     <select>
-  //       {notebooks.map(function (notebook) {
-  //         return <option value={notebook}>{notebook.title}</option>
-  //       })}
-  //     </select>
-  //   )
-  // },
-
   render: function() {
     var header = this.setUpHeader();
     var toolbar = this.setUpToolbar();
-    var notebooks = this.setUpNotebooks();
-
-    if (quillEditor) {
-      quillEditor.setText(this.state.body);
-    }
+    var notebooks = NotebookStore.all().map(function (notebook, key) {
+      return <option key={key} value={notebook.id}>{notebook.title}</option>;
+    });
 
     var placeholderText = "";
     if (!edit) {
       placeholderText = "Title your note";
     }
+    console.log("render");
+    if (quillEditor) {
+      console.log("inside quilleditor");
+      sameEditor = true;
+      quillEditor.setText(this.state.body);
+      sameEditor = false;
+    }
 
     return (
       <div className="note-form-outer">
-          <div className="note-form-header">
-            {header}
-          </div>
-          <div className="editor-outer">
+        <div className="note-form-header">
+          {header}
+        </div>
+        <div className="editor-outer">
+          <label htmlFor="notebook-selection-dropdown">Notebook </label>
+          <select className="notebook-selection-dropdown">
             {notebooks}
-            {toolbar}
-            <input
-              className="note-form-title"
-              type="text"
-              valueLink={this.linkState('title')}
-              onChange={this.handleTitleChange}
-              placeholder={placeholderText}>
-            </input>
-            <div id="editor"></div>
-          </div>
+          </select>
+          {toolbar}
+          <input
+            className="note-form-title"
+            type="text"
+            onKeyUp={this.handleTextChange}
+            valueLink={this.linkState('title')}
+            placeholder={placeholderText}>
+          </input>
+          <div id="editor"></div>
+        </div>
       </div>
     );
   }
 });
-
-
-
-
-// _onChange: function() {
-//   var id = this.props.params.noteId;
-//   var note;
-//   if (id === "new") {
-//     note = {};
-//   } else {
-//     note = NoteStore.find(parseInt(this.props.params.noteId));
-//   }
-//   this.setState({note: note});
-// },
 
 module.exports = NoteForm;
