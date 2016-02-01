@@ -1,0 +1,39 @@
+.mini-menu {
+  float: right;
+  z-index: 100;
+}
+
+.mini-menu:hover {
+
+}
+
+.mini-menu-delete {
+  float: right;
+  margin-top: 5px;
+}
+
+.mini-menu-delete:hover {
+  color: white;
+}
+
+.delete-modal {
+  text-align: center;
+  border: none;
+}
+
+.delete-modal-bottom {
+  display: block;
+}
+
+.delete-modal-cancel-button {
+  float: left;
+}
+
+.delete-modal-delete-button {
+  float: right;
+}
+
+.delete-modal-delete-button,
+.delete-modal-cancel-button {
+  width: 50%;
+}

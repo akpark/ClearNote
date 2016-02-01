@@ -8,7 +8,7 @@
   border: 3px solid #ccc;
 }
 
-.note-index-item-inner {
+.notebook-index-item-inner {
   border-bottom: 1px solid #ccc;
   padding: 5px 10px;
   height: 100px;
@@ -68,4 +68,12 @@
 .new-notebook-cancel-button,
 .new-notebook-create-button {
   width: 50%;
+}
+
+.notebook-index-item-title {
+  float: left;
+}
+
+.mini-menu-delete {
+  
 }

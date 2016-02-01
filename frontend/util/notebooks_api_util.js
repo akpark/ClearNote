@@ -2,7 +2,7 @@ var NotebookStore = require('../stores/notebook_store');
 var NotebookActions = require('../actions/notebook_actions');
 
 var NotebooksApiUtil = {
-  fetchAllNotebooks: function() {
+  fetchAllNotebooks: function () {
     $.ajax({
       method: "GET",
       url: "/api/notebooks",
@@ -13,7 +13,7 @@ var NotebooksApiUtil = {
     });
   },
 
-  fetchSingleNotebook: function(id) {
+  fetchSingleNotebook: function (id) {
     $.ajax({
       method: "GET",
       url: "api/notebooks/" + id,
@@ -24,7 +24,7 @@ var NotebooksApiUtil = {
     });
   },
 
-  createNotebook: function(notebook) {
+  createNotebook: function (notebook) {
     $.ajax({
       method: "POST",
       url: "api/notebooks",
@@ -33,6 +33,18 @@ var NotebooksApiUtil = {
       success: function (notebook) {
         NotebookActions.receiveSingleNotebook(notebook);
         alert("notebook has been created!");
+      }
+    });
+  },
+
+  deleteNotebook: function (notebook) {
+    $.ajax({
+      method: "DELETE",
+      url: "api/notebooks/" + notebook.id,
+      dataType: "json",
+      success: function () {
+        console.log("notebook deleted!");
+        NotebookActions.deleteNotebook(notebook);
       }
     });
   }

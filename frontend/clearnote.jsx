@@ -33,9 +33,6 @@ var router = (
   </Router>
 );
 
-//options:
-//make
-
 function _ensureLoggedIn(nextState, replace, callback) {
   if (CurrentUserStore.userHasBeenFetched()) {
     _redirectIfNotLoggedIn();

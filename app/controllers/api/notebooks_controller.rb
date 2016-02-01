@@ -18,6 +18,12 @@ class Api::NotebooksController < ApplicationController
     end
   end
 
+  def destroy
+    @notebook = Notebook.find(params[:id])
+    @notebook.destroy
+    render :show
+  end
+
   private
   def notebook_params
     params.require(:notebook).permit(:title)

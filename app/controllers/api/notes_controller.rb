@@ -11,7 +11,6 @@ class Api::NotesController < ApplicationController
   def create
     @note = Note.new(note_params)
     @note.author_id = current_user.id
-    byebug
     if @note.save
       render :show
     else
@@ -30,6 +29,12 @@ class Api::NotesController < ApplicationController
     else
       render json: @note.errors.full_message, status: 422
     end
+  end
+
+  def destroy
+    @note = Note.find(params[:id])
+    @note.destroy
+    render :show
   end
 
   private

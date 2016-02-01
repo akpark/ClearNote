@@ -83,9 +83,6 @@
 	  React.createElement(Route, { path: 'register', component: UserForm })
 	);
 	
-	//options:
-	//make
-	
 	function _ensureLoggedIn(nextState, replace, callback) {
 	  if (CurrentUserStore.userHasBeenFetched()) {
 	    _redirectIfNotLoggedIn();
@@ -24183,6 +24180,7 @@
 	  },
 	
 	  handleNotesClick: function () {
+	    $('.notes-index').show();
 	    this.history.pushState(null, "/");
 	  },
 	
@@ -24191,6 +24189,10 @@
 	    // $('.slideout').show("slow");
 	    // $('.notebooks-index').show("slow");
 	    this.history.pushState(null, "home/notebooks", {});
+	  },
+	
+	  handleProfileButtonClick: function (e) {
+	    //show my profile stuff and option to log out.
 	  },
 	
 	  render: function () {
@@ -24221,6 +24223,11 @@
 	          'Notebooks'
 	        )
 	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'profile-button', onClick: this.handleProfileButtonClick },
+	        'ME'
+	      ),
 	      React.createElement('img', { className: 'profile-pic' })
 	    );
 	  }
@@ -24244,6 +24251,7 @@
 	  displayName: 'NotesIndex',
 	
 	  mixins: [History],
+	
 	  getInitialState: function () {
 	    return { notes: NoteStore.all(), optionsClicked: false };
 	  },
@@ -24317,10 +24325,8 @@
 	      )
 	    );
 	  }
-	
 	});
 	
-	$(document).on("click", function () {});
 	module.exports = NotesIndex;
 
 /***/ },
@@ -24332,6 +24338,7 @@
 	var NoteConstants = __webpack_require__(229);
 	var AppDispatcher = __webpack_require__(230);
 	var NoteStore = new Store(AppDispatcher);
+	var History = __webpack_require__(159).History;
 	
 	NoteStore.all = function () {
 	  var notes = [];
@@ -24346,7 +24353,7 @@
 	};
 	
 	NoteStore.findFirst = function () {
-	  return Object.key(_notes)[0];
+	  return Object.keys(_notes)[0];
 	};
 	
 	var resetNotes = function (notes) {
@@ -24361,12 +24368,7 @@
 	};
 	
 	var deleteNote = function (note) {
-	  _notes.forEach(function (note) {
-	    var idx = _notes.indexOf(note);
-	    if (idx > 0) {
-	      _notes.splice(idx, 1);
-	    }
-	  });
+	  delete _notes[note.id];
 	};
 	
 	var addNote = function (note) {
@@ -24402,7 +24404,6 @@
 	  }
 	};
 	
-	window.NoteStore = NoteStore;
 	module.exports = NoteStore;
 
 /***/ },
@@ -31236,6 +31237,19 @@
 	        callback();
 	      }
 	    });
+	  },
+	
+	  deleteNote: function (note) {
+	    debugger;
+	    $.ajax({
+	      method: "DELETE",
+	      url: "api/notes/" + note.id,
+	      data: { note: note },
+	      success: function (note) {
+	        NoteActions.deleteNote(note);
+	        console.log("successfuly deleted");
+	      }
+	    });
 	  }
 	
 	};
@@ -31278,7 +31292,8 @@
 	    });
 	  },
 	
-	  deleteNote: function () {
+	  deleteNote: function (note) {
+	    debugger;
 	    AppDispatcher.dispatch({
 	      actionType: NoteConstants.DELETE_NOTE,
 	      note: note
@@ -31295,6 +31310,7 @@
 	var React = __webpack_require__(1);
 	var NoteStore = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
+	var MiniMenu = __webpack_require__(284);
 	
 	var NoteIndexItem = React.createClass({
 	  displayName: 'NoteIndexItem',
@@ -31305,23 +31321,31 @@
 	    return { note: this.props.note };
 	  },
 	
-	  showDetail: function (e) {
-	    $(".note-index-item").removeClass("selected");
-	    $(e.currentTarget).addClass('selected');
+	  componentWillMount: function () {
+	    var noteId = parseInt(NoteStore.findFirst());
 	
-	    this.history.pushState(null, 'home/notes/' + this.props.note.id, this.state.note);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.noteIndexItemListener.remove();
+	    if (this.state.note.id === noteId) {
+	      this.history.pushState(null, 'home/notes/' + noteId, this.state.note);
+	    }
 	  },
 	
 	  componentDidMount: function () {
 	    this.noteIndexItemListener = NoteStore.addListener(this._onChange);
 	  },
 	
+	  componentWillUnmount: function () {
+	    this.noteIndexItemListener.remove();
+	  },
+	
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.state.note.id) });
+	  },
+	
+	  showDetail: function (e) {
+	    $(".note-index-item").removeClass("selected");
+	    $(e.currentTarget).addClass('selected');
+	
+	    this.history.pushState(null, 'home/notes/' + this.props.note.id, this.state.note);
 	  },
 	
 	  render: function () {
@@ -31333,8 +31357,13 @@
 	        { className: 'note-index-item-inner' },
 	        React.createElement(
 	          'div',
-	          { className: 'note-index-item-title' },
-	          this.state.note.title
+	          { className: 'note-index-item-top group' },
+	          React.createElement(
+	            'div',
+	            { className: 'note-index-item-title' },
+	            this.state.note.title
+	          ),
+	          React.createElement(MiniMenu, { note: this.state.note })
 	        ),
 	        React.createElement(
 	          'div',
@@ -31488,9 +31517,7 @@
 	    console.log("componentwillmount");
 	  },
 	
-	  componentWillUnmount: function () {
-	    this.noteListener.remove();
-	  },
+	  componentWillUnmount: function () {},
 	
 	  handleNewNoteDoneClick: function (e) {
 	    this.showHome();
@@ -31606,6 +31633,7 @@
 	      placeholderText = "Title your note";
 	    }
 	    console.log("render");
+	
 	    if (quillEditor) {
 	      console.log("inside quilleditor");
 	      sameEditor = true;
@@ -43248,12 +43276,16 @@
 	  return _notebooks[id];
 	};
 	
-	var resetNotebooks = function (notebooks) {
+	function resetNotebooks(notebooks) {
 	  _notebooks = notebooks;
 	};
 	
 	function resetNotebook(notebook) {
 	  _notebooks[notebook.id] = notebook;
+	};
+	
+	function deleteNotebook(notebook) {
+	  delete _notebooks[notebook.id];
 	};
 	
 	NotebookStore.__onDispatch = function (payload) {
@@ -43267,10 +43299,14 @@
 	      resetNotebook(payload.notebook);
 	      this.__emitChange();
 	      break;
+	
+	    case NotebookConstants.DELETE_NOTEBOOK:
+	      deleteNotebook(payload.notebook);
+	      this.__emitChange();
+	      break;
 	  }
 	};
 	
-	window.NotebookStore = NotebookStore;
 	module.exports = NotebookStore;
 
 /***/ },
@@ -43279,7 +43315,8 @@
 
 	var NotebookConstants = {
 	  NOTEBOOKS_RECEIVED: "NOTEBOOKS_RECEIVED",
-	  NOTEBOOK_RECEIVED: "NOTEBOOK_RECEIVED"
+	  NOTEBOOK_RECEIVED: "NOTEBOOK_RECEIVED",
+	  DELETE_NOTEBOOK: "DELETE_NOTEBOOK"
 	};
 	
 	module.exports = NotebookConstants;
@@ -43526,11 +43563,11 @@
 	var App = React.createClass({
 	  displayName: 'App',
 	
-	  componentDidMount: function () {
-	    CurrentUserStore.addListener(this.forceUpdate.bind(this));
-	    SessionsApiUtil.fetchCurrentUser();
-	    $('.slideout').hide();
-	  },
+	  // componentDidMount: function () {
+	  //   CurrentUserStore.addListener(this.forceUpdate.bind(this));
+	  //   SessionsApiUtil.fetchCurrentUser();
+	  //   $('.slideout').hide();
+	  // },
 	
 	  render: function () {
 	    if (!CurrentUserStore.userHasBeenFetched()) {
@@ -43769,6 +43806,7 @@
 	var React = __webpack_require__(1);
 	var NotebookStore = __webpack_require__(249);
 	var NotebooksApiUtil = __webpack_require__(262);
+	var MiniMenu = __webpack_require__(284);
 	
 	var NotebookIndexItem = React.createClass({
 	  displayName: 'NotebookIndexItem',
@@ -43794,8 +43832,18 @@
 	      { className: 'notebook-index-item', onClick: this.handleItemClick },
 	      React.createElement(
 	        'div',
-	        { className: 'notebook-index-item-title' },
-	        notebook.title
+	        { className: 'notebook-index-item-top group' },
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-item-title' },
+	          notebook.title
+	        ),
+	        React.createElement(MiniMenu, { notebook: notebook })
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'number-of-notes-in-notebook' },
+	        notebook.notes
 	      )
 	    );
 	  }
@@ -43844,6 +43892,18 @@
 	        alert("notebook has been created!");
 	      }
 	    });
+	  },
+	
+	  deleteNotebook: function (notebook) {
+	    $.ajax({
+	      method: "DELETE",
+	      url: "api/notebooks/" + notebook.id,
+	      dataType: "json",
+	      success: function () {
+	        console.log("notebook deleted!");
+	        NotebookActions.deleteNotebook(notebook);
+	      }
+	    });
 	  }
 	
 	};
@@ -43873,17 +43933,18 @@
 	    });
 	  },
 	
-	  editNotebook: function (note) {
+	  editNotebook: function (notebook) {
 	    AppDispatcher.dispatch({
 	      actionType: NotebookConstants.EDIT_NOTEBOOK,
-	      note: note
+	      notebook: notebook
 	    });
 	  },
 	
-	  deleteNotebook: function () {
+	  deleteNotebook: function (notebook) {
+	    debugger;
 	    AppDispatcher.dispatch({
 	      actionType: NotebookConstants.DELETE_NOTEBOOK,
-	      note: note
+	      notebook: notebook
 	    });
 	  }
 	};
@@ -45818,6 +45879,126 @@
 	  else this.add(className)
 	}
 
+
+/***/ },
+/* 284 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var Modal = __webpack_require__(264);
+	var NotesApiUtil = __webpack_require__(233);
+	var History = __webpack_require__(159).History;
+	
+	const customStyles = {
+	  content: {
+	    top: '25%',
+	    bottom: '25%',
+	    left: '25%',
+	    right: '25%'
+	  }
+	};
+	
+	var note = false;
+	
+	var MiniMenu = React.createClass({
+	  displayName: 'MiniMenu',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { modalIsOpen: false };
+	  },
+	
+	  handleDeleteClick: function () {
+	    var note = this.props.note;
+	    var notebook = this.props.notebook;
+	    if (note) {
+	      NotesApiUtil.deleteNote(note);
+	      this.history.pushState(null, 'home');
+	    } else {
+	      NotebooksApiUtil.deleteNotebook(notebook);
+	      this.history.pushState(null, 'home/notebooks');
+	    }
+	    this.closeModal();
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  componentWillMount: function () {
+	    var noteProp = this.props.note;
+	    var notebookProp = this.props.notebook;
+	    if (noteProp) {
+	      note = true;
+	    } else {
+	      note = false;
+	    }
+	  },
+	
+	  setUpModal: function (title) {
+	    var title = note ? "Note" : "Notebook";
+	
+	    return React.createElement(
+	      Modal,
+	      {
+	        className: 'delete-modal',
+	        isOpen: this.state.modalIsOpen,
+	        onRequestClose: this.closeModal,
+	        style: customStyles },
+	      React.createElement('i', { className: 'fa fa-trash fa-2x' }),
+	      React.createElement(
+	        'h2',
+	        null,
+	        'Delete ',
+	        title
+	      ),
+	      React.createElement(
+	        'h2',
+	        { className: 'delete-modal-title' },
+	        'Are you sure you want to delete ?'
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'delete-modal-bottom group' },
+	        React.createElement(
+	          'button',
+	          { className: 'delete-modal-cancel-button', onClick: this.closeModal },
+	          'Cancel'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'delete-modal-delete-button', onClick: this.handleDeleteClick },
+	          'Delete'
+	        )
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var modal = this.setUpModal();
+	    return React.createElement(
+	      'div',
+	      { className: 'mini-menu-container' },
+	      React.createElement(
+	        'div',
+	        { className: 'mini-menu group' },
+	        React.createElement(
+	          'div',
+	          { className: 'mini-menu-delete', onClick: this.openModal },
+	          React.createElement('i', { className: 'fa fa-trash fa-lg' })
+	        )
+	      ),
+	      modal
+	    );
+	  }
+	});
+	
+	module.exports = MiniMenu;
 
 /***/ }
 /******/ ]);

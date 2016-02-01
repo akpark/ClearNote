@@ -7,11 +7,11 @@ var Slideout = require('./slideout/slideout');
 
 
 var App = React.createClass({
-  componentDidMount: function () {
-    CurrentUserStore.addListener(this.forceUpdate.bind(this));
-    SessionsApiUtil.fetchCurrentUser();
-    $('.slideout').hide();
-  },
+  // componentDidMount: function () {
+  //   CurrentUserStore.addListener(this.forceUpdate.bind(this));
+  //   SessionsApiUtil.fetchCurrentUser();
+  //   $('.slideout').hide();
+  // },
 
   render: function () {
     if (!CurrentUserStore.userHasBeenFetched()) {

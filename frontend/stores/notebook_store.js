@@ -16,12 +16,16 @@ NotebookStore.find = function (id) {
   return _notebooks[id];
 };
 
-var resetNotebooks = function (notebooks) {
+function resetNotebooks(notebooks) {
   _notebooks = notebooks;
 };
 
 function resetNotebook(notebook) {
   _notebooks[notebook.id] = notebook;
+};
+
+function deleteNotebook(notebook) {
+  delete _notebooks[notebook.id];
 };
 
 NotebookStore.__onDispatch = function (payload) {
@@ -35,8 +39,12 @@ NotebookStore.__onDispatch = function (payload) {
       resetNotebook(payload.notebook);
       this.__emitChange();
       break;
+
+    case NotebookConstants.DELETE_NOTEBOOK:
+      deleteNotebook(payload.notebook);
+      this.__emitChange();
+      break;
   }
 }
 
-window.NotebookStore = NotebookStore;
 module.exports = NotebookStore;

@@ -3,6 +3,7 @@ var _notes = {};
 var NoteConstants = require('../constants/note_constants');
 var AppDispatcher = require('../dispatcher/dispatcher');
 var NoteStore = new Store(AppDispatcher);
+var History = require('react-router').History;
 
 NoteStore.all = function() {
   var notes = [];
@@ -17,7 +18,7 @@ NoteStore.find = function(id) {
 };
 
 NoteStore.findFirst = function() {
-  return Object.key(_notes)[0];
+  return Object.keys(_notes)[0];
 };
 
 var resetNotes = function(notes) {
@@ -32,12 +33,7 @@ var resetNote = function(newNote) {
 };
 
 var deleteNote = function(note) {
-  _notes.forEach(function (note) {
-    var idx = _notes.indexOf(note);
-    if (idx > 0) {
-      _notes.splice(idx, 1);
-    }
-  });
+  delete _notes[note.id];
 };
 
 var addNote = function(note) {
@@ -73,5 +69,4 @@ NoteStore.__onDispatch = function(payload) {
   }
 };
 
-window.NoteStore = NoteStore;
 module.exports = NoteStore;

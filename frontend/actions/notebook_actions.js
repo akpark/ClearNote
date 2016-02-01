@@ -16,17 +16,18 @@ var NotebookActions = {
     });
   },
 
-  editNotebook: function (note) {
+  editNotebook: function (notebook) {
     AppDispatcher.dispatch({
       actionType: NotebookConstants.EDIT_NOTEBOOK,
-      note: note
+      notebook: notebook
     });
   },
 
-  deleteNotebook: function () {
+  deleteNotebook: function (notebook) {
+    debugger
     AppDispatcher.dispatch({
       actionType: NotebookConstants.DELETE_NOTEBOOK,
-      note: note
+      notebook: notebook
     });
   }
 };

@@ -8,6 +8,7 @@ var History = require('react-router').History;
 
 var NotesIndex = React.createClass({
   mixins: [History],
+
   getInitialState: function() {
     return ({notes: NoteStore.all(), optionsClicked: false});
   },
@@ -63,10 +64,6 @@ var NotesIndex = React.createClass({
       </div>
     );
   }
-
 });
 
-$(document).on("click", function() {
-
-});
 module.exports = NotesIndex;

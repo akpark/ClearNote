@@ -51,7 +51,6 @@ var NoteForm = React.createClass({
   },
 
   componentWillUnmount: function() {
-    this.noteListener.remove();
   },
 
   handleNewNoteDoneClick: function(e) {
@@ -148,6 +147,7 @@ var NoteForm = React.createClass({
       placeholderText = "Title your note";
     }
     console.log("render");
+
     if (quillEditor) {
       console.log("inside quilleditor");
       sameEditor = true;

@@ -2,7 +2,7 @@ var NoteStore = require('../stores/note_store');
 var NoteActions = require('../actions/note_actions');
 
 var NotesApiUtil = {
-  fetchAllNotes: function() {
+  fetchAllNotes: function () {
     $.ajax({
       method: "GET",
       url: "/api/notes",
@@ -13,7 +13,7 @@ var NotesApiUtil = {
     });
   },
 
-  fetchSingleNote: function(id) {
+  fetchSingleNote: function (id) {
     $.ajax({
       method: "GET",
       url: "api/notes/" + id,
@@ -24,7 +24,7 @@ var NotesApiUtil = {
     });
   },
 
-  createNote: function(note) {
+  createNote: function (note) {
     $.ajax({
       method: "POST",
       url: "api/notes",
@@ -37,7 +37,7 @@ var NotesApiUtil = {
     });
   },
 
-  editNote: function(note, callback) {
+  editNote: function (note, callback) {
     $.ajax({
       method: "PATCH",
       url: "api/notes/" + note.id,
@@ -48,6 +48,19 @@ var NotesApiUtil = {
       }
     });
   },
+
+  deleteNote: function (note) {
+    debugger
+    $.ajax({
+      method: "DELETE",
+      url: "api/notes/" + note.id,
+      data: {note: note},
+      success: function (note) {
+        NoteActions.deleteNote(note);
+        console.log("successfuly deleted");
+      }
+    })
+  }
 
 };
 

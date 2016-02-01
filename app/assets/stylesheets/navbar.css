@@ -21,3 +21,14 @@
 .bottom-bar {
   margin-top: 50px;
 }
+
+.profile-button {
+  border: 1px solid #ccc;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.profile-button:hover {
+  background: #2dbe60;
+  cursor: pointer;
+}
