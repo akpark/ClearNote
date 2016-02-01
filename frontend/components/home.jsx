@@ -1,7 +1,6 @@
 var React = require('react');
 var CurrentUserStore = require('../stores/current_user_store');
 var SessionsApiUtil = require('../util/sessions_api_util');
-var Navbar = require('./navbar');
 var NotesIndex = require('./notes_index/index');
 var History = require('react-router').History;
 

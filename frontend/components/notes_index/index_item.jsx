@@ -12,7 +12,7 @@ var NoteIndexItem = React.createClass({
 
   componentWillMount: function () {
     var noteId = parseInt(NoteStore.findFirst());
-    
+
     if (this.state.note.id === noteId) {
       this.history.pushState(null, 'home/notes/' + noteId, this.state.note);
     }
@@ -27,14 +27,14 @@ var NoteIndexItem = React.createClass({
   },
 
   _onChange: function () {
-    this.setState({note: NoteStore.find(this.state.note.id)});
+    this.setState({note: this.props.note});
   },
 
   showDetail: function(e) {
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
 
-    this.history.pushState(null, 'home/notes/' + this.props.note.id, this.state.note);
+    this.history.pushState(null, 'home/notes/' + this.state.note.id, this.state.note);
   },
 
   render: function() {

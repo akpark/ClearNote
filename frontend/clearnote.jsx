@@ -5,7 +5,6 @@ var Router = ReactRouter.Router;
 var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var root = document.getElementById('root');
-var Navbar = require('./components/navbar');
 var NotesIndex = require('./components/notes_index/index');
 var NoteForm = require('./components/note_form/note_form');
 var NoteStore = require('./stores/note_store');

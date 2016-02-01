@@ -23,7 +23,9 @@ class Api::SessionsController < ApplicationController
   end
 
   def destroy
-    sign_out!
+    sign_out
+    flash[:success] = "Thank you, come again."
+    render json: {}
   end
 
 end

@@ -36,9 +36,11 @@ var NotesIndex = React.createClass({
 
   render: function() {
     var notes = this.state.notes.map(function(note, key) {
-      return (
-        <NoteIndexItem key={key} note={note}>{note.title}</NoteIndexItem>
-      );
+      if (note) {
+        return (
+          <NoteIndexItem key={key} note={note}>{note.title}</NoteIndexItem>
+        );
+      }
     }.bind(this));
 
     var optionsDropdown;

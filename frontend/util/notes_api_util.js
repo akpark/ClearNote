@@ -50,7 +50,6 @@ var NotesApiUtil = {
   },
 
   deleteNote: function (note) {
-    debugger
     $.ajax({
       method: "DELETE",
       url: "api/notes/" + note.id,
