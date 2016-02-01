@@ -24261,45 +24261,74 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(210).Store;
-	var _notes = {};
+	var _notes = [];
 	var NoteConstants = __webpack_require__(228);
 	var AppDispatcher = __webpack_require__(229);
 	var NoteStore = new Store(AppDispatcher);
 	var History = __webpack_require__(159).History;
 	
 	NoteStore.all = function () {
-	  var notes = [];
-	  for (var id in _notes) {
-	    notes.push(_notes[id]);
-	  }
-	  return notes;
+	  return _notes.slice(0);
+	  // var notes = [];
+	  // for (var id in _notes) {
+	  //   notes.push(_notes[id]);
+	  // }
+	  // return notes;
 	};
 	
 	NoteStore.find = function (id) {
-	  return _notes[id];
+	  _notes.forEach(function (note) {
+	    if (note.id === id) {
+	      return note;
+	    }
+	  });
+	  // return _notes[id];
 	};
 	
 	NoteStore.findFirst = function () {
-	  return Object.keys(_notes)[0];
+	  return _notes[0];
+	  // return Object.keys(_notes)[0];
 	};
 	
 	var resetNotes = function (notes) {
-	  _notes = {};
-	  notes.forEach(function (note) {
-	    _notes[note.id] = note;
-	  });
+	  _notes = notes.slice(0);
+	  // _notes = {};
+	  // notes.forEach(function (note) {
+	  //   _notes[note.id] = note;
+	  // });
 	};
 	
 	var resetNote = function (newNote) {
-	  _notes[newNote.id] = newNote;
+	  _notes.forEach(function (note) {
+	    debugger;
+	    if (note.id === newNote.id) {
+	      var index = _notes.indexOf(note);
+	      _notes[index] = newNote;
+	      // note = newNote;
+	      return;
+	    }
+	  });
+	  _notes.push(newNote);
+	  // _notes[newNote.id] = newNote;
 	};
 	
-	var deleteNote = function (note) {
-	  delete _notes[note.id];
+	var deleteNote = function (deleteNote) {
+	  _notes.forEach(function (note) {
+	    if (deleteNote.id === note.id) {
+	      var index = _notes.indexOf(note);
+	      _notes.splice(index, 1);
+	    }
+	  });
+	  // var index = _notes.indexOf(note);
+	  // debugger
+	  // if (index > -1) {
+	  //   _notes.splice(index, 1);
+	  // }
+	  // delete _notes[note.id];
 	};
 	
 	var addNote = function (note) {
-	  _notes.push(note);
+	  _notes.unshift(note);
 	};
 	
 	NoteStore.__onDispatch = function (payload) {
@@ -31149,7 +31178,7 @@
 	      data: { note: note },
 	      dataType: "json",
 	      success: function (note) {
-	        NoteActions.receiveSingleNote(note);
+	        NoteActions.createNote(note);
 	        alert("note has been created!");
 	      }
 	    });
@@ -31275,7 +31304,41 @@
 	    this.history.pushState(null, 'home/notes/' + this.state.note.id, this.state.note);
 	  },
 	
+	  getCreatedDate: function () {
+	    var note = this.state.note;
+	    var updated_at = new Date(note.updated_at);
+	    var today = new Date();
+	    var elapsedTime = today.getTime() - updated_at.getTime();
+	
+	    var seconds = Math.round(elapsedTime / 1000);
+	    var minutes = 0;
+	    var hour = 0;
+	    var days = 0;
+	    var weekds = 0;
+	    var time = seconds + " seconds";
+	    if (seconds > 60) {
+	      minutes = Math.round(seconds / 60);
+	      time = minutes + " minutes";
+	      if (minutes > 60) {
+	        hours = Math.round(minutes / 60);
+	        time = hours + " hours";
+	        if (hours > 24) {
+	          days = Math.round(hours / 24);
+	          time = days + " days";
+	          if (days > 7) {
+	            weeks = Math.round(days / 7);
+	            time = weeks + " weeks";
+	          }
+	        }
+	      }
+	    }
+	
+	    return time + " ago";
+	  },
+	
 	  render: function () {
+	    var elapsed = this.getCreatedDate();
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'note-index-item', onClick: this.showDetail },
@@ -31295,7 +31358,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'note-index-item-date' },
-	          'Date Created'
+	          elapsed
 	        ),
 	        React.createElement(
 	          'div',
@@ -31341,13 +31404,12 @@
 	  handleDeleteClick: function () {
 	    var note = this.props.note;
 	    var notebook = this.props.notebook;
-	    debugger;
 	    if (note) {
 	      NotesApiUtil.deleteNote(note);
 	      this.history.pushState(null, 'home');
 	    } else {
 	      NotebooksApiUtil.deleteNotebook(notebook);
-	      this.history.pushState(null, 'home/notebooks');
+	      // this.history.pushState(null, 'home/notebooks')
 	    }
 	    this.closeModal();
 	  },
@@ -45242,6 +45304,7 @@
 	var _notebooks = {};
 	
 	NotebookStore.all = function () {
+	  // return _notebooks.slice(0);
 	  var notebooks = [];
 	  for (var id in _notebooks) {
 	    notebooks.push(_notebooks[id]);
@@ -45250,19 +45313,43 @@
 	};
 	
 	NotebookStore.find = function (id) {
+	  // _notebooks.forEach(function (notebook) {
+	  //   if (notebook.id === id) {
+	  //     return notebook;
+	  //   }
+	  // })
 	  return _notebooks[id];
 	};
 	
 	function resetNotebooks(notebooks) {
-	  _notebooks = notebooks;
+	  _notebooks = {};
+	  notebooks.forEach(function (notebook) {
+	    _notebooks[notebook.id] = notebook;
+	  });
+	  // _notebooks = notebooks.slice(0);
 	};
 	
 	function resetNotebook(notebook) {
+	  // _notebooks.forEach(function (notebook) {
+	  //   if (newNotebook.id === notebook.id) {
+	  //     var index = _notebooks.indexOf(notebook);
+	  //     _notebooks[index] = newNotebook;
+	  //   }
+	  // })
 	  _notebooks[notebook.id] = notebook;
 	};
 	
 	function deleteNotebook(notebook) {
-	  delete _notebooks[notebook.id];
+	  // _notebooks.forEach(function (notebook) {
+	  //   if (notebook.id === deleteNotebook.id) {
+	  //     var index = _notebooks.indexOf(notebook);
+	  //     _notebooks.splice(index, 1);
+	  //   }
+	  // })
+	  // debugger
+	  var notebookId = notebook.id;
+	  delete _notebooks[notebookId];
+	  // debugger
 	};
 	
 	NotebookStore.__onDispatch = function (payload) {
@@ -45277,6 +45364,11 @@
 	      this.__emitChange();
 	      break;
 	
+	    // case NotebookConstants.CREATE_NOTEBOOK:
+	    //   addNotebook(payload.notebook);
+	    //   this.__emitChange();
+	    //   break;
+	
 	    case NotebookConstants.DELETE_NOTEBOOK:
 	      deleteNotebook(payload.notebook);
 	      this.__emitChange();
@@ -45285,6 +45377,9 @@
 	};
 	
 	module.exports = NotebookStore;
+	window.NotebookStore = NotebookStore;
+	
+	//allow the index of notebooks receive the call first before changing the index item
 
 /***/ },
 /* 270 */
@@ -45388,7 +45483,6 @@
 	  },
 	
 	  deleteNotebook: function (notebook) {
-	    debugger;
 	    AppDispatcher.dispatch({
 	      actionType: NotebookConstants.DELETE_NOTEBOOK,
 	      notebook: notebook
@@ -45970,6 +46064,7 @@
 	  },
 	
 	  _onChange: function () {
+	    debugger;
 	    var notebooks = NotebookStore.all();
 	    this.setState({ notebooks: notebooks });
 	  },
@@ -45991,6 +46086,7 @@
 	
 	  render: function () {
 	    $('.notes-index').hide();
+	    debugger;
 	    var notebooks = this.state.notebooks.map(function (notebook, key) {
 	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook });
 	    });
@@ -46014,7 +46110,8 @@
 	            React.createElement(
 	              'div',
 	              { onClick: this.openModal },
-	              'New Notebook'
+	              React.createElement('i', { className: 'fa fa-plus' }),
+	              React.createElement('i', { className: 'fa fa-book fa-2x' })
 	            )
 	          )
 	        ),
@@ -46086,14 +46183,7 @@
 	    return { notebook: this.props.notebook };
 	  },
 	
-	  componentDidMount: function () {},
-	
 	  componentWillUnmount: function () {},
-	
-	  handleNewNotebokClick: function (e) {
-	    //modal for new notebook
-	    // NotebooksApiUtil.createNotebook()
-	  },
 	
 	  render: function () {
 	    var notebook = this.props.notebook;

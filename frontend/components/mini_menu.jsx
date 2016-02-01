@@ -24,13 +24,12 @@ var MiniMenu = React.createClass({
   handleDeleteClick: function () {
     var note = this.props.note;
     var notebook = this.props.notebook;
-    debugger
     if (note) {
       NotesApiUtil.deleteNote(note);
       this.history.pushState(null, 'home');
     } else {
       NotebooksApiUtil.deleteNotebook(notebook);
-      this.history.pushState(null, 'home/notebooks')
+      // this.history.pushState(null, 'home/notebooks')
     }
     this.closeModal();
   },

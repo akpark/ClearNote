@@ -24,7 +24,6 @@ var NotebookActions = {
   },
 
   deleteNotebook: function (notebook) {
-    debugger
     AppDispatcher.dispatch({
       actionType: NotebookConstants.DELETE_NOTEBOOK,
       notebook: notebook

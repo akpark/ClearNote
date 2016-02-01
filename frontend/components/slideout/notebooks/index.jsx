@@ -31,6 +31,7 @@ var NotebooksIndex = React.createClass({
   },
 
   _onChange: function () {
+    debugger
     var notebooks = NotebookStore.all();
     this.setState({notebooks: notebooks});
   },
@@ -52,6 +53,7 @@ var NotebooksIndex = React.createClass({
 
   render: function () {
     $('.notes-index').hide();
+    debugger
     var notebooks = this.state.notebooks.map(function (notebook, key) {
       return (
         <NotebookIndexItem key={key} notebook={notebook} />
@@ -63,7 +65,10 @@ var NotebooksIndex = React.createClass({
           <div className="notebook-index-header-top group">
             <div className="notebook-index-title">Notebooks</div>
             <div className="add-notebook-button">
-              <div onClick={this.openModal}>New Notebook</div>
+              <div onClick={this.openModal}>
+                <i className="fa fa-plus"></i>
+                <i className="fa fa-book fa-2x"></i>
+              </div>
             </div>
           </div>
 

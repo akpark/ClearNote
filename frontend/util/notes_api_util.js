@@ -31,7 +31,7 @@ var NotesApiUtil = {
       data: {note: note},
       dataType: "json",
       success: function (note) {
-        NoteActions.receiveSingleNote(note);
+        NoteActions.createNote(note);
         alert("note has been created!");
       }
     });

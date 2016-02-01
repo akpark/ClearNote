@@ -8,17 +8,8 @@ var NotebookIndexItem = React.createClass({
     return {notebook: this.props.notebook};
   },
 
-  componentDidMount: function () {
-
-  },
-
   componentWillUnmount: function () {
 
-  },
-
-  handleNewNotebokClick: function (e) {
-    //modal for new notebook
-    // NotebooksApiUtil.createNotebook()
   },
 
   render: function () {

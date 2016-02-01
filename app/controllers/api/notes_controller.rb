@@ -1,11 +1,8 @@
 class Api::NotesController < ApplicationController
 
   def index
-    @notes = Note.all
-  end
+    @notes = current_user.notes.order(updated_at: :desc)
 
-  def new
-    @note = Note.new
   end
 
   def create

@@ -5,6 +5,7 @@ var NotebookConstants = require('../constants/notebook_constants');
 var _notebooks = {};
 
 NotebookStore.all = function () {
+  // return _notebooks.slice(0);
   var notebooks = [];
   for (var id in _notebooks) {
     notebooks.push(_notebooks[id]);
@@ -13,19 +14,43 @@ NotebookStore.all = function () {
 };
 
 NotebookStore.find = function (id) {
+  // _notebooks.forEach(function (notebook) {
+  //   if (notebook.id === id) {
+  //     return notebook;
+  //   }
+  // })
   return _notebooks[id];
 };
 
 function resetNotebooks(notebooks) {
-  _notebooks = notebooks;
+  _notebooks = {};
+  notebooks.forEach(function (notebook) {
+    _notebooks[notebook.id] = notebook;
+  });
+  // _notebooks = notebooks.slice(0);
 };
 
 function resetNotebook(notebook) {
+  // _notebooks.forEach(function (notebook) {
+  //   if (newNotebook.id === notebook.id) {
+  //     var index = _notebooks.indexOf(notebook);
+  //     _notebooks[index] = newNotebook;
+  //   }
+  // })
   _notebooks[notebook.id] = notebook;
 };
 
 function deleteNotebook(notebook) {
-  delete _notebooks[notebook.id];
+  // _notebooks.forEach(function (notebook) {
+  //   if (notebook.id === deleteNotebook.id) {
+  //     var index = _notebooks.indexOf(notebook);
+  //     _notebooks.splice(index, 1);
+  //   }
+  // })
+  // debugger
+  var notebookId = notebook.id;
+  delete _notebooks[notebookId];
+  // debugger
 };
 
 NotebookStore.__onDispatch = function (payload) {
@@ -40,6 +65,11 @@ NotebookStore.__onDispatch = function (payload) {
       this.__emitChange();
       break;
 
+    // case NotebookConstants.CREATE_NOTEBOOK:
+    //   addNotebook(payload.notebook);
+    //   this.__emitChange();
+    //   break;
+
     case NotebookConstants.DELETE_NOTEBOOK:
       deleteNotebook(payload.notebook);
       this.__emitChange();
@@ -48,3 +78,6 @@ NotebookStore.__onDispatch = function (payload) {
 }
 
 module.exports = NotebookStore;
+window.NotebookStore = NotebookStore;
+
+//allow the index of notebooks receive the call first before changing the index item
