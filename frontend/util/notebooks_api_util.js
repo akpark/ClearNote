@@ -51,5 +51,4 @@ var NotebooksApiUtil = {
 
 };
 
-window.NotebooksApiUtil = NotebooksApiUtil;
 module.exports = NotebooksApiUtil;

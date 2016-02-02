@@ -7,11 +7,6 @@ var History = require('react-router').History;
 
 NoteStore.all = function() {
   return _notes.slice(0);
-  // var notes = [];
-  // for (var id in _notes) {
-  //   notes.push(_notes[id]);
-  // }
-  // return notes;
 };
 
 NoteStore.find = function(id) {
@@ -20,29 +15,31 @@ NoteStore.find = function(id) {
       return note;
     }
   });
-  // return _notes[id];
 };
 
-NoteStore.findFirst = function() {
+NoteStore.findFirst = function () {
   return _notes[0];
-  // return Object.keys(_notes)[0];
+};
+
+NoteStore.findByNotebook = function (id) {
+  var notebookNotes = [];
+  _notes.forEach(function (note) {
+    if (note.notebook_id === id) {
+      notebookNotes.push(note);
+    }
+  });
+  return notebookNotes;
 };
 
 var resetNotes = function(notes) {
   _notes = notes.slice(0);
-  // _notes = {};
-  // notes.forEach(function (note) {
-  //   _notes[note.id] = note;
-  // });
 };
 
 var resetNote = function(newNote) {
   _notes.forEach(function (note) {
-    debugger
     if (note.id === newNote.id) {
       var index = _notes.indexOf(note);
       _notes[index] = newNote;
-      // note = newNote;
       return;
     }
   });
@@ -57,12 +54,6 @@ var deleteNote = function(deleteNote) {
       _notes.splice(index, 1);
     }
   });
-  // var index = _notes.indexOf(note);
-  // debugger
-  // if (index > -1) {
-  //   _notes.splice(index, 1);
-  // }
-  // delete _notes[note.id];
 };
 
 var addNote = function(note) {

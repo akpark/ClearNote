@@ -10,7 +10,7 @@ var NotesIndex = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return ({notes: NoteStore.all(), optionsClicked: false});
+    return ({notes: this.props.notes, optionsClicked: false, header: this.props.header});
   },
 
   componentDidMount: function() {
@@ -23,7 +23,7 @@ var NotesIndex = React.createClass({
   },
 
   _onChange: function() {
-    this.setState({notes: NoteStore.all()});
+    this.setState({notes: this.props.notes, header: this.props.header});
   },
 
   showOptions: function() {
@@ -35,6 +35,7 @@ var NotesIndex = React.createClass({
   },
 
   render: function() {
+    //if we are trying to not get store.all
     var notes = this.state.notes.map(function(note, key) {
       if (note) {
         return (
@@ -42,6 +43,8 @@ var NotesIndex = React.createClass({
         );
       }
     }.bind(this));
+
+    var numberOfNotes = this.state.notes.length;
 
     var optionsDropdown;
     if (this.state.optionsClicked) {
@@ -51,9 +54,9 @@ var NotesIndex = React.createClass({
     return(
       <div className="notes-index">
         <div className="notes-index-header">
-          <div className="notes-index-title">NOTES</div>
+          <div className="notes-index-title">{this.state.header}</div>
           <div className="notes-index-header-bottom group">
-            <div className="number-of-notes">567 Notes</div>
+            <div className="number-of-notes">{numberOfNotes} Notes</div>
             <div onClick={this.showOptions} className="options-dropdown-click">Options &#8964;
               {optionsDropdown}
             </div>

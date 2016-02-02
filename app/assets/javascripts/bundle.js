@@ -24178,7 +24178,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { notes: NoteStore.all(), optionsClicked: false };
+	    return { notes: this.props.notes, optionsClicked: false, header: this.props.header };
 	  },
 	
 	  componentDidMount: function () {
@@ -24191,7 +24191,7 @@
 	  },
 	
 	  _onChange: function () {
-	    this.setState({ notes: NoteStore.all() });
+	    this.setState({ notes: this.props.notes, header: this.props.header });
 	  },
 	
 	  showOptions: function () {
@@ -24203,6 +24203,7 @@
 	  },
 	
 	  render: function () {
+	    //if we are trying to not get store.all
 	    var notes = this.state.notes.map(function (note, key) {
 	      if (note) {
 	        return React.createElement(
@@ -24212,6 +24213,8 @@
 	        );
 	      }
 	    }.bind(this));
+	
+	    var numberOfNotes = this.state.notes.length;
 	
 	    var optionsDropdown;
 	    if (this.state.optionsClicked) {
@@ -24227,7 +24230,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'notes-index-title' },
-	          'NOTES'
+	          this.state.header
 	        ),
 	        React.createElement(
 	          'div',
@@ -24235,7 +24238,8 @@
 	          React.createElement(
 	            'div',
 	            { className: 'number-of-notes' },
-	            '567 Notes'
+	            numberOfNotes,
+	            ' Notes'
 	          ),
 	          React.createElement(
 	            'div',
@@ -24269,11 +24273,6 @@
 	
 	NoteStore.all = function () {
 	  return _notes.slice(0);
-	  // var notes = [];
-	  // for (var id in _notes) {
-	  //   notes.push(_notes[id]);
-	  // }
-	  // return notes;
 	};
 	
 	NoteStore.find = function (id) {
@@ -24282,29 +24281,31 @@
 	      return note;
 	    }
 	  });
-	  // return _notes[id];
 	};
 	
 	NoteStore.findFirst = function () {
 	  return _notes[0];
-	  // return Object.keys(_notes)[0];
+	};
+	
+	NoteStore.findByNotebook = function (id) {
+	  var notebookNotes = [];
+	  _notes.forEach(function (note) {
+	    if (note.notebook_id === id) {
+	      notebookNotes.push(note);
+	    }
+	  });
+	  return notebookNotes;
 	};
 	
 	var resetNotes = function (notes) {
 	  _notes = notes.slice(0);
-	  // _notes = {};
-	  // notes.forEach(function (note) {
-	  //   _notes[note.id] = note;
-	  // });
 	};
 	
 	var resetNote = function (newNote) {
 	  _notes.forEach(function (note) {
-	    debugger;
 	    if (note.id === newNote.id) {
 	      var index = _notes.indexOf(note);
 	      _notes[index] = newNote;
-	      // note = newNote;
 	      return;
 	    }
 	  });
@@ -24319,12 +24320,6 @@
 	      _notes.splice(index, 1);
 	    }
 	  });
-	  // var index = _notes.indexOf(note);
-	  // debugger
-	  // if (index > -1) {
-	  //   _notes.splice(index, 1);
-	  // }
-	  // delete _notes[note.id];
 	};
 	
 	var addNote = function (note) {
@@ -31179,7 +31174,6 @@
 	      dataType: "json",
 	      success: function (note) {
 	        NoteActions.createNote(note);
-	        alert("note has been created!");
 	      }
 	    });
 	  },
@@ -31203,7 +31197,6 @@
 	      data: { note: note },
 	      success: function (note) {
 	        NoteActions.deleteNote(note);
-	        console.log("successfuly deleted");
 	      }
 	    });
 	  }
@@ -45304,7 +45297,6 @@
 	var _notebooks = {};
 	
 	NotebookStore.all = function () {
-	  // return _notebooks.slice(0);
 	  var notebooks = [];
 	  for (var id in _notebooks) {
 	    notebooks.push(_notebooks[id]);
@@ -45313,11 +45305,6 @@
 	};
 	
 	NotebookStore.find = function (id) {
-	  // _notebooks.forEach(function (notebook) {
-	  //   if (notebook.id === id) {
-	  //     return notebook;
-	  //   }
-	  // })
 	  return _notebooks[id];
 	};
 	
@@ -45326,30 +45313,15 @@
 	  notebooks.forEach(function (notebook) {
 	    _notebooks[notebook.id] = notebook;
 	  });
-	  // _notebooks = notebooks.slice(0);
 	};
 	
 	function resetNotebook(notebook) {
-	  // _notebooks.forEach(function (notebook) {
-	  //   if (newNotebook.id === notebook.id) {
-	  //     var index = _notebooks.indexOf(notebook);
-	  //     _notebooks[index] = newNotebook;
-	  //   }
-	  // })
 	  _notebooks[notebook.id] = notebook;
 	};
 	
 	function deleteNotebook(notebook) {
-	  // _notebooks.forEach(function (notebook) {
-	  //   if (notebook.id === deleteNotebook.id) {
-	  //     var index = _notebooks.indexOf(notebook);
-	  //     _notebooks.splice(index, 1);
-	  //   }
-	  // })
-	  // debugger
 	  var notebookId = notebook.id;
 	  delete _notebooks[notebookId];
-	  // debugger
 	};
 	
 	NotebookStore.__onDispatch = function (payload) {
@@ -45450,7 +45422,6 @@
 	
 	};
 	
-	window.NotebooksApiUtil = NotebooksApiUtil;
 	module.exports = NotebooksApiUtil;
 
 /***/ },
@@ -45759,23 +45730,47 @@
 	var Navbar = __webpack_require__(280);
 	var NotesIndex = __webpack_require__(208);
 	var Slideout = __webpack_require__(282);
+	var NoteStore = __webpack_require__(209);
+	var NotesApiUtil = __webpack_require__(232);
 	
 	var App = React.createClass({
 	  displayName: 'App',
 	
 	  getInitialState: function () {
-	    return { index: "" };
+	    return { slideoutIndex: "", outerIndex: "", notes: [], header: "" };
 	  },
 	
 	  componentDidMount: function () {
-	    CurrentUserStore.addListener(this.forceUpdate.bind(this));
+	    // CurrentUserStore.addListener(this.forceUpdate.bind(this));
 	    SessionsApiUtil.fetchCurrentUser();
 	
 	    $('.slideout').hide();
 	  },
 	
 	  slideoutClickHandler: function (index) {
-	    this.setState({ index: index });
+	    this.setState({ slideoutIndex: index });
+	  },
+	
+	  _onChange: function () {
+	    // if (empty) {
+	    //   this.setState({notes: NoteStore.all()});
+	    // }
+	  },
+	
+	  componentWillMount: function () {
+	    NotesApiUtil.fetchAllNotes();
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    NotesApiUtil.fetchAllNotes();
+	    var notes = newProps.location.query;
+	    if (notes.notes === undefined) {
+	      this.setState({ notes: NoteStore.all(), header: "NOTES" });
+	    } else {
+	      this.setState({ notes: JSON.parse(notes.notes), header: notes.header });
+	      $('.slideout').hide();
+	    }
+	    //ADD IN TAG'S NOTES and SHORTCUTS
 	  },
 	
 	  render: function () {
@@ -45794,8 +45789,8 @@
 	      React.createElement(
 	        'div',
 	        { className: 'home-right group' },
-	        React.createElement(NotesIndex, null),
-	        React.createElement(Slideout, { index: this.state.index }),
+	        React.createElement(NotesIndex, { notes: this.state.notes, header: this.state.header }),
+	        React.createElement(Slideout, { index: this.state.slideoutIndex }),
 	        this.props.children
 	      )
 	    );
@@ -45803,6 +45798,8 @@
 	});
 	
 	module.exports = App;
+	
+	// <OuterIndex index={this.state.outerIndex}/>
 
 /***/ },
 /* 280 */
@@ -46183,15 +46180,23 @@
 	var NotebookStore = __webpack_require__(269);
 	var NotebooksApiUtil = __webpack_require__(271);
 	var MiniMenu = __webpack_require__(235);
+	var History = __webpack_require__(159).History;
 	
 	var NotebookIndexItem = React.createClass({
 	  displayName: 'NotebookIndexItem',
+	
+	  mixins: [History],
 	
 	  getInitialState: function () {
 	    return { notebook: this.props.notebook };
 	  },
 	
 	  componentWillUnmount: function () {},
+	
+	  handleItemClick: function () {
+	    var notes = NoteStore.findByNotebook(this.state.notebook.id);
+	    this.history.pushState(null, '/home', { notes: JSON.stringify(notes), header: this.props.notebook.title });
+	  },
 	
 	  render: function () {
 	    var notebook = this.props.notebook;
