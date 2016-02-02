@@ -4,16 +4,21 @@ var SessionsApiUtil = require('../util/sessions_api_util');
 var Navbar = require('./navbar/navbar');
 var NotesIndex = require('./notes_index/index');
 var Slideout = require('./slideout/slideout');
-var History = require('react-router').History;
-
 
 var App = React.createClass({
+  getInitialState: function () {
+    return ({index: ""});
+  },
 
   componentDidMount: function () {
     CurrentUserStore.addListener(this.forceUpdate.bind(this));
     SessionsApiUtil.fetchCurrentUser();
 
-    // $('.slideout').hide();
+    $('.slideout').hide();
+  },
+
+  slideoutClickHandler: function (index) {
+    this.setState({index: index});
   },
 
   render: function () {
@@ -23,9 +28,12 @@ var App = React.createClass({
 
     return (
       <div className="home group">
-        <Navbar />
-        <NotesIndex />
-        {this.props.children}
+        <Navbar slideoutClickHandler={this.slideoutClickHandler} />
+        <div className="home-right group">
+          <NotesIndex />
+          <Slideout index={this.state.index} />
+          {this.props.children}
+        </div>
       </div>
     );
   }

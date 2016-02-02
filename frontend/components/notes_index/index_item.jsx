@@ -11,7 +11,7 @@ var NoteIndexItem = React.createClass({
   },
 
   componentWillMount: function () {
-    var noteId = parseInt(NoteStore.findFirst());
+    var noteId = NoteStore.findFirst().id
 
     if (this.state.note.id === noteId) {
       this.history.pushState(null, 'home/notes/' + noteId, this.state.note);

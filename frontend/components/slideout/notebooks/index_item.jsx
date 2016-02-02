@@ -7,7 +7,7 @@ var NotebookIndexItem = React.createClass({
   getInitialState: function () {
     return {notebook: this.props.notebook};
   },
-
+  
   componentWillUnmount: function () {
 
   },

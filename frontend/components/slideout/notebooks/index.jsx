@@ -31,7 +31,6 @@ var NotebooksIndex = React.createClass({
   },
 
   _onChange: function () {
-    debugger
     var notebooks = NotebookStore.all();
     this.setState({notebooks: notebooks});
   },
@@ -52,8 +51,6 @@ var NotebooksIndex = React.createClass({
   },
 
   render: function () {
-    $('.notes-index').hide();
-    debugger
     var notebooks = this.state.notebooks.map(function (notebook, key) {
       return (
         <NotebookIndexItem key={key} notebook={notebook} />

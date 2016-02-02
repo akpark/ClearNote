@@ -1,0 +1,8 @@
+.slideout {
+  z-index: 100;
+  background: green;
+  float: left;
+  height: 100%;
+  width: 400px;
+  position: fixed;
+}

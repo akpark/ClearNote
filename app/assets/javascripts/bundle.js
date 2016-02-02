@@ -59,9 +59,9 @@
 	var CurrentUserStore = __webpack_require__(278);
 	var SessionsApiUtil = __webpack_require__(274);
 	var App = __webpack_require__(279);
-	var Home = __webpack_require__(283);
+	var Home = __webpack_require__(281);
 	var Slideout = __webpack_require__(282);
-	var NotebooksIndex = __webpack_require__(284);
+	var NotebooksIndex = __webpack_require__(283);
 	
 	var router = React.createElement(
 	  Router,
@@ -31278,7 +31278,7 @@
 	  },
 	
 	  componentWillMount: function () {
-	    var noteId = parseInt(NoteStore.findFirst());
+	    var noteId = NoteStore.findFirst().id;
 	
 	    if (this.state.note.id === noteId) {
 	      this.history.pushState(null, 'home/notes/' + noteId, this.state.note);
@@ -45741,7 +45741,6 @@
 	    case CurrentUserConstants.DELETE_USER:
 	      _currentUser = {};
 	      _currentUserHasBeenFetched = false;
-	      debugger;
 	      this.__emitChange();
 	      break;
 	  }
@@ -45760,16 +45759,23 @@
 	var Navbar = __webpack_require__(280);
 	var NotesIndex = __webpack_require__(208);
 	var Slideout = __webpack_require__(282);
-	var History = __webpack_require__(159).History;
 	
 	var App = React.createClass({
 	  displayName: 'App',
+	
+	  getInitialState: function () {
+	    return { index: "" };
+	  },
 	
 	  componentDidMount: function () {
 	    CurrentUserStore.addListener(this.forceUpdate.bind(this));
 	    SessionsApiUtil.fetchCurrentUser();
 	
-	    // $('.slideout').hide();
+	    $('.slideout').hide();
+	  },
+	
+	  slideoutClickHandler: function (index) {
+	    this.setState({ index: index });
 	  },
 	
 	  render: function () {
@@ -45784,9 +45790,14 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'home group' },
-	      React.createElement(Navbar, null),
-	      React.createElement(NotesIndex, null),
-	      this.props.children
+	      React.createElement(Navbar, { slideoutClickHandler: this.slideoutClickHandler }),
+	      React.createElement(
+	        'div',
+	        { className: 'home-right group' },
+	        React.createElement(NotesIndex, null),
+	        React.createElement(Slideout, { index: this.state.index }),
+	        this.props.children
+	      )
 	    );
 	  }
 	});
@@ -45799,15 +45810,23 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var Account = __webpack_require__(281);
+	var Account = __webpack_require__(285);
+	var Slideout = __webpack_require__(282);
+	
+	var slideoutShown = false;
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
 	
 	  mixins: [History],
 	
+	  getInitialState: function () {
+	    return { slideout: "" };
+	  },
+	
 	  componentDidMount: function () {
 	    $('.account-options-menu').hide();
+	    $('.slideout').hide();
 	  },
 	
 	  handleNewNoteClick: function () {
@@ -45817,7 +45836,8 @@
 	  },
 	
 	  handleSearchClick: function () {
-	    $('.notes-index').hide();
+	    // $('.notes-index').hide();
+	
 	  },
 	
 	  handleNotesClick: function () {
@@ -45826,10 +45846,31 @@
 	  },
 	
 	  handleNotebooksClick: function () {
-	    $('.notes-index').hide();
-	    // $('.slideout').show("slow");
-	    // $('.notebooks-index').show("slow");
-	    this.history.pushState(null, "home/notebooks", {});
+	    this.props.slideoutClickHandler("notebooks");
+	    if (!slideoutShown) {
+	      this.showSlideout();
+	    } else {
+	      this.hideSlideout();
+	    }
+	  },
+	
+	  showSlideout: function () {
+	    $('.slideout').show("slow");
+	    slideoutShown = true;
+	    this.handleBackgroundFade();
+	  },
+	
+	  hideSlideout: function () {
+	    $('.slideout').hide("slow");
+	    slideoutShown = false;
+	    $('.note-form-outer').fadeTo("slow", 1);
+	  },
+	
+	  handleBackgroundFade: function () {
+	    $('.note-form-outer').fadeTo("slow", 0.2);
+	    $('.note-form-outer').on('click', function () {
+	      this.hideSlideout();
+	    }.bind(this));
 	  },
 	
 	  handleProfileButtonClick: function (e) {
@@ -45866,7 +45907,7 @@
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'navbar-link', onClick: this.handleNotebooksClick },
+	          { className: 'navbar-link notebooks-index-link', onClick: this.handleNotebooksClick },
 	          React.createElement('i', { className: 'fa fa-book' })
 	        )
 	      ),
@@ -45885,95 +45926,6 @@
 
 /***/ },
 /* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(274);
-	var CurrentUserStore = __webpack_require__(278);
-	var SessionsApiUtil = __webpack_require__(274);
-	var History = __webpack_require__(159).History;
-	
-	var Account = React.createClass({
-	  displayName: 'Account',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { user: CurrentUserStore.currentUser() };
-	  },
-	
-	  componentDidMount: function () {
-	    this.signOutListener = CurrentUserStore.addListener(this._onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.signOutListener.remove();
-	  },
-	
-	  _onChange: function () {
-	    if (!CurrentUserStore.isLoggedIn) {
-	      // this.history.pushState(null, 'home');
-	    }
-	  },
-	
-	  handleSignOutClick: function (e) {
-	    SessionsApiUtil.logout();
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'account-options-menu' },
-	      React.createElement(
-	        'div',
-	        { className: 'account-options-menu-header' },
-	        React.createElement('img', null),
-	        React.createElement(
-	          'div',
-	          { className: 'username' },
-	          this.state.user.username,
-	          ';'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'account-options-menu-links' },
-	          React.createElement(
-	            'div',
-	            { className: 'settings link', onClick: this.handleSettingsClick },
-	            'Settings'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'sign-out-button link', onClick: this.handleSignOutClick },
-	            React.createElement('i', { className: 'fa fa-sign-out fa-lg' }),
-	            ' Log Out'
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Account;
-
-/***/ },
-/* 282 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	var SlideOut = React.createClass({
-	  displayName: "SlideOut",
-	
-	  render: function () {
-	    return React.createElement("div", { className: "slideout" });
-	  }
-	});
-	
-	module.exports = SlideOut;
-
-/***/ },
-/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -46027,12 +45979,71 @@
 	module.exports = Home;
 
 /***/ },
-/* 284 */
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NotesIndex = __webpack_require__(283);
+	var Modal = __webpack_require__(236);
+	
+	const customStyles = {
+	  content: {
+	    top: '0%',
+	    left: '10%'
+	  }
+	};
+	var SlideOut = React.createClass({
+	  displayName: 'SlideOut',
+	
+	  getInitialState: function () {
+	    return { modalIsOpen: false };
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  componentDidMount: function () {
+	    // $('.notebooks-index-link').on('click', function() {
+	    //   this.openModal();
+	    // }.bind(this));
+	
+	  },
+	
+	  setUpIndex: function () {
+	    switch (this.props.index) {
+	      case "notebooks":
+	        return React.createElement(NotesIndex, null);
+	        break;
+	    }
+	    return React.createElement('div', null);
+	  },
+	
+	  render: function () {
+	    //depending on what the user asks for
+	    var index = this.setUpIndex();
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'slideout' },
+	      index
+	    );
+	  }
+	});
+	
+	module.exports = SlideOut;
+
+/***/ },
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var NotebookStore = __webpack_require__(269);
-	var NotebookIndexItem = __webpack_require__(285);
+	var NotebookIndexItem = __webpack_require__(284);
 	var NotebooksApiUtil = __webpack_require__(271);
 	var Modal = __webpack_require__(236);
 	
@@ -46064,7 +46075,6 @@
 	  },
 	
 	  _onChange: function () {
-	    debugger;
 	    var notebooks = NotebookStore.all();
 	    this.setState({ notebooks: notebooks });
 	  },
@@ -46085,8 +46095,6 @@
 	  },
 	
 	  render: function () {
-	    $('.notes-index').hide();
-	    debugger;
 	    var notebooks = this.state.notebooks.map(function (notebook, key) {
 	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook });
 	    });
@@ -46168,7 +46176,7 @@
 	module.exports = NotebooksIndex;
 
 /***/ },
-/* 285 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -46211,6 +46219,80 @@
 	});
 	
 	module.exports = NotebookIndexItem;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SessionsApiUtil = __webpack_require__(274);
+	var CurrentUserStore = __webpack_require__(278);
+	var SessionsApiUtil = __webpack_require__(274);
+	var History = __webpack_require__(159).History;
+	
+	var Account = React.createClass({
+	  displayName: 'Account',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { user: CurrentUserStore.currentUser() };
+	  },
+	
+	  componentDidMount: function () {
+	    this.signOutListener = CurrentUserStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.signOutListener.remove();
+	  },
+	
+	  _onChange: function () {
+	    if (!CurrentUserStore.isLoggedIn) {
+	      // this.history.pushState(null, 'home');
+	    }
+	  },
+	
+	  handleSignOutClick: function (e) {
+	    SessionsApiUtil.logout();
+	    this.history.pushState(null, 'home');
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'account-options-menu' },
+	      React.createElement(
+	        'div',
+	        { className: 'account-options-menu-header' },
+	        React.createElement('img', null),
+	        React.createElement(
+	          'div',
+	          { className: 'username' },
+	          this.state.user.username,
+	          ';'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'account-options-menu-links' },
+	          React.createElement(
+	            'div',
+	            { className: 'settings link', onClick: this.handleSettingsClick },
+	            'Settings'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'sign-out-button link', onClick: this.handleSignOutClick },
+	            React.createElement('i', { className: 'fa fa-sign-out fa-lg' }),
+	            ' Log Out'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Account;
 
 /***/ }
 /******/ ]);

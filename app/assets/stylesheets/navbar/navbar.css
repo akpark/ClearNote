@@ -4,6 +4,7 @@
   width: 60px;
   background: #877B6A;
   padding: 10px;
+  z-index: 100;
 }
 
 .navbar-link {

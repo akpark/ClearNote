@@ -27,6 +27,10 @@ gem 'bcrypt', '~> 3.1.7'
 
 gem 'kaminari'
 
+gem 'paperclip'
+gem 'aws-sdk', '~> 1.6'
+gem 'figaro'
+
 # Use Unicorn as the app server
 # gem 'unicorn'
 

@@ -29,7 +29,6 @@ CurrentUserStore.__onDispatch = function (payload) {
     case CurrentUserConstants.DELETE_USER:
       _currentUser = {};
       _currentUserHasBeenFetched = false;
-      debugger
       this.__emitChange();
       break;
   }
