@@ -15,7 +15,7 @@ var NoteIndexItem = React.createClass({
     var noteId = NoteStore.findFirst().id
 
     if (this.state.note.id === noteId) {
-      this.history.pushState(null, 'home/notes/' + noteId, this.state.note);
+      this.history.pushState(null, 'home/notes/' + noteId);
     }
   },
 
@@ -37,7 +37,7 @@ var NoteIndexItem = React.createClass({
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
 
-    this.history.pushState(null, 'home/notes/' + this.state.note.id, this.state.note);
+    this.history.pushState(null, 'home/notes/' + this.state.note.id);
   },
 
   getCreatedDate: function () {
