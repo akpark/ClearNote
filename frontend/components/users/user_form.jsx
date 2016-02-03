@@ -6,7 +6,7 @@ var UserForm = React.createClass({
 
   submit: function (e) {
     e.preventDefault();
-    this.history.pushState(null, 'notes');
+    this.history.pushState(null, 'home/notes');
   },
 
   render: function() {

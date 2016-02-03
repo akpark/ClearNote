@@ -79,3 +79,7 @@ button:hover {
   text-decoration: none;
   color: #2dbe60;
 }
+
+.guest-login-button {
+  width: 250px;
+}

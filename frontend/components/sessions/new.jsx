@@ -7,7 +7,15 @@ var SessionForm = React.createClass({
 
   submit: function (e) {
     e.preventDefault();
+    debugger
     var credentials = $(e.currentTarget).serializeJSON();
+    SessionsApiUtil.login(credentials, function () {
+      this.history.pushState({}, "home");
+    }.bind(this));
+  },
+
+  handleGuestLogin: function () {
+    var credentials = {username: "guest", password: "password"};
     SessionsApiUtil.login(credentials, function () {
       this.history.pushState({}, "home");
     }.bind(this));
@@ -33,6 +41,11 @@ var SessionForm = React.createClass({
 
           <button>Log In!</button>
         </form>
+
+        <button className="guest-login-button"
+                onClick={this.handleGuestLogin}>
+                Guest Log In </button>
+
       </div>
     );
   }
