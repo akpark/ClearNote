@@ -30,18 +30,18 @@ var App = React.createClass({
   },
 
   componentWillMount: function () {
-    NotesApiUtil.fetchAllNotes();
+    // NotesApiUtil.fetchAllNotes();
   },
 
   componentWillReceiveProps: function (newProps) {
-    NotesApiUtil.fetchAllNotes();
-    var notes = newProps.location.query;
-    if (notes.notes === undefined) {
-      this.setState({notes: NoteStore.all(), header: "NOTES"})
-    } else {
-      this.setState({notes: JSON.parse(notes.notes), header: notes.header});
-      $('.slideout').hide();
-    }
+    // NotesApiUtil.fetchAllNotes();
+    // var notes = newProps.location.query;
+    // if (notes.notes === undefined) {
+    //   this.setState({notes: NoteStore.all(), header: "NOTES"})
+    // } else {
+    //   this.setState({notes: JSON.parse(notes.notes), header: notes.header});
+    //   $('.slideout').hide();
+    // }
     //ADD IN TAG'S NOTES and SHORTCUTS
   },
 
@@ -54,7 +54,7 @@ var App = React.createClass({
       <div className="home group">
         <Navbar slideoutClickHandler={this.slideoutClickHandler} />
         <div className="home-right group">
-          <NotesIndex notes={this.state.notes} header={this.state.header} />
+          <NotesIndex />
           <Slideout index={this.state.slideoutIndex} />
           {this.props.children}
         </div>

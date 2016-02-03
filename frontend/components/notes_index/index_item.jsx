@@ -7,7 +7,8 @@ var NoteIndexItem = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return {note: this.props.note};
+    var note = NoteStore.find(this.props.note.id);
+    return {note: note};
   },
 
   componentWillMount: function () {
@@ -27,7 +28,9 @@ var NoteIndexItem = React.createClass({
   },
 
   _onChange: function () {
-    this.setState({note: this.props.note});
+    // this.setState({note: this.props.note});
+    var note = NoteStore.find(this.props.note.id);
+    this.setState({note: note});
   },
 
   showDetail: function(e) {

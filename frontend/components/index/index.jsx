@@ -6,7 +6,7 @@ var Index = React.createClass({
   }
 
   componentDidMount: function () {
-    
+
   },
 
   getIndex: function () {
@@ -16,7 +16,6 @@ var Index = React.createClass({
         break;
 
       case "notebooks-notes"
-        return (<)
         break;
 
       case "tags":

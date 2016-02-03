@@ -10,7 +10,7 @@ var NotesIndex = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return ({notes: this.props.notes, optionsClicked: false, header: this.props.header});
+    return ({notes: NoteStore.all(), optionsClicked: false});
   },
 
   componentDidMount: function() {
@@ -23,7 +23,7 @@ var NotesIndex = React.createClass({
   },
 
   _onChange: function() {
-    this.setState({notes: this.props.notes, header: this.props.header});
+    this.setState({notes: NoteStore.all()});
   },
 
   showOptions: function() {

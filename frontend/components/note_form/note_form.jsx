@@ -16,39 +16,50 @@ var NoteForm = React.createClass({
   mixins: [History, LinkedStateMixin],
 
   getInitialState: function() {
-    return this.setUpNote(this.props.params.noteId, this.props.location.query);
+    edit = (this.props.route.path === "new") ? false : true;
+    var note = NoteStore.find(parseInt(this.props.params.noteId));
+    debugger
+    return ({id: note.id, title: note.title, body: note.body});
+    // return this.setUpNote(this.props.params.noteId, this.props.location.query);
   },
 
   componentDidMount: function() {
+    this.noteformListener = NoteStore.addListener(this._onChange);
     this.setUpQuillEditor();
-    console.log("componentdidmount");
+    // console.log("componentdidmount");
   },
 
-  setUpNote: function(id, noteProps) {
-    var note;
-    if (id === "new") {
-      note = {id: null, title: "", body: ""};
-      edit = false;
-    } else {
-      note = noteProps;
-      edit = true;
-    }
-    return { id: note.id, title: note.title, body: note.body }
+  componentWillUnmount: function () {
+    this.noteformListener.remove();
   },
+
+  // setUpNote: function(id, noteProps) {
+  //   var note;
+  //   if (id === "new") {
+  //     note = {id: null, title: "", body: ""};
+  //     edit = false;
+  //   } else {
+  //     note = noteProps;
+  //     edit = true;
+  //   }
+  //   return { id: note.id, title: note.title, body: note.body }
+  // },
 
   //when we change index item
   componentWillReceiveProps: function(newProps) {
-    var id = newProps.params.noteId;
-    var note = this.setUpNote(id, newProps.location.query);
-    this.setState({id: note.id, title: note.title, body: note.body});
+    var note = NoteStore.find(parseInt(newProps.params.noteId));
+    this.setState({title: note.title, body: note.body});
+    // var id = newProps.params.noteId;
+    // var note = this.setUpNote(id, newProps.location.query);
+    // this.setState({id: note.id, title: note.title, body: note.body});
   },
 
-  componentWillMount: function () {
-    var note = this.props.location.query;
-    this.setState({title: note.title, body: note.body});
-    NotebooksApiUtil.fetchAllNotebooks();
-    console.log("componentwillmount");
-  },
+  // componentWillMount: function () {
+  //   var note = this.props.location.query;
+  //   this.setState({title: note.title, body: note.body});
+  //   NotebooksApiUtil.fetchAllNotebooks();
+  //   console.log("componentwillmount");
+  // },
 
   componentWillUnmount: function() {
   },
@@ -138,6 +149,7 @@ var NoteForm = React.createClass({
   render: function() {
     var header = this.setUpHeader();
     var toolbar = this.setUpToolbar();
+
     var notebooks = NotebookStore.all().map(function (notebook, key) {
       return <option key={key} value={notebook.id}>{notebook.title}</option>;
     });
