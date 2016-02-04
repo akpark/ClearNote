@@ -43579,10 +43579,26 @@
 	
 	  slideoutClickHandler: function (clickedIndex) {
 	    this.setState({ slideoutIndex: clickedIndex });
-	    this.state.slideoutOpen ? this.setState({ slideoutOpen: false }) : this.setState({ slideoutOpen: true });
+	    if (this.state.slideoutOpen) {
+	      this.closeSlideout();
+	    } else {
+	      this.openSlideout();
+	    }
+	    // this.state.slideoutOpen ? this.setState({slideoutOpen: false}) : this.setState({slideoutOpen: true});
 	  },
 	
-	  handleSlideOutOpen: function () {},
+	  closeSlideout: function () {
+	    this.setState({ slideoutOpen: false });
+	    $('.note-form-outer').fadeTo("slow", 1);
+	  },
+	
+	  openSlideout: function () {
+	    this.setState({ slideoutOpen: true });
+	    $('.note-form-outer').fadeTo("slow", 0.2);
+	    $('.note-form-outer').on('click', function () {
+	      this.closeSlideout();
+	    }.bind(this));
+	  },
 	
 	  render: function () {
 	    if (!CurrentUserStore.userHasBeenFetched()) {
