@@ -43582,6 +43582,8 @@
 	    this.state.slideoutOpen ? this.setState({ slideoutOpen: false }) : this.setState({ slideoutOpen: true });
 	  },
 	
+	  handleSlideOutOpen: function () {},
+	
 	  render: function () {
 	    if (!CurrentUserStore.userHasBeenFetched()) {
 	      return React.createElement(
@@ -43812,8 +43814,8 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    $('.slideout').show("slow");
 	    this.setState({ index: newProps.index, isOpen: newProps.isOpen });
+	    newProps.isOpen ? $('.slideout').show('slow') : $('.slideout').hide('slow');
 	  },
 	
 	  setUpIndex: function () {

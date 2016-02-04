@@ -11,8 +11,8 @@ var SlideOut = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    $('.slideout').show("slow");
     this.setState({index: newProps.index, isOpen: newProps.isOpen});
+    newProps.isOpen ? $('.slideout').show('slow') : $('.slideout').hide('slow');
   },
 
   setUpIndex: function () {

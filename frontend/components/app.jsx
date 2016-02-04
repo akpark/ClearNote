@@ -45,6 +45,10 @@ var App = React.createClass({
     this.state.slideoutOpen ? this.setState({slideoutOpen: false}) : this.setState({slideoutOpen: true});
   },
 
+  handleSlideOutOpen: function () {
+
+  },
+
   render: function () {
     if (!CurrentUserStore.userHasBeenFetched()) {
       return <p>Please Wait</p>;
