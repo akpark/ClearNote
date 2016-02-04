@@ -22,7 +22,6 @@ var NotesIndex = React.createClass({
     this.notesListener.remove();
   },
 
-  //edit content
   _onChange: function() {
     var notes;
     switch (this.state.indexInfo.header) {
@@ -36,10 +35,10 @@ var NotesIndex = React.createClass({
         notes = NoteStore.findByTagId(indexInfo.id);
         break;
     }
+    console.log("reset the notes");
     this.setState({notes: notes})
   },
 
-  //load page
   componentWillReceiveProps: function (newProps) {
     debugger
     if (newProps.location) {
@@ -79,7 +78,7 @@ var NotesIndex = React.createClass({
       <div className="notes-index">
 
         <div className="notes-index-header">
-          <div className="notes-index-title">{this.state.title}</div>
+          <div className="notes-index-title">{this.state.indexInfo.title}</div>
           <div className="notes-index-header-bottom group">
             <div className="number-of-notes">{notesLength} Notes</div>
             <div onClick={this.showOptions} className="options-dropdown-click">Options &#8964;

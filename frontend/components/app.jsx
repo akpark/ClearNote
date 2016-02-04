@@ -11,34 +11,10 @@ var App = React.createClass({
   getInitialState: function () {
     return { slideoutOpen: false, slideoutIndex: "" }
   },
-  // getInitialState: function () {
-  //   return {
-  //     indexInfo: {header: "notes", title: "notes"},
-  //     slideoutIndex: "",
-  //     slideoutOpen: false
-  //   };
-  // },
 
   componentWillMount: function () {
     SessionsApiUtil.fetchCurrentUser();
   },
-
-  // componentWillReceiveProps: function (newProps) {
-  //   //this is "REPLACING NOTES" depending on the clicked index item FROM slideout
-  //   var notesInfo = newProps.location.query;
-  //   var indexInfo = { title: notesInfo.title, id: notesInfo.id };
-  //
-  //   if (notesInfo.header === "notebooks") {
-  //     indexInfo[header] = "notebooks"
-  //   } else if (notesInfo.header === "tags") {
-  //     indexInfo[header] = "tags";
-  //   } else if (notesInfo.header === "shortcuts") {
-  //     indexInfo[header] = "shortcuts";
-  //   }
-  //
-  //   this.setState({indexInfo: indexInfo});
-  // },
-
 
   slideoutClickHandler: function (clickedIndex) {
     this.setState({slideoutIndex: clickedIndex});
@@ -47,7 +23,6 @@ var App = React.createClass({
     } else {
       this.openSlideout();
     }
-    // this.state.slideoutOpen ? this.setState({slideoutOpen: false}) : this.setState({slideoutOpen: true});
   },
 
   closeSlideout: function () {

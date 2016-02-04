@@ -69,25 +69,15 @@ var NoteIndexItem = React.createClass({
     return time + " ago";
   },
 
-  setUpMiniMenu: function () {
-    var itemInfo = {
-      type: "note",
-      id: this.state.note.id,
-      title: this.state.note.title
-    }
-    return (<MiniMenu itemInfo={itemInfo}/>);
-  },
-
   render: function() {
     var elapsed = this.getCreatedDate();
-    var miniMenu = this.setUpMiniMenu();
 
     return (
       <div className="note-index-item" onClick={this.showDetail}>
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
             <div className="note-index-item-title">{this.state.note.title}</div>
-            {miniMenu}
+            <MiniMenu note={this.state.note}/>
           </div>
           <div className="note-index-item-date">{elapsed}</div>
           <div className="note-index-item-body">{this.state.note.body}</div>

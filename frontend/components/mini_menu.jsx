@@ -5,37 +5,45 @@ var History = require('react-router').History;
 
 const customStyles = {
   content: {
-    top: '25%',
-    bottom: '25%',
-    left: '25%',
-    right: '25%',
+    top: '0',
+    left: '0',
+    right: '0',
+    bottom: '0',
+    border: '1px solid #fff'
   }
 };
-
-var note = false;
 
 var MiniMenu = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    return {modalIsOpen: false}
+    return {parentInfo: this.props.itemInfo, modalIsOpen: false}
   },
 
-  handleDeleteClick: function () {
-    var note = this.props.note;
-    var notebook = this.props.notebook;
-    
-    if (note) {
-      debugger
-      NotesApiUtil.deleteNote(note);
-      this.history.pushState(null, 'home/notes');
-    } else {
-      NotebooksApiUtil.deleteNotebook(notebook);
-    }
-    this.closeModal();
+  setUpModal: function () {
+    return (
+      <Modal
+        isOpen={this.state.modalIsOpen}
+        onRequestClose={this.closeModal}
+        style={customStyles}>
+
+        <div className="delete-modal-middle">
+          <div className="delete-modal-inner">
+            <i className="fa fa-trash-o fa-2x"></i>
+            <div className="delete-modal-title">Delete {this.state.parentInfo.type}</div>
+            <h2 className="delete-modal-question">Are you sure you want to delete <b>{this.state.parentInfo.title}</b></h2>
+            <div className="delete-modal-bottom group">
+              <button className="delete-modal-cancel-button" onClick={this.closeModal}>Cancel</button>
+              <button className="delete-modal-delete-button" onClick={this.handleDeleteClick}>Delete</button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+    );
   },
 
   openModal: function () {
+    console.log("open modal");
     this.setState({modalIsOpen: true});
   },
 
@@ -43,48 +51,32 @@ var MiniMenu = React.createClass({
     this.setState({modalIsOpen: false});
   },
 
-  componentWillMount: function () {
-    var noteProp = this.props.note;
-    var notebookProp = this.props.notebook;
-    if (noteProp) {
-      note = true;
-    } else {
-      note = false;
+  handleDeleteClick: function (e) {
+    switch (this.state.parentInfo.type) {
+      case "note":
+        console.log('entered');
+        NotesApiUtil.deleteNote(this.state.parentInfo.id);
+        break;
+      // case "notebook":
+      //   NotebooksApiUtil.deleteNotebook(this.state.parentInfo.id);
+      //   break;
     }
-  },
-
-  setUpModal: function (title) {
-    var title = (note) ? "Note" : "Notebook";
-
-    return (
-      <Modal
-        className="delete-modal"
-        isOpen={this.state.modalIsOpen}
-        onRequestClose={this.closeModal}
-        style={customStyles} >
-
-        <i className="fa fa-trash fa-2x"></i>
-        <h2>Delete {title}</h2>
-        <h2 className="delete-modal-title">Are you sure you want to delete ?</h2>
-        <div className="delete-modal-bottom group">
-          <button className="delete-modal-cancel-button" onClick={this.closeModal}>Cancel</button>
-          <button className="delete-modal-delete-button" onClick={this.handleDeleteClick}>Delete</button>
-        </div>
-      </Modal>
-    );
+    this.closeModal();
   },
 
   render: function () {
     var modal = this.setUpModal();
+
     return (
       <div className="mini-menu-container">
         <div className="mini-menu group">
-          <div className="mini-menu-delete" onClick={this.openModal}><i className="fa fa-trash fa-lg"></i></div>
+          <div className="mini-menu-link trash" onClick={this.openModal}><i className="fa fa-trash fa-lg"></i></div>
         </div>
-          {modal}
+        {modal}
       </div>
     )
   }
+
 });
 
 module.exports = MiniMenu;

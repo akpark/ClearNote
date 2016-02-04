@@ -24185,7 +24185,6 @@
 	    this.notesListener.remove();
 	  },
 	
-	  //edit content
 	  _onChange: function () {
 	    var notes;
 	    switch (this.state.indexInfo.header) {
@@ -24202,7 +24201,6 @@
 	    this.setState({ notes: notes });
 	  },
 	
-	  //load page
 	  componentWillReceiveProps: function (newProps) {
 	    debugger;
 	    if (newProps.location) {
@@ -24249,7 +24247,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'notes-index-title' },
-	          this.state.title
+	          this.state.indexInfo.title
 	        ),
 	        React.createElement(
 	          'div',
@@ -35920,11 +35918,10 @@
 	    });
 	  },
 	
-	  deleteNote: function (note) {
+	  deleteNote: function (noteId) {
 	    $.ajax({
 	      method: "DELETE",
-	      url: "api/notes/" + note.id,
-	      data: { note: note },
+	      url: "api/notes/" + noteId,
 	      success: function (note) {
 	        NoteActions.deleteNote(note);
 	      }
@@ -43549,33 +43546,10 @@
 	  getInitialState: function () {
 	    return { slideoutOpen: false, slideoutIndex: "" };
 	  },
-	  // getInitialState: function () {
-	  //   return {
-	  //     indexInfo: {header: "notes", title: "notes"},
-	  //     slideoutIndex: "",
-	  //     slideoutOpen: false
-	  //   };
-	  // },
 	
 	  componentWillMount: function () {
 	    SessionsApiUtil.fetchCurrentUser();
 	  },
-	
-	  // componentWillReceiveProps: function (newProps) {
-	  //   //this is "REPLACING NOTES" depending on the clicked index item FROM slideout
-	  //   var notesInfo = newProps.location.query;
-	  //   var indexInfo = { title: notesInfo.title, id: notesInfo.id };
-	  //
-	  //   if (notesInfo.header === "notebooks") {
-	  //     indexInfo[header] = "notebooks"
-	  //   } else if (notesInfo.header === "tags") {
-	  //     indexInfo[header] = "tags";
-	  //   } else if (notesInfo.header === "shortcuts") {
-	  //     indexInfo[header] = "shortcuts";
-	  //   }
-	  //
-	  //   this.setState({indexInfo: indexInfo});
-	  // },
 	
 	  slideoutClickHandler: function (clickedIndex) {
 	    this.setState({ slideoutIndex: clickedIndex });
@@ -43584,7 +43558,6 @@
 	    } else {
 	      this.openSlideout();
 	    }
-	    // this.state.slideoutOpen ? this.setState({slideoutOpen: false}) : this.setState({slideoutOpen: true});
 	  },
 	
 	  closeSlideout: function () {
@@ -44057,14 +44030,13 @@
 	
 	const customStyles = {
 	  content: {
-	    top: '25%',
-	    bottom: '25%',
-	    left: '25%',
-	    right: '25%'
+	    top: '0',
+	    left: '0',
+	    right: '0',
+	    bottom: '0',
+	    border: '1px solid #fff'
 	  }
 	};
-	
-	var note = false;
 	
 	var MiniMenu = React.createClass({
 	  displayName: 'MiniMenu',
@@ -44072,24 +44044,60 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { modalIsOpen: false };
+	    return { parentInfo: this.props.itemInfo, modalIsOpen: false };
 	  },
 	
-	  handleDeleteClick: function () {
-	    var note = this.props.note;
-	    var notebook = this.props.notebook;
-	
-	    if (note) {
-	      debugger;
-	      NotesApiUtil.deleteNote(note);
-	      this.history.pushState(null, 'home/notes');
-	    } else {
-	      NotebooksApiUtil.deleteNotebook(notebook);
-	    }
-	    this.closeModal();
+	  setUpModal: function () {
+	    return React.createElement(
+	      Modal,
+	      {
+	        isOpen: this.state.modalIsOpen,
+	        onRequestClose: this.closeModal,
+	        style: customStyles },
+	      React.createElement(
+	        'div',
+	        { className: 'delete-modal-middle' },
+	        React.createElement(
+	          'div',
+	          { className: 'delete-modal-inner' },
+	          React.createElement('i', { className: 'fa fa-trash-o fa-2x' }),
+	          React.createElement(
+	            'div',
+	            { className: 'delete-modal-title' },
+	            'Delete ',
+	            this.state.parentInfo.type
+	          ),
+	          React.createElement(
+	            'h2',
+	            { className: 'delete-modal-question' },
+	            'Are you sure you want to delete ',
+	            React.createElement(
+	              'b',
+	              null,
+	              this.state.parentInfo.title
+	            )
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'delete-modal-bottom group' },
+	            React.createElement(
+	              'button',
+	              { className: 'delete-modal-cancel-button', onClick: this.closeModal },
+	              'Cancel'
+	            ),
+	            React.createElement(
+	              'button',
+	              { className: 'delete-modal-delete-button', onClick: this.handleDeleteClick },
+	              'Delete'
+	            )
+	          )
+	        )
+	      )
+	    );
 	  },
 	
 	  openModal: function () {
+	    console.log("open modal");
 	    this.setState({ modalIsOpen: true });
 	  },
 	
@@ -44097,57 +44105,22 @@
 	    this.setState({ modalIsOpen: false });
 	  },
 	
-	  componentWillMount: function () {
-	    var noteProp = this.props.note;
-	    var notebookProp = this.props.notebook;
-	    if (noteProp) {
-	      note = true;
-	    } else {
-	      note = false;
+	  handleDeleteClick: function (e) {
+	    switch (this.state.parentInfo.type) {
+	      case "note":
+	        console.log('entered');
+	        NotesApiUtil.deleteNote(this.state.parentInfo.id);
+	        break;
+	      // case "notebook":
+	      //   NotebooksApiUtil.deleteNotebook(this.state.parentInfo.id);
+	      //   break;
 	    }
-	  },
-	
-	  setUpModal: function (title) {
-	    var title = note ? "Note" : "Notebook";
-	
-	    return React.createElement(
-	      Modal,
-	      {
-	        className: 'delete-modal',
-	        isOpen: this.state.modalIsOpen,
-	        onRequestClose: this.closeModal,
-	        style: customStyles },
-	      React.createElement('i', { className: 'fa fa-trash fa-2x' }),
-	      React.createElement(
-	        'h2',
-	        null,
-	        'Delete ',
-	        title
-	      ),
-	      React.createElement(
-	        'h2',
-	        { className: 'delete-modal-title' },
-	        'Are you sure you want to delete ?'
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'delete-modal-bottom group' },
-	        React.createElement(
-	          'button',
-	          { className: 'delete-modal-cancel-button', onClick: this.closeModal },
-	          'Cancel'
-	        ),
-	        React.createElement(
-	          'button',
-	          { className: 'delete-modal-delete-button', onClick: this.handleDeleteClick },
-	          'Delete'
-	        )
-	      )
-	    );
+	    this.closeModal();
 	  },
 	
 	  render: function () {
 	    var modal = this.setUpModal();
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'mini-menu-container' },
@@ -44156,13 +44129,14 @@
 	        { className: 'mini-menu group' },
 	        React.createElement(
 	          'div',
-	          { className: 'mini-menu-delete', onClick: this.openModal },
+	          { className: 'mini-menu-link trash', onClick: this.openModal },
 	          React.createElement('i', { className: 'fa fa-trash fa-lg' })
 	        )
 	      ),
 	      modal
 	    );
 	  }
+	
 	});
 	
 	module.exports = MiniMenu;
@@ -46224,8 +46198,18 @@
 	    return time + " ago";
 	  },
 	
+	  setUpMiniMenu: function () {
+	    var itemInfo = {
+	      type: "note",
+	      id: this.state.note.id,
+	      title: this.state.note.title
+	    };
+	    return React.createElement(MiniMenu, { itemInfo: itemInfo });
+	  },
+	
 	  render: function () {
 	    var elapsed = this.getCreatedDate();
+	    var miniMenu = this.setUpMiniMenu();
 	
 	    return React.createElement(
 	      'div',
@@ -46241,7 +46225,7 @@
 	            { className: 'note-index-item-title' },
 	            this.state.note.title
 	          ),
-	          React.createElement(MiniMenu, { note: this.state.note })
+	          miniMenu
 	        ),
 	        React.createElement(
 	          'div',
