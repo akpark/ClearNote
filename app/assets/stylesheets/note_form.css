@@ -1,9 +1,13 @@
 .note-form-outer {
   margin-right: auto;
-  margin-left: auto;
+  padding: 0 15px;
   background: white;
   overflow: hidden;
   height: 100%;
+}
+
+.new-form {
+  padding: 0 100px;
 }
 
 .note-form-header {

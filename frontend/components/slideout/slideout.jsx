@@ -1,44 +1,28 @@
 var React = require('react');
 var NotesIndex = require('./notebooks/index');
-var Modal = require('react-modal');
 
-const customStyles = {
-  content: {
-    top: '0%',
-    left: '10%',
-  }
-}
 var SlideOut = React.createClass({
   getInitialState: function () {
-    return ({modalIsOpen: false});
+    return {index: this.props.index};
   },
 
-  openModal: function () {
-    this.setState({modalIsOpen: true});
-  },
-
-  closeModal: function () {
-    this.setState({modalIsOpen: false});
-  },
-
-  componentDidMount: function () {
-    // $('.notebooks-index-link').on('click', function() {
-    //   this.openModal();
-    // }.bind(this));
-
+  componentWillReceiveProps: function (newProps) {
+    this.setState({index: newProps.index});
   },
 
   setUpIndex: function () {
-    switch (this.props.index) {
+    switch (this.state.index) {
       case "notebooks":
         return <NotesIndex />
         break;
+      case "tags":
+        return <TagsIndex />
+        break;
     }
-    return <div></div>;
+    return null;
   },
 
   render: function () {
-    //depending on what the user asks for
     var index = this.setUpIndex();
 
     return (

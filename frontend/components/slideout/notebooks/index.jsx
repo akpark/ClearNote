@@ -76,18 +76,17 @@ var NotebooksIndex = React.createClass({
               placeholder="Find a notebook"/>
           </div>
         </div>
-        <Modal
-          className="new-notebook-modal"
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          style={customStyles} >
+
+        <Modal className="new-notebook-modal"
+               isOpen={this.state.modalIsOpen}
+               onRequestClose={this.closeModal}
+               style={customStyles} >
 
           <h2 className="new-notebook-modal-title">Create Notebook</h2>
-          <input
-            className="new-notebook-title-input"
-            type="text"
-            placeholder="Title your notebook"
-          />
+          <input className="new-notebook-title-input"
+                 type="text"
+                 placeholder="Title your notebook" />
+               
           <div className="new-notebook-modal-bottom group">
             <button className="new-notebook-cancel-button" onClick={this.closeModal}>Cancel</button>
             <button className="new-notebook-create-button" onClick={this.handleNewNotebookClick}>Create Notebook</button>

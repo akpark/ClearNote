@@ -36,14 +36,13 @@ var NotesApiUtil = {
     });
   },
 
-  editNote: function (note, callback) {
+  editNote: function (note) {
     $.ajax({
       method: "PATCH",
       url: "api/notes/" + note.id,
       data: {note: note},
       success: function (note) {
         NoteActions.editNote(note);
-        callback();
       }
     });
   },

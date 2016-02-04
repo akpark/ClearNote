@@ -11,20 +11,20 @@ var NotebookIndexItem = React.createClass({
     return {notebook: this.props.notebook};
   },
 
-  componentWillUnmount: function () {
-
-  },
-
-  handleItemClick: function () {
-    var notes = NoteStore.findByNotebook(this.state.notebook.id);
-    this.history.pushState(null, '/home', {notes: JSON.stringify(notes), header: this.props.notebook.title});
+  handleNotebookItemClick: function () {
+    this.history.pushState(
+      null,
+      '/home',
+      {header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id }
+    );
+    $('.slideout').hide();
   },
 
   render: function () {
-    var notebook = this.props.notebook;
+    var notebook = this.state.notebook;
 
     return (
-      <div className="notebook-index-item" onClick={this.handleItemClick}>
+      <div className="notebook-index-item" onClick={this.handleNotebookItemClick}>
         <div className="notebook-index-item-top group">
           <div className="notebook-index-item-title">{notebook.title}</div>
           <MiniMenu notebook={notebook}/>

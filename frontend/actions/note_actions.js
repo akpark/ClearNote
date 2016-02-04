@@ -31,7 +31,6 @@ var NoteActions = {
   },
 
   deleteNote: function (note) {
-    debugger
     AppDispatcher.dispatch({
       actionType: NoteConstants.DELETE_NOTE,
       note: note

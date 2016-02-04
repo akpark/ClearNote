@@ -9,40 +9,36 @@ var NotesApiUtil = require('../util/notes_api_util');
 
 var App = React.createClass({
   getInitialState: function () {
-    return ({slideoutIndex: "", outerIndex: "", notes: [], header: ""});
-  },
-
-  componentDidMount: function () {
-    // CurrentUserStore.addListener(this.forceUpdate.bind(this));
-    SessionsApiUtil.fetchCurrentUser();
-
-    $('.slideout').hide();
-  },
-
-  slideoutClickHandler: function (index) {
-    this.setState({slideoutIndex: index});
-  },
-
-  _onChange: function () {
-    // if (empty) {
-    //   this.setState({notes: NoteStore.all()});
-    // }
+    return ({slideoutIndex: "", outerIndex: "", indexInfo: {header: "notes", title: "notes"}});
   },
 
   componentWillMount: function () {
-    // NotesApiUtil.fetchAllNotes();
+    SessionsApiUtil.fetchCurrentUser();
   },
 
   componentWillReceiveProps: function (newProps) {
-    // NotesApiUtil.fetchAllNotes();
-    // var notes = newProps.location.query;
-    // if (notes.notes === undefined) {
-    //   this.setState({notes: NoteStore.all(), header: "NOTES"})
-    // } else {
-    //   this.setState({notes: JSON.parse(notes.notes), header: notes.header});
-    //   $('.slideout').hide();
-    // }
-    //ADD IN TAG'S NOTES and SHORTCUTS
+    var notesInfo = newProps.location.query;
+    var indexInfo = { title: notesInfo.title, id: notesInfo.id };
+
+    if (notesInfo.header === "notebooks") {
+      // var header = {header: "notebooks", title: notesInfo.title, id: notesInfo.id};
+      indexInfo[header] = "notebooks"
+      this.setState({indexInfo: indexInfo});
+    } else if (notesInfo.header === "tags") {
+      indexInfo[header] = "tags";
+      this.setState({indexInfo: indexInfo});
+    } else if (notesInfo.header === "shortcuts") {
+      indexInfo[header] = "shortcuts";
+      this.setState({indexInfo: indexInfo});
+    }
+  },
+
+  componentDidMount: function () {
+    $('.slideout').hide();
+  },
+
+  slideoutClickHandler: function (clickedIndex) {
+    this.setState({slideoutIndex: clickedIndex});
   },
 
   render: function () {
@@ -52,19 +48,18 @@ var App = React.createClass({
 
     return (
       <div className="home group">
+
         <Navbar slideoutClickHandler={this.slideoutClickHandler} />
+
         <div className="home-right group">
-          <NotesIndex />
+          <NotesIndex indexInfo={this.state.indexInfo}/>
           <Slideout index={this.state.slideoutIndex} />
           {this.props.children}
         </div>
+
       </div>
     );
   }
 });
 
 module.exports = App;
-
-
-
-// <OuterIndex index={this.state.outerIndex}/>

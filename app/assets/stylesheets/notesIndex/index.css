@@ -61,6 +61,6 @@
 
 .note-index-items {
   border-top: 1px solid #ccc;
-  display: block;
-  overflow-y: scroll;
+  overflow: auto;
+  height: 100%;
 }

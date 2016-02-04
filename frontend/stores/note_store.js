@@ -10,23 +10,15 @@ NoteStore.all = function() {
   for (var id in _notes) {
     notes.push(_notes[id]);
   }
-  return notes;
-  // return _notes.slice(0);
+  return notes.reverse();
 };
 
 NoteStore.find = function(id) {
   return _notes[id];
-  // _notes.forEach(function (note) {
-  //   if (note.id === id) {
-  //     return note;
-  //   }
-  // });
 };
 
 NoteStore.findFirst = function () {
-  return _notes[Object.keys(_notes)[0]];
-
-  // return _notes[0];
+  return this.all()[0];
 };
 
 NoteStore.findByNotebook = function (id) {
@@ -44,35 +36,20 @@ var resetNotes = function(notes) {
   notes.forEach(function (note) {
     _notes[note.id] = note;
   })
-  // _notes = notes.slice(0);
 };
 
 var resetNote = function(newNote) {
   _notes[newNote.id] = newNote;
-  // _notes.forEach(function (note) {
-  //   if (note.id === newNote.id) {
-  //     var index = _notes.indexOf(note);
-  //     _notes[index] = newNote;
-  //     return;
-  //   }
-  // });
-  // _notes.push(newNote);
-  // _notes[newNote.id] = newNote;
 };
 
 var deleteNote = function(deleteNote) {
   delete _notes[deleteNote.id];
-  // _notes.forEach(function (note) {
-  //   if (deleteNote.id === note.id) {
-  //     var index = _notes.indexOf(note);
-  //     _notes.splice(index, 1);
-  //   }
-  // });
+  debugger
 };
 
-var addNote = function(note) {
-  _notes.unshift(note);
-};
+// var addNote = function(note) {
+//   _note
+// };
 
 NoteStore.__onDispatch = function(payload) {
   switch (payload.actionType) {
@@ -87,7 +64,7 @@ NoteStore.__onDispatch = function(payload) {
       break;
 
     case NoteConstants.CREATE_NOTE:
-      addNote(payload.note);
+      resetNote(payload.note);
       this.__emitChange();
       break;
 

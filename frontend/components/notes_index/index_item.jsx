@@ -7,8 +7,7 @@ var NoteIndexItem = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    var note = NoteStore.find(this.props.note.id);
-    return {note: note};
+    return {note: this.props.note};
   },
 
   componentWillMount: function () {
@@ -28,20 +27,19 @@ var NoteIndexItem = React.createClass({
   },
 
   _onChange: function () {
-    // this.setState({note: this.props.note});
-    var note = NoteStore.find(this.props.note.id);
-    this.setState({note: note});
+    this.setState({note: NoteStore.find(this.state.note.id)});
   },
 
   showDetail: function(e) {
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
 
-    this.history.pushState(null, 'home/notes/' + this.state.note.id);
+    this.history.pushState(null, 'home/notes/' + this.props.note.id);
   },
 
+  //TODO!!!refactor this
   getCreatedDate: function () {
-    var note = this.state.note;
+    var note = this.props.note;
     var updated_at = new Date(note.updated_at);
     var today = new Date();
     var elapsedTime = today.getTime() - updated_at.getTime();
@@ -68,13 +66,13 @@ var NoteIndexItem = React.createClass({
         }
       }
     }
-
     return time + " ago";
   },
 
   render: function() {
     var elapsed = this.getCreatedDate();
-
+    debugger
+    
     return (
       <div className="note-index-item" onClick={this.showDetail}>
         <div className="note-index-item-inner">

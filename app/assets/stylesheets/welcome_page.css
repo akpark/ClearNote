@@ -1,5 +1,9 @@
 .welcome-page {
   margin: auto auto;
   display: block;
-  background: white;
+  background: url(https://s3.amazonaws.com/clearnote-dev/welcome-page/And+I+must+go.+(1).png)
+}
+
+.sign-in {
+  background: url("https://s3.amazonaws.com/clearnote-dev/welcome-page/And+I+must+go.+(1).png")
 }

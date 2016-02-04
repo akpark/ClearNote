@@ -25,7 +25,6 @@ var router = (
         <Route path=":noteId" component={ NoteForm }/>
         <Route path="new" component={ NoteForm }/>
       </Route>
-      <Route path="notebooks" component={ NotebooksIndex } />
     </Route>
     <Route path="login" component={ SessionForm } />
     <Route path="register" component={ UserForm } />

@@ -2,18 +2,19 @@
   height: 100%;
   float: left;
   width: 60px;
-  background: #877B6A;
+  background: #E2DFDB;
   padding: 10px;
   z-index: 100;
 }
 
 .navbar-link {
-  margin: 10px 0;
+  margin: 10px auto;
   background: #fff;
   border-radius: 50%;
+  color: white;
   border: 1px solid #2dbe60;
-  text-align: center;
   padding: 10px;
+  // content: image-url('notebook.png');
 }
 
 .navbar-link:hover {

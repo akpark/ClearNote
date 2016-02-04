@@ -10,10 +10,12 @@ var NotesIndex = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return ({notes: NoteStore.all(), optionsClicked: false});
+    console.log("get Initial State");
+    return ({notes: NoteStore.all(), indexInfo: this.props.indexInfo});
   },
 
-  componentDidMount: function() {
+  componentWillMount: function () {
+    console.log("componentWillMount");
     this.notesListener = NoteStore.addListener(this._onChange);
     NotesApiUtil.fetchAllNotes();
   },
@@ -22,41 +24,64 @@ var NotesIndex = React.createClass({
     this.notesListener.remove();
   },
 
+  //edit content
   _onChange: function() {
-    this.setState({notes: NoteStore.all()});
+    console.log("on change");
+    var notes;
+    switch (this.state.indexInfo.header) {
+      case "notes":
+        notes = NoteStore.all();
+        break;
+      case "notebooks":
+        notes = NoteStore.findByNotebook(indexInfo.id);
+        break;
+      case "tags":
+        // notes
+        break;
+    }
+    this.setState({notes: notes})
   },
 
-  showOptions: function() {
-    if (this.state.optionsClicked) {
-      this.setState({optionsClicked: false});
-    } else {
-      this.setState({optionsClicked: true});
+  //load page
+  componentWillReceiveProps: function (newProps) {
+    var notes;
+    switch (newProps.indexInfo.header) {
+      case "notebooks":
+        notes = NoteStore.findByNotebook(parseInt(newProps.indexInfo.id));
+        break;
+      case "tags":
+        //find notes by tag
+        break;
+      case "shortcuts":
+        //find notes by shortcuts
+        break;
     }
+    this.setState({notes: notes, title: newProps.indexInfo.title})
+  },
+
+  fetchNotes: function () {
+    console.log("fetch notes");
+    debugger
+    var notes = this.state.notes.map(function (note, key) {
+        return ( <NoteIndexItem key={key} note={note} /> );
+    });
+    return notes;
   },
 
   render: function() {
-    //if we are trying to not get store.all
-    var notes = this.state.notes.map(function(note, key) {
-      if (note) {
-        return (
-          <NoteIndexItem key={key} note={note}>{note.title}</NoteIndexItem>
-        );
-      }
-    }.bind(this));
-
-    var numberOfNotes = this.state.notes.length;
+    console.log("render");
+    var notes = this.fetchNotes();
 
     var optionsDropdown;
-    if (this.state.optionsClicked) {
-      optionsDropdown = <OptionsDropdown />;
-    }
+    if (this.state.optionsClicked) { optionsDropdown = <OptionsDropdown />; }
 
     return(
       <div className="notes-index">
+
         <div className="notes-index-header">
-          <div className="notes-index-title">{this.state.header}</div>
+          <div className="notes-index-title">{this.state.title}</div>
           <div className="notes-index-header-bottom group">
-            <div className="number-of-notes">{numberOfNotes} Notes</div>
+            <div className="number-of-notes">{notes.length} Notes</div>
             <div onClick={this.showOptions} className="options-dropdown-click">Options &#8964;
               {optionsDropdown}
             </div>
