@@ -9,36 +9,40 @@ var NotesApiUtil = require('../util/notes_api_util');
 
 var App = React.createClass({
   getInitialState: function () {
-    return ({slideoutIndex: "", outerIndex: "", indexInfo: {header: "notes", title: "notes"}});
+    return { slideoutOpen: false, slideoutIndex: "" }
   },
+  // getInitialState: function () {
+  //   return {
+  //     indexInfo: {header: "notes", title: "notes"},
+  //     slideoutIndex: "",
+  //     slideoutOpen: false
+  //   };
+  // },
 
   componentWillMount: function () {
     SessionsApiUtil.fetchCurrentUser();
   },
 
-  componentWillReceiveProps: function (newProps) {
-    var notesInfo = newProps.location.query;
-    var indexInfo = { title: notesInfo.title, id: notesInfo.id };
+  // componentWillReceiveProps: function (newProps) {
+  //   //this is "REPLACING NOTES" depending on the clicked index item FROM slideout
+  //   var notesInfo = newProps.location.query;
+  //   var indexInfo = { title: notesInfo.title, id: notesInfo.id };
+  //
+  //   if (notesInfo.header === "notebooks") {
+  //     indexInfo[header] = "notebooks"
+  //   } else if (notesInfo.header === "tags") {
+  //     indexInfo[header] = "tags";
+  //   } else if (notesInfo.header === "shortcuts") {
+  //     indexInfo[header] = "shortcuts";
+  //   }
+  //
+  //   this.setState({indexInfo: indexInfo});
+  // },
 
-    if (notesInfo.header === "notebooks") {
-      // var header = {header: "notebooks", title: notesInfo.title, id: notesInfo.id};
-      indexInfo[header] = "notebooks"
-      this.setState({indexInfo: indexInfo});
-    } else if (notesInfo.header === "tags") {
-      indexInfo[header] = "tags";
-      this.setState({indexInfo: indexInfo});
-    } else if (notesInfo.header === "shortcuts") {
-      indexInfo[header] = "shortcuts";
-      this.setState({indexInfo: indexInfo});
-    }
-  },
-
-  componentDidMount: function () {
-    $('.slideout').hide();
-  },
 
   slideoutClickHandler: function (clickedIndex) {
     this.setState({slideoutIndex: clickedIndex});
+    this.state.slideoutOpen ? this.setState({slideoutOpen: false}) : this.setState({slideoutOpen: true});
   },
 
   render: function () {
@@ -49,11 +53,11 @@ var App = React.createClass({
     return (
       <div className="home group">
 
-        <Navbar slideoutClickHandler={this.slideoutClickHandler} />
+        <Navbar slideoutClickHandler={this.slideoutClickHandler}/>
 
         <div className="home-right group">
-          <NotesIndex indexInfo={this.state.indexInfo}/>
-          <Slideout index={this.state.slideoutIndex} />
+          <NotesIndex />
+          <Slideout index={this.state.slideoutIndex} isOpen={this.state.slideoutOpen} />
           {this.props.children}
         </div>
 

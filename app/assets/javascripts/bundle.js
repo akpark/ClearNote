@@ -70,12 +70,8 @@
 	  React.createElement(
 	    Route,
 	    { path: 'home', component: App, onEnter: _ensureLoggedIn },
-	    React.createElement(
-	      Route,
-	      { path: 'notes' },
-	      React.createElement(Route, { path: ':noteId', component: NoteForm }),
-	      React.createElement(Route, { path: 'new', component: NoteForm })
-	    )
+	    React.createElement(Route, { path: 'notes/:noteId', component: NoteForm }),
+	    React.createElement(Route, { path: 'notes/new', component: NoteForm })
 	  ),
 	  React.createElement(Route, { path: 'login', component: SessionForm }),
 	  React.createElement(Route, { path: 'register', component: UserForm })
@@ -24177,12 +24173,10 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    console.log("get Initial State");
-	    return { notes: NoteStore.all(), indexInfo: this.props.indexInfo };
+	    return { notes: NoteStore.all(), indexInfo: { header: "notes", title: "notes" } };
 	  },
 	
 	  componentWillMount: function () {
-	    console.log("componentWillMount");
 	    this.notesListener = NoteStore.addListener(this._onChange);
 	    NotesApiUtil.fetchAllNotes();
 	  },
@@ -24193,17 +24187,16 @@
 	
 	  //edit content
 	  _onChange: function () {
-	    console.log("on change");
 	    var notes;
 	    switch (this.state.indexInfo.header) {
 	      case "notes":
 	        notes = NoteStore.all();
 	        break;
 	      case "notebooks":
-	        notes = NoteStore.findByNotebook(indexInfo.id);
+	        notes = NoteStore.findByNotebookId(indexInfo.id);
 	        break;
 	      case "tags":
-	        // notes
+	        notes = NoteStore.findByTagId(indexInfo.id);
 	        break;
 	    }
 	    this.setState({ notes: notes });
@@ -24211,24 +24204,27 @@
 	
 	  //load page
 	  componentWillReceiveProps: function (newProps) {
-	    var notes;
-	    switch (newProps.indexInfo.header) {
-	      case "notebooks":
-	        notes = NoteStore.findByNotebook(parseInt(newProps.indexInfo.id));
-	        break;
-	      case "tags":
-	        //find notes by tag
-	        break;
-	      case "shortcuts":
-	        //find notes by shortcuts
-	        break;
+	    debugger;
+	    if (newProps.location) {
+	      var params = newProps.location.query;
+	      var notes = [];
+	      switch (params.header) {
+	        case "notebooks":
+	          notes = NoteStore.findByNotebook(parseInt(params.id));
+	          break;
+	        case "tags":
+	          //find notes by tag
+	          break;
+	        case "shortcuts":
+	          //find notes by shortcuts
+	          break;
+	      }
+	      this.setState({ notes: notes, indexInfo: { header: params.header, title: params.title, id: params.id } });
 	    }
-	    this.setState({ notes: notes, title: newProps.indexInfo.title });
 	  },
 	
-	  fetchNotes: function () {
-	    console.log("fetch notes");
-	    debugger;
+	  createNotesArray: function () {
+	    console.log("create notes array");
 	    var notes = this.state.notes.map(function (note, key) {
 	      return React.createElement(NoteIndexItem, { key: key, note: note });
 	    });
@@ -24236,8 +24232,8 @@
 	  },
 	
 	  render: function () {
-	    console.log("render");
-	    var notes = this.fetchNotes();
+	    var notes = this.createNotesArray();
+	    var notesLength = notes ? notes.length : 0;
 	
 	    var optionsDropdown;
 	    if (this.state.optionsClicked) {
@@ -24261,7 +24257,7 @@
 	          React.createElement(
 	            'div',
 	            { className: 'number-of-notes' },
-	            notes.length,
+	            notesLength,
 	            ' Notes'
 	          ),
 	          React.createElement(
@@ -35966,7 +35962,7 @@
 	  return this.all()[0];
 	};
 	
-	NoteStore.findByNotebook = function (id) {
+	NoteStore.findByNotebookId = function (id) {
 	  var notebookNotes = [];
 	  this.all().forEach(function (note) {
 	    if (note.notebook_id === id) {
@@ -35975,6 +35971,10 @@
 	  });
 	  return notebookNotes;
 	};
+	
+	NoteStore.findByTagId = function (id) {};
+	
+	NoteStore.findByShortcut = function (id) {};
 	
 	var resetNotes = function (notes) {
 	  _notes = {};
@@ -43547,36 +43547,39 @@
 	  displayName: 'App',
 	
 	  getInitialState: function () {
-	    return { slideoutIndex: "", outerIndex: "", indexInfo: { header: "notes", title: "notes" } };
+	    return { slideoutOpen: false, slideoutIndex: "" };
 	  },
+	  // getInitialState: function () {
+	  //   return {
+	  //     indexInfo: {header: "notes", title: "notes"},
+	  //     slideoutIndex: "",
+	  //     slideoutOpen: false
+	  //   };
+	  // },
 	
 	  componentWillMount: function () {
 	    SessionsApiUtil.fetchCurrentUser();
 	  },
 	
-	  componentWillReceiveProps: function (newProps) {
-	    var notesInfo = newProps.location.query;
-	    var indexInfo = { title: notesInfo.title, id: notesInfo.id };
-	
-	    if (notesInfo.header === "notebooks") {
-	      // var header = {header: "notebooks", title: notesInfo.title, id: notesInfo.id};
-	      indexInfo[header] = "notebooks";
-	      this.setState({ indexInfo: indexInfo });
-	    } else if (notesInfo.header === "tags") {
-	      indexInfo[header] = "tags";
-	      this.setState({ indexInfo: indexInfo });
-	    } else if (notesInfo.header === "shortcuts") {
-	      indexInfo[header] = "shortcuts";
-	      this.setState({ indexInfo: indexInfo });
-	    }
-	  },
-	
-	  componentDidMount: function () {
-	    $('.slideout').hide();
-	  },
+	  // componentWillReceiveProps: function (newProps) {
+	  //   //this is "REPLACING NOTES" depending on the clicked index item FROM slideout
+	  //   var notesInfo = newProps.location.query;
+	  //   var indexInfo = { title: notesInfo.title, id: notesInfo.id };
+	  //
+	  //   if (notesInfo.header === "notebooks") {
+	  //     indexInfo[header] = "notebooks"
+	  //   } else if (notesInfo.header === "tags") {
+	  //     indexInfo[header] = "tags";
+	  //   } else if (notesInfo.header === "shortcuts") {
+	  //     indexInfo[header] = "shortcuts";
+	  //   }
+	  //
+	  //   this.setState({indexInfo: indexInfo});
+	  // },
 	
 	  slideoutClickHandler: function (clickedIndex) {
 	    this.setState({ slideoutIndex: clickedIndex });
+	    this.state.slideoutOpen ? this.setState({ slideoutOpen: false }) : this.setState({ slideoutOpen: true });
 	  },
 	
 	  render: function () {
@@ -43595,8 +43598,8 @@
 	      React.createElement(
 	        'div',
 	        { className: 'home-right group' },
-	        React.createElement(NotesIndex, { indexInfo: this.state.indexInfo }),
-	        React.createElement(Slideout, { index: this.state.slideoutIndex }),
+	        React.createElement(NotesIndex, null),
+	        React.createElement(Slideout, { index: this.state.slideoutIndex, isOpen: this.state.slideoutOpen }),
 	        this.props.children
 	      )
 	    );
@@ -43614,8 +43617,6 @@
 	var Account = __webpack_require__(258);
 	var Slideout = __webpack_require__(259);
 	
-	var slideoutShown = false;
-	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
 	
@@ -43625,29 +43626,23 @@
 	    $('.account-options-menu').hide();
 	  },
 	
-	  handleNewNoteClick: function () {
-	    $('.notes-index').hide("slow");
-	    $('.navbar').hide("slow");
-	    $('.note-form-outer').addClass("new-form");
-	    this.history.pushState(null, "home/notes/new");
-	  },
+	  // handleNewNoteClick: function () {
+	  //   $('.notes-index').hide("slow");
+	  //   $('.navbar').hide("slow");
+	  //   $('.note-form-outer').addClass("new-form");
+	  //   this.history.pushState(null, "home/notes/new");
+	  // },
 	
-	  handleSearchClick: function () {
-	    // $('.notes-index').hide();
-	  },
+	  // handleSearchClick: function () {
+	  //   // $('.notes-index').hide();
+	  // },
 	
 	  handleNotesClick: function () {
-	    $('.notes-index').show();
-	    this.history.pushState(null, "/");
+	    this.history.pushState(null, '/home');
 	  },
 	
 	  handleNotebooksClick: function () {
 	    this.props.slideoutClickHandler("notebooks");
-	    if (!slideoutShown) {
-	      this.showSlideout();
-	    } else {
-	      this.hideSlideout();
-	    }
 	  },
 	
 	  // showSlideout: function () {
@@ -43678,42 +43673,46 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'navbar group' },
-	      React.createElement('img', { className: 'logo', href: 'ClearNote/app/assets/logo.png' }),
+	      React.createElement('img', { className: 'app-logo' }),
 	      React.createElement(
 	        'div',
-	        { className: 'top-bar' },
+	        { className: 'navbar-top' },
 	        React.createElement(
 	          'div',
-	          { className: 'navbar-link', onClick: this.handleNewNoteClick },
+	          { className: 'navbar-link new-note-link',
+	            onClick: this.handleNewNoteClick },
 	          React.createElement('i', { className: 'fa fa-plus' })
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'navbar-link', onClick: this.handleSearchClick },
+	          { className: 'navbar-link search-link',
+	            onClick: this.handleSearchClick },
 	          React.createElement('i', { className: 'fa fa-search' })
 	        )
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'bottom-bar' },
+	        { className: 'navbar-bottom' },
 	        React.createElement(
 	          'div',
-	          { className: 'navbar-link', onClick: this.handleNotesClick },
+	          { className: 'navbar-link notes-link',
+	            onClick: this.handleNotesClick },
 	          React.createElement('i', { className: 'fa fa-file-text' })
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'navbar-link notebooks-index-link', onClick: this.handleNotebooksClick },
+	          { className: 'navbar-link notebooks-link',
+	            onClick: this.handleNotebooksClick },
 	          React.createElement('i', { className: 'fa fa-book' })
 	        )
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'profile-button', onClick: this.handleProfileButtonClick },
+	        { className: 'profile-button',
+	          onClick: this.handleProfileButtonClick },
 	        'ME',
 	        React.createElement(Account, null)
-	      ),
-	      React.createElement('img', { className: 'profile-pic' })
+	      )
 	    );
 	  }
 	});
@@ -43799,23 +43798,28 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var NotesIndex = __webpack_require__(260);
+	var NotebookIndex = __webpack_require__(260);
 	
 	var SlideOut = React.createClass({
 	  displayName: 'SlideOut',
 	
 	  getInitialState: function () {
-	    return { index: this.props.index };
+	    return { index: this.props.index, isOpen: false };
+	  },
+	
+	  componentDidMount: function () {
+	    $('.slideout').hide();
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    this.setState({ index: newProps.index });
+	    $('.slideout').show("slow");
+	    this.setState({ index: newProps.index, isOpen: newProps.isOpen });
 	  },
 	
 	  setUpIndex: function () {
 	    switch (this.state.index) {
 	      case "notebooks":
-	        return React.createElement(NotesIndex, null);
+	        return React.createElement(NotebookIndex, null);
 	        break;
 	      case "tags":
 	        return React.createElement(TagsIndex, null);
@@ -43993,7 +43997,8 @@
 	
 	  handleNotebookItemClick: function () {
 	    this.history.pushState(null, '/home', { header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id });
-	    $('.slideout').hide();
+	
+	    // $('.slideout').hide();
 	  },
 	
 	  render: function () {
@@ -46203,7 +46208,6 @@
 	
 	  render: function () {
 	    var elapsed = this.getCreatedDate();
-	    debugger;
 	
 	    return React.createElement(
 	      'div',

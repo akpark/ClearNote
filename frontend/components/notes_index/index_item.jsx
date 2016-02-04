@@ -71,8 +71,7 @@ var NoteIndexItem = React.createClass({
 
   render: function() {
     var elapsed = this.getCreatedDate();
-    debugger
-    
+
     return (
       <div className="note-index-item" onClick={this.showDetail}>
         <div className="note-index-item-inner">

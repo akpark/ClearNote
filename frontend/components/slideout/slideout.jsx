@@ -1,19 +1,24 @@
 var React = require('react');
-var NotesIndex = require('./notebooks/index');
+var NotebookIndex = require('./notebooks/index');
 
 var SlideOut = React.createClass({
   getInitialState: function () {
-    return {index: this.props.index};
+    return {index: this.props.index, isOpen: false};
+  },
+
+  componentDidMount: function () {
+    $('.slideout').hide();
   },
 
   componentWillReceiveProps: function (newProps) {
-    this.setState({index: newProps.index});
+    $('.slideout').show("slow");
+    this.setState({index: newProps.index, isOpen: newProps.isOpen});
   },
 
   setUpIndex: function () {
     switch (this.state.index) {
       case "notebooks":
-        return <NotesIndex />
+        return <NotebookIndex />
         break;
       case "tags":
         return <TagsIndex />

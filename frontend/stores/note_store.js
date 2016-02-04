@@ -21,7 +21,7 @@ NoteStore.findFirst = function () {
   return this.all()[0];
 };
 
-NoteStore.findByNotebook = function (id) {
+NoteStore.findByNotebookId = function (id) {
   var notebookNotes = [];
   this.all().forEach(function (note) {
     if (note.notebook_id === id) {
@@ -29,6 +29,14 @@ NoteStore.findByNotebook = function (id) {
     }
   });
   return notebookNotes;
+};
+
+NoteStore.findByTagId = function (id) {
+
+};
+
+NoteStore.findByShortcut = function (id) {
+
 };
 
 var resetNotes = function(notes) {
