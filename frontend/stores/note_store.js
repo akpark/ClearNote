@@ -52,12 +52,7 @@ var resetNote = function(newNote) {
 
 var deleteNote = function(deleteNote) {
   delete _notes[deleteNote.id];
-  debugger
 };
-
-// var addNote = function(note) {
-//   _note
-// };
 
 NoteStore.__onDispatch = function(payload) {
   switch (payload.actionType) {

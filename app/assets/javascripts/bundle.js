@@ -35986,12 +35986,7 @@
 	
 	var deleteNote = function (deleteNote) {
 	  delete _notes[deleteNote.id];
-	  debugger;
 	};
-	
-	// var addNote = function(note) {
-	//   _note
-	// };
 	
 	NoteStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
@@ -46135,28 +46130,12 @@
 	
 	  mixins: [History],
 	
-	  getInitialState: function () {
-	    return { note: this.props.note };
-	  },
-	
 	  componentWillMount: function () {
 	    var noteId = NoteStore.findFirst().id;
 	
-	    if (this.state.note.id === noteId) {
+	    if (this.props.note.id === noteId) {
 	      this.history.pushState(null, 'home/notes/' + noteId);
 	    }
-	  },
-	
-	  componentDidMount: function () {
-	    this.noteIndexItemListener = NoteStore.addListener(this._onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.noteIndexItemListener.remove();
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ note: NoteStore.find(this.state.note.id) });
 	  },
 	
 	  showDetail: function (e) {
@@ -46201,8 +46180,8 @@
 	  setUpMiniMenu: function () {
 	    var itemInfo = {
 	      type: "note",
-	      id: this.state.note.id,
-	      title: this.state.note.title
+	      id: this.props.note.id,
+	      title: this.props.note.title
 	    };
 	    return React.createElement(MiniMenu, { itemInfo: itemInfo });
 	  },
@@ -46223,7 +46202,7 @@
 	          React.createElement(
 	            'div',
 	            { className: 'note-index-item-title' },
-	            this.state.note.title
+	            this.props.note.title
 	          ),
 	          miniMenu
 	        ),
@@ -46235,7 +46214,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'note-index-item-body' },
-	          this.state.note.body
+	          this.props.note.body
 	        )
 	      )
 	    );

@@ -24,8 +24,10 @@ var NotesIndex = React.createClass({
 
   _onChange: function() {
     var notes;
+    console.log("on change");
     switch (this.state.indexInfo.header) {
       case "notes":
+        console.log("inside on change for notes");
         notes = NoteStore.all();
         break;
       case "notebooks":
@@ -62,7 +64,7 @@ var NotesIndex = React.createClass({
   createNotesArray: function () {
     console.log("create notes array");
     var notes = this.state.notes.map(function (note, key) {
-        return (<NoteIndexItem key={key} note={note} />);
+      return (<NoteIndexItem key={key} note={note} />);
     });
     return notes;
   },

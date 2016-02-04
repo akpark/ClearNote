@@ -6,28 +6,12 @@ var MiniMenu = require('../mini_menu');
 var NoteIndexItem = React.createClass({
   mixins: [History],
 
-  getInitialState: function() {
-    return {note: this.props.note};
-  },
-
   componentWillMount: function () {
     var noteId = NoteStore.findFirst().id
 
-    if (this.state.note.id === noteId) {
+    if (this.props.note.id === noteId) {
       this.history.pushState(null, 'home/notes/' + noteId);
     }
-  },
-
-  componentDidMount: function () {
-    this.noteIndexItemListener = NoteStore.addListener(this._onChange);
-  },
-
-  componentWillUnmount: function () {
-    this.noteIndexItemListener.remove();
-  },
-
-  _onChange: function () {
-    this.setState({note: NoteStore.find(this.state.note.id)});
   },
 
   showDetail: function(e) {
@@ -72,8 +56,8 @@ var NoteIndexItem = React.createClass({
   setUpMiniMenu: function () {
     var itemInfo = {
       type: "note",
-      id: this.state.note.id,
-      title: this.state.note.title
+      id: this.props.note.id,
+      title: this.props.note.title
     }
     return (<MiniMenu itemInfo={itemInfo}/>);
   },
@@ -86,11 +70,11 @@ var NoteIndexItem = React.createClass({
       <div className="note-index-item" onClick={this.showDetail}>
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
-            <div className="note-index-item-title">{this.state.note.title}</div>
+            <div className="note-index-item-title">{this.props.note.title}</div>
             {miniMenu}
           </div>
           <div className="note-index-item-date">{elapsed}</div>
-          <div className="note-index-item-body">{this.state.note.body}</div>
+          <div className="note-index-item-body">{this.props.note.body}</div>
         </div>
       </div>
     );
