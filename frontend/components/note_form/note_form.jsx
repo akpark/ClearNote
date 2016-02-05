@@ -13,6 +13,7 @@ var MiniMenu = require('../mini_menu');
 var _quillEditor;
 var edit;
 var sameEditor = false;
+var _expanded = false;
 
 const defaultColors = [
 	'rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
@@ -99,14 +100,18 @@ var NoteForm = React.createClass({
 		var minimenu = this.setUpMiniMenu();
     if (edit) {
       return (
-        <div>
-					{minimenu}
+        <div className="note-form-header">
+					<div className="note-form-header-minimenu">
+						{minimenu}
+					</div>
           <div className="expand-button" onClick={this.handleExpand}><i className="fa fa-expand"></i></div>
         </div>);
     } else {
       return (
-        <div>
-					{minimenu}
+        <div className="note-form-header">
+					<div className="note-form-header-minimenu">
+						{minimenu}
+					</div>
           <div onClick={this.handleCancelClick}>Cancel</div>
           <div onClick={this.handleNewNoteDoneClick} className="new-note-done-button">Done</div>
         </div>
@@ -127,14 +132,22 @@ var NoteForm = React.createClass({
 	},
 
 	handleExpand: function () {
-		$('.notes-index').hide("slow");
-    $('.navbar').hide("slow");
-		$('.note-form-outer').addClass("expanded");
+		if (!_expanded) {
+			$('.notes-index').hide("slow");
+	    $('.navbar').hide("slow");
+			$('.note-form-outer').addClass("expanded");
+			_expanded = true;
+		} else {
+			$('.notes-index').show("slow");
+			$('.navbar').show("slow");
+			$('.note-form-outer').removeClass("expanded");
+			_expanded = false;
+		}
 	},
 
   handleCancelClick: function () {
     this.showHome();
-    $('.note-form-outer').removeClass('new-form');
+    $('.note-form-outer').removeClass('expanded');
   },
 
   setUpToolbar: function () {
@@ -226,9 +239,7 @@ var NoteForm = React.createClass({
 
     return (
       <div className="note-form-outer">
-        <div className="note-form-header">
-          {header}
-        </div>
+        {header}
         <div className="editor-outer">
           {toolbar}
           <input

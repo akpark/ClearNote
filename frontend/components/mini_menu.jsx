@@ -31,7 +31,7 @@ var MiniMenu = React.createClass({
           <div className="delete-modal-inner">
             <i className="fa fa-trash-o fa-2x"></i>
             <div className="delete-modal-title">Delete {this.props.itemInfo.type}</div>
-            <h2 className="delete-modal-question">Are you sure you want to delete <b>{this.props.itemInfo.title}</b></h2>
+            <h2 className="delete-modal-question">Are you sure you want to delete {this.props.itemInfo.title}</h2>
             <div className="delete-modal-bottom group">
               <button className="delete-modal-cancel-button" onClick={this.closeModal}>Cancel</button>
               <button className="delete-modal-delete-button" onClick={this.handleDeleteClick}>Delete</button>

@@ -31452,11 +31452,7 @@
 	            'h2',
 	            { className: 'delete-modal-question' },
 	            'Are you sure you want to delete ',
-	            React.createElement(
-	              'b',
-	              null,
-	              this.props.itemInfo.title
-	            )
+	            this.props.itemInfo.title
 	          ),
 	          React.createElement(
 	            'div',
@@ -33544,6 +33540,7 @@
 	var _quillEditor;
 	var edit;
 	var sameEditor = false;
+	var _expanded = false;
 	
 	const defaultColors = ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)', 'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)', 'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)', 'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)', 'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)', 'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)', 'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)', 'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)', 'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)', 'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)', 'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)', 'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)'];
 	
@@ -33622,8 +33619,12 @@
 	    if (edit) {
 	      return React.createElement(
 	        'div',
-	        null,
-	        minimenu,
+	        { className: 'note-form-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'note-form-header-minimenu' },
+	          minimenu
+	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'expand-button', onClick: this.handleExpand },
@@ -33633,8 +33634,12 @@
 	    } else {
 	      return React.createElement(
 	        'div',
-	        null,
-	        minimenu,
+	        { className: 'note-form-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'note-form-header-minimenu' },
+	          minimenu
+	        ),
 	        React.createElement(
 	          'div',
 	          { onClick: this.handleCancelClick },
@@ -33660,14 +33665,22 @@
 	  },
 	
 	  handleExpand: function () {
-	    $('.notes-index').hide("slow");
-	    $('.navbar').hide("slow");
-	    $('.note-form-outer').addClass("expanded");
+	    if (!_expanded) {
+	      $('.notes-index').hide("slow");
+	      $('.navbar').hide("slow");
+	      $('.note-form-outer').addClass("expanded");
+	      _expanded = true;
+	    } else {
+	      $('.notes-index').show("slow");
+	      $('.navbar').show("slow");
+	      $('.note-form-outer').removeClass("expanded");
+	      _expanded = false;
+	    }
 	  },
 	
 	  handleCancelClick: function () {
 	    this.showHome();
-	    $('.note-form-outer').removeClass('new-form');
+	    $('.note-form-outer').removeClass('expanded');
 	  },
 	
 	  setUpToolbar: function () {
@@ -33804,11 +33817,7 @@
 	    return React.createElement(
 	      'div',
 	      { className: 'note-form-outer' },
-	      React.createElement(
-	        'div',
-	        { className: 'note-form-header' },
-	        header
-	      ),
+	      header,
 	      React.createElement(
 	        'div',
 	        { className: 'editor-outer' },
