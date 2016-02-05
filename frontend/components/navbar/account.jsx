@@ -19,15 +19,9 @@ var Account = React.createClass({
     this.signOutListener.remove();
   },
 
-  _onChange: function () {
-    if (!CurrentUserStore.isLoggedIn) {
-      // this.history.pushState(null, 'home');
-    }
-  },
-
-  handleSignOutClick: function (e) {
+  handleSignOutClick: function () {
     SessionsApiUtil.logout();
-    this.history.pushState(null, 'home');
+    this.history.pushState(null, '/login');
   },
 
   render: function () {
