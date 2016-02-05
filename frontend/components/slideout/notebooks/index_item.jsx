@@ -25,7 +25,7 @@ var NotebookIndexItem = React.createClass({
       type: "notebook",
       id: this.props.notebook.id,
       title: this.props.notebook.title
-    }
+    };
   },
 
   render: function () {
@@ -37,7 +37,7 @@ var NotebookIndexItem = React.createClass({
         </div>
         <div className="number-of-notes-in-notebook">{this.props.notebook.notes.length}</div>
       </div>
-    )
+    );
   }
 });
 

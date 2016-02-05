@@ -75,7 +75,6 @@ var NoteForm = React.createClass({
     this.setState({id: note.id, title: note.title, body: note.body});
     this.history.pushState(null, '/home');
     edit = true;
-    debugger
   },
 
   handleBodyChange: function () {

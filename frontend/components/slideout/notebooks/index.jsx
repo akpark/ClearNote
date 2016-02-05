@@ -36,7 +36,7 @@ var NotebooksIndex = React.createClass({
   },
 
   closeModal: function () {
-    this.setState({modalIsOpen: false})
+    this.setState({modalIsOpen: false});
   },
 
   handleNewNotebookClick: function (e) {

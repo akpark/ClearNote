@@ -17,10 +17,6 @@ NoteStore.find = function(id) {
   return _notes[id];
 };
 
-NoteStore.findFirst = function () {
-  return this.all()[0];
-};
-
 NoteStore.findByNotebookId = function (id) {
   var notebookNotes = [];
   this.all().forEach(function (note) {

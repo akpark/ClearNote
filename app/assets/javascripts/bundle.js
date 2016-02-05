@@ -24061,7 +24061,6 @@
 	
 	  _onChange: function () {
 	    console.log(this.props.indexInfo.header);
-	    debugger;
 	    switch (this.props.indexInfo.header) {
 	      case "notes":
 	        this.setState({ notes: NoteStore.all() });
@@ -24070,58 +24069,26 @@
 	        this.setState({ notes: NoteStore.findByNotebookId(parseInt(this.props.indexInfo.id)) });
 	        break;
 	    }
-	    // this.setState({notes: NoteStore.all()});
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    if (newProps.indexInfo.header === "notebooks") {
-	      this.setState({ notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id)) });
-	    } else {
-	      this.setState({ notes: NoteStore.all() });
+	    switch (newProps.indexInfo.header) {
+	      case "notebooks":
+	        this.setState({ notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id)) });
+	        break;
+	      case "notes":
+	        this.setState({ notes: NoteStore.all() });
+	        break;
 	    }
 	  },
-	  //
-	  // getNotes: function () {
-	  //   var notes;
-	  //   switch (this.props.indexInfo.header) {
-	  //     case "notes":
-	  //       notes = NoteStore.all();
-	  //       break;
-	  //     case "notebooks":
-	  //       notes = NoteStore.findByNotebookId(this.props.indexInfo.id);
-	  //       break;
-	  //   }
-	  //   return notes;
-	  // },
-	
-	  // getNotesIndexItems: function () {
-	  //   var notes = this.getNotes();
-	  //   var noteItems = this.state.notes.map(function (note, key) {
-	  //     return (<NoteIndexItem key={key} note={note} />);
-	  //   });
-	  //   return noteItems;
-	  // },
-	  //
-	  // getNotesIndexItems: function () {
-	  //   console.log("getNotesIndexItems");
-	  //   debugger
-	  //   var notes = [];
-	  //   switch (this.props.indexInfo.header) {
-	  //     case "notes":
-	  //       notes = NoteStore.all();
-	  //       break;
-	  //     case "notebooks":
-	  //       notes = NoteStore.findByNotebookId(this.props.indexInfo.id);
-	  //       break;
-	  //   }
-	  //   return notes;
-	  // },
 	
 	  render: function () {
 	    console.log("render notes index");
 	
 	    var noteItems = this.state.notes.map(function (note, key) {
-	      return React.createElement(NoteIndexItem, { key: key, note: note });
+	      //if the first item in the array then send it a selected prop
+	      var selected = key === 0 ? true : false;
+	      return React.createElement(NoteIndexItem, { key: key, note: note, selected: selected });
 	    });
 	
 	    var notesLength = this.state.notes ? this.state.notes.length : 0;
@@ -24191,10 +24158,6 @@
 	
 	NoteStore.find = function (id) {
 	  return _notes[id];
-	};
-	
-	NoteStore.findFirst = function () {
-	  return this.all()[0];
 	};
 	
 	NoteStore.findByNotebookId = function (id) {
@@ -31163,14 +31126,13 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { note: this.props.note };
+	    return { note: this.props.note, selected: this.props.selected };
 	  },
 	
 	  componentWillMount: function () {
 	    var noteId = NoteStore.findFirst().id;
-	
-	    if (this.state.note.id === noteId) {
-	      this.history.pushState(null, 'home/notes/' + noteId);
+	    if (this.state.selected) {
+	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
 	  },
 	
@@ -31184,8 +31146,7 @@
 	
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
-	    if (this.props.note.id === NoteStore.findFirst().id) {
-	      // debugger
+	    if (this.state.selected) {
 	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
 	  },
@@ -33465,7 +33426,6 @@
 	    this.setState({ id: note.id, title: note.title, body: note.body });
 	    this.history.pushState(null, '/home');
 	    edit = true;
-	    debugger;
 	  },
 	
 	  handleBodyChange: function () {
@@ -45854,31 +45814,13 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    if (newProps.location.query.header === "notebooks") {
-	      var params = newProps.location.query;
-	      this.setState({ indexInfo: { header: params.header, title: params.title, id: params.id } });
-	    }
 	    debugger;
-	    // debugger
-	    // console.log("componentWillReceiveProps app");
-	    // if (!newProps.params.noteId && newProps.location) {
-	    //   console.log('entered');
-	    //   var params = newProps.location.query;
-	    //   var notes = [];
-	    //   switch (params.header) {
-	    //     case "notes":
-	    //       break;
-	    //     case "notebooks":
-	    //       break;
-	    //     case "tags":
-	    //       //find notes by tag
-	    //       break;
-	    //     case "shortcuts":
-	    //       //find notes by shortcuts
-	    //       break;
-	    //   }
-	    //   this.setState({indexInfo: {header: params.header, title: params.title, id: params.id}});
-	    // }
+	    switch (newProps.location.query.header) {
+	      case "notebooks":
+	        var params = newProps.location.query;
+	        this.setState({ slideoutOpen: false, indexInfo: { header: params.header, title: params.title, id: params.id } });
+	        break;
+	    }
 	  },
 	
 	  slideoutClickHandler: function (clickedIndex) {
@@ -45901,7 +45843,6 @@
 	    $('.note-form-outer').fadeTo("slow", 0.2);
 	    $('.note-form-outer').on('click', function () {
 	      this.closeSlideout();
-	      // $('.note-form-outer').fadeTo('slow', 1);
 	    }.bind(this));
 	  },
 	

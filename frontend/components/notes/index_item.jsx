@@ -7,14 +7,13 @@ var NoteIndexItem = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return {note: this.props.note};
+    return {note: this.props.note, selected: this.props.selected};
   },
 
   componentWillMount: function () {
     var noteId = NoteStore.findFirst().id;
-
-    if (this.state.note.id === noteId) {
-      this.history.pushState(null, 'home/notes/' + noteId);
+    if (this.state.selected) {
+      this.history.pushState(null, 'home/notes/' + this.props.note.id);
     }
   },
 
@@ -28,8 +27,7 @@ var NoteIndexItem = React.createClass({
 
   _onChange: function () {
     this.setState({note: NoteStore.find(this.props.note.id)});
-    if (this.props.note.id === NoteStore.findFirst().id) {
-      // debugger
+    if (this.state.selected) {
       this.history.pushState(null, 'home/notes/' + this.props.note.id);
     }
   },

@@ -24,7 +24,6 @@ var NotesIndex = React.createClass({
 
   _onChange: function() {
     console.log(this.props.indexInfo.header);
-    debugger
     switch (this.props.indexInfo.header) {
       case "notes":
         this.setState({notes: NoteStore.all()});
@@ -33,58 +32,26 @@ var NotesIndex = React.createClass({
         this.setState({notes: NoteStore.findByNotebookId(parseInt(this.props.indexInfo.id))});
         break;
     }
-    // this.setState({notes: NoteStore.all()});
   },
 
   componentWillReceiveProps: function (newProps) {
-    if (newProps.indexInfo.header === "notebooks") {
-      this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
-    } else {
-      this.setState({notes: NoteStore.all()});
+    switch (newProps.indexInfo.header) {
+      case "notebooks":
+        this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
+        break;
+      case "notes":
+        this.setState({notes: NoteStore.all()});
+        break;
     }
   },
-  //
-  // getNotes: function () {
-  //   var notes;
-  //   switch (this.props.indexInfo.header) {
-  //     case "notes":
-  //       notes = NoteStore.all();
-  //       break;
-  //     case "notebooks":
-  //       notes = NoteStore.findByNotebookId(this.props.indexInfo.id);
-  //       break;
-  //   }
-  //   return notes;
-  // },
-
-  // getNotesIndexItems: function () {
-  //   var notes = this.getNotes();
-  //   var noteItems = this.state.notes.map(function (note, key) {
-  //     return (<NoteIndexItem key={key} note={note} />);
-  //   });
-  //   return noteItems;
-  // },
-  //
-  // getNotesIndexItems: function () {
-  //   console.log("getNotesIndexItems");
-  //   debugger
-  //   var notes = [];
-  //   switch (this.props.indexInfo.header) {
-  //     case "notes":
-  //       notes = NoteStore.all();
-  //       break;
-  //     case "notebooks":
-  //       notes = NoteStore.findByNotebookId(this.props.indexInfo.id);
-  //       break;
-  //   }
-  //   return notes;
-  // },
 
   render: function() {
     console.log("render notes index");
 
     var noteItems = this.state.notes.map(function (note, key) {
-      return (<NoteIndexItem key={key} note={note} />);
+      //if the first item in the array then send it a selected prop
+      var selected = (key === 0) ? true : false;
+      return (<NoteIndexItem key={key} note={note} selected={selected} />);
     });
 
     var notesLength = (this.state.notes) ? this.state.notes.length : 0;

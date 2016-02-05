@@ -17,31 +17,13 @@ var App = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    if (newProps.location.query.header === "notebooks") {
-      var params = newProps.location.query;
-      this.setState({indexInfo: {header: params.header, title: params.title, id: params.id} });
+    debugger
+    switch (newProps.location.query.header) {
+      case "notebooks":
+        var params = newProps.location.query;
+        this.setState({slideoutOpen: false, indexInfo: {header: params.header, title: params.title, id: params.id} });
+        break;
     }
-    debugger;
-    // debugger
-    // console.log("componentWillReceiveProps app");
-    // if (!newProps.params.noteId && newProps.location) {
-    //   console.log('entered');
-    //   var params = newProps.location.query;
-    //   var notes = [];
-    //   switch (params.header) {
-    //     case "notes":
-    //       break;
-    //     case "notebooks":
-    //       break;
-    //     case "tags":
-    //       //find notes by tag
-    //       break;
-    //     case "shortcuts":
-    //       //find notes by shortcuts
-    //       break;
-    //   }
-    //   this.setState({indexInfo: {header: params.header, title: params.title, id: params.id}});
-    // }
   },
 
   slideoutClickHandler: function (clickedIndex) {
@@ -64,7 +46,6 @@ var App = React.createClass({
     $('.note-form-outer').fadeTo("slow", 0.2);
     $('.note-form-outer').on('click', function () {
       this.closeSlideout();
-      // $('.note-form-outer').fadeTo('slow', 1);
     }.bind(this));
   },
 
