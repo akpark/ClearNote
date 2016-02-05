@@ -70,7 +70,7 @@
 	  React.createElement(
 	    Route,
 	    { path: 'home', component: App, onEnter: _ensureLoggedIn },
-	    React.createElement(Route, { path: 'notes/:noteId', component: NoteForm })
+	    React.createElement(Route, { path: '/:noteId', component: NoteForm })
 	  ),
 	  React.createElement(Route, { path: 'login', component: SessionForm }),
 	  React.createElement(Route, { path: 'register', component: UserForm })
@@ -24061,7 +24061,6 @@
 	
 	  _onChange: function () {
 	    console.log(this.props.indexInfo.header);
-	    debugger;
 	    switch (this.props.indexInfo.header) {
 	      case "notes":
 	        this.setState({ notes: NoteStore.all() });
@@ -24073,14 +24072,16 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
+	    debugger;
 	    switch (newProps.indexInfo.header) {
 	      case "notebooks":
 	        this.setState({ notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id)) });
 	        break;
-	      case "notes":
-	        this.setState({ notes: NoteStore.all() });
-	        break;
 	    }
+	    // case "notes":
+	    //   this.setState({notes: NoteStore.all()});
+	    //   break;
+	    // }
 	  },
 	
 	  render: function () {
@@ -24090,7 +24091,6 @@
 	      //if the first item in the array then send it a selected prop
 	      var selected = key === 0 ? true : false;
 	      var selectedClass = key === 0 ? "selected" : "";
-	      debugger;
 	      return React.createElement(NoteIndexItem, { className: selectedClass, key: key, note: note, selected: selected });
 	    });
 	
@@ -31134,7 +31134,7 @@
 	
 	  componentWillMount: function () {
 	    if (this.state.selected) {
-	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
+	      this.history.pushState(null, '/' + this.props.note.id);
 	    }
 	  },
 	
@@ -31150,8 +31150,7 @@
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
 	
 	    if (this.state.selected && this.props.className !== "selected") {
-	      debugger;
-	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
+	      this.history.pushState(null, '/' + this.props.note.id);
 	    }
 	  },
 	
@@ -31159,7 +31158,7 @@
 	    $(".note-index-item").removeClass("selected");
 	    $(e.currentTarget).addClass('selected');
 	
-	    this.history.pushState(null, 'home/notes/' + this.props.note.id);
+	    this.history.pushState(null, '/' + this.props.note.id);
 	  },
 	
 	  //TODO!!!refactor this
@@ -33630,12 +33629,12 @@
 	        this.handleBodyChange();
 	        this.setState({ body: _quillEditor.getText() });
 	      }
-	      console.log("text change on new");
 	    }.bind(this));
 	  },
 	
 	  getNotebooks: function () {
 	    var notebooks = NotebookStore.all().map(function (notebook, key) {
+	      // var selected = (notebook.id === this.stat)
 	      return React.createElement(
 	        'option',
 	        { key: key, value: notebook.id },
@@ -46466,26 +46465,33 @@
 	      if (searchResult._type === "Note") {
 	        return React.createElement(
 	          'div',
-	          null,
-	          'Note: ',
-	          searchResult.title
+	          { className: 'search-result' },
+	          React.createElement(
+	            'div',
+	            null,
+	            'Note: ',
+	            searchResult.title
+	          )
 	        );
 	      } else if (searchResult._type === "Notebook") {
 	        return React.createElement(
 	          'div',
-	          null,
-	          'Notebook: ',
-	          searchResult.title
+	          { className: 'search-result' },
+	          React.createElement(
+	            'div',
+	            null,
+	            'Notebook: ',
+	            searchResult.title
+	          )
 	        );
 	      }
 	    });
-	
-	    debugger;
 	
 	    return React.createElement(
 	      'div',
 	      { className: 'search' },
 	      React.createElement('input', {
+	        className: 'search-input',
 	        type: 'text',
 	        placeholder: 'search notes',
 	        onKeyUp: this.search }),
@@ -46496,7 +46502,7 @@
 	      ),
 	      React.createElement(
 	        'ul',
-	        null,
+	        { className: 'search-results-list' },
 	        searchResults
 	      )
 	    );

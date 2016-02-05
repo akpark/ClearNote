@@ -21,7 +21,7 @@ var router = (
   <Router>
     <Route path="/" component={ Home } onEnter={_ensureLoggedIn}/>
     <Route path="home" component={ App } onEnter={_ensureLoggedIn}>
-      <Route path="notes/:noteId" component={ NoteForm }/>
+      <Route path="/:noteId" component={ NoteForm }/>
     </Route>
     <Route path="login" component={ SessionForm } />
     <Route path="register" component={ UserForm } />

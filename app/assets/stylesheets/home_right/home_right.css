@@ -7,4 +7,21 @@
 .search {
   float: left;
   height: 100%;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  height: 30px;
+  padding: 10px;
+  font-size: 24px;
+}
+
+.search-results-list {
+  background: white;
+}
+
+.search-result {
+  border: 1px solid #aaa;
+  margin: 10px 0;
 }

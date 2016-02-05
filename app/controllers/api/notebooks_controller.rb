@@ -1,7 +1,7 @@
 class Api::NotebooksController < ApplicationController
 
   def index
-    @notebooks = Notebook.all
+    @notebooks = current_user.notebooks
   end
 
   def show

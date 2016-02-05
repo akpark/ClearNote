@@ -3,7 +3,8 @@ class Note < ActiveRecord::Base
   validates :title, :body, :author, :notebook_id, presence: true
   belongs_to :author, class_name: "User", foreign_key: :author_id, primary_key: :id, dependent: :destroy
   belongs_to :notebook, dependent: :destroy
-  
+
   include PgSearch
-  multisearchable :against => [:title]
+  multisearchable :against => [:title],
+  using: {tsearch: {prefix: true, dictionary: "english"}}
 end

@@ -211,12 +211,12 @@ var NoteForm = React.createClass({
         this.handleBodyChange();
         this.setState({body: _quillEditor.getText()});
       }
-      console.log("text change on new");
     }.bind(this));
   },
 
   getNotebooks: function () {
     var notebooks = NotebookStore.all().map(function (notebook, key) {
+      // var selected = (notebook.id === this.stat)
       return <option key={key} value={notebook.id}>{notebook.title}</option>;
     });
     return notebooks;

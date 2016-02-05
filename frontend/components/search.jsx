@@ -33,22 +33,21 @@ var Search = React.createClass({
 
     var searchResults = SearchResultsStore.all().map(function (searchResult) {
       if (searchResult._type === "Note") {
-        return <div>Note: {searchResult.title}</div>;
+        return <div className="search-result"><div>Note: {searchResult.title}</div></div>;
       } else if (searchResult._type === "Notebook") {
-        return <div>Notebook: {searchResult.title}</div>;
+        return <div className="search-result"><div>Notebook: {searchResult.title}</div></div>;
       }
     });
-
-    debugger
 
     return (
       <div className="search">
         <input
+          className="search-input"
           type="text"
           placeholder="search notes"
           onKeyUp={this.search} />
         <div className="search-location">searching in your notebooks</div>
-        <ul>
+        <ul className="search-results-list">
           {searchResults}
         </ul>
       </div>

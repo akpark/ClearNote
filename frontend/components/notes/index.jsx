@@ -24,7 +24,6 @@ var NotesIndex = React.createClass({
 
   _onChange: function() {
     console.log(this.props.indexInfo.header);
-    debugger
     switch (this.props.indexInfo.header) {
       case "notes":
         this.setState({notes: NoteStore.all()});
@@ -36,14 +35,16 @@ var NotesIndex = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
+    debugger
     switch (newProps.indexInfo.header) {
       case "notebooks":
         this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
         break;
-      case "notes":
-        this.setState({notes: NoteStore.all()});
-        break;
-    }
+      }
+      // case "notes":
+      //   this.setState({notes: NoteStore.all()});
+      //   break;
+    // }
   },
 
   render: function() {
@@ -53,7 +54,6 @@ var NotesIndex = React.createClass({
       //if the first item in the array then send it a selected prop
       var selected = (key === 0) ? true : false;
       var selectedClass = (key === 0) ? "selected" : "";
-      debugger
       return (<NoteIndexItem className={selectedClass} key={key} note={note} selected={selected} />);
     });
 
