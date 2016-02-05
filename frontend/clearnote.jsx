@@ -20,12 +20,13 @@ var NotebooksIndex = require('./components/slideout/notebooks/index');
 var router = (
   <Router>
     <Route path="/" component={ Home } onEnter={_ensureLoggedIn}/>
-    <Route path="home" component={ App } onEnter={_ensureLoggedIn}/>
-    <Route path="notes">
-      <Route path="/:noteId" component={ NoteForm }/>
-    </Route>
     <Route path="login" component={ SessionForm } />
     <Route path="register" component={ UserForm } />
+    <Route path="home" component={ App } onEnter={_ensureLoggedIn}>
+      <Route path="notes">
+        <Route path=":noteId" component={ NoteForm }/>
+      </Route>
+    </Route>
   </Router>
 );
 

@@ -54,14 +54,15 @@ var MiniMenu = React.createClass({
   },
 
   handleDeleteClick: function (e) {
-    switch (this.state.parentInfo.type) {
+    debugger
+    switch (this.props.itemInfo.type) {
       case "note":
         console.log('entered');
         NotesApiUtil.deleteNote(this.state.parentInfo.id);
         break;
-      // case "notebook":
-      //   NotebooksApiUtil.deleteNotebook(this.state.parentInfo.id);
-      //   break;
+      case "notebook":
+        NotebooksApiUtil.deleteNotebook(this.state.parentInfo.id);
+        break;
     }
     this.closeModal();
   },

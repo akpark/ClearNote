@@ -12,7 +12,7 @@ var NoteIndexItem = React.createClass({
 
   componentWillMount: function () {
     if (this.state.selected) {
-      this.history.pushState(null, 'notes/' + this.props.note.id);
+      this.history.pushState(null, 'home/notes/' + this.props.note.id);
     }
   },
 
@@ -28,7 +28,7 @@ var NoteIndexItem = React.createClass({
     this.setState({note: NoteStore.find(this.props.note.id)});
 
     if (this.state.selected && this.props.className !== "selected") {
-      this.history.pushState(null, 'notes/' + this.props.note.id);
+      this.history.pushState(null, 'home/notes/' + this.props.note.id);
     }
   },
 
@@ -36,7 +36,7 @@ var NoteIndexItem = React.createClass({
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
 
-    this.history.pushState(null, 'notes/' + this.props.note.id);
+    this.history.pushState(null, 'home/notes/' + this.props.note.id);
   },
 
   //TODO!!!refactor this
@@ -91,11 +91,11 @@ var NoteIndexItem = React.createClass({
       <div className={klass} onClick={this.showDetail}>
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
-            <div className="note-index-item-title">{this.state.note.title}</div>
-            <MiniMenu itemInfo={this.getNotesInfo}/>
+            <div className="note-index-item-title">{this.props.note.title}</div>
+            <MiniMenu itemInfo={this.getNotesInfo} />
           </div>
           <div className="note-index-item-date">{elapsed}</div>
-          <div className="note-index-item-body">{this.state.note.body}</div>
+          <div className="note-index-item-body">{this.props.note.body}</div>
         </div>
       </div>
     );

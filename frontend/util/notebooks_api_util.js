@@ -32,7 +32,6 @@ var NotebooksApiUtil = {
       dataType: "json",
       success: function (notebook) {
         NotebookActions.receiveSingleNotebook(notebook);
-        alert("notebook has been created!");
       }
     });
   },

@@ -67,13 +67,17 @@
 	  Router,
 	  null,
 	  React.createElement(Route, { path: '/', component: Home, onEnter: _ensureLoggedIn }),
+	  React.createElement(Route, { path: 'login', component: SessionForm }),
+	  React.createElement(Route, { path: 'register', component: UserForm }),
 	  React.createElement(
 	    Route,
 	    { path: 'home', component: App, onEnter: _ensureLoggedIn },
-	    React.createElement(Route, { path: '/:noteId', component: NoteForm })
-	  ),
-	  React.createElement(Route, { path: 'login', component: SessionForm }),
-	  React.createElement(Route, { path: 'register', component: UserForm })
+	    React.createElement(
+	      Route,
+	      { path: 'notes' },
+	      React.createElement(Route, { path: ':noteId', component: NoteForm })
+	    )
+	  )
 	);
 	
 	function _ensureLoggedIn(nextState, replace, callback) {
@@ -31259,7 +31263,7 @@
 	
 	  componentWillMount: function () {
 	    if (this.state.selected) {
-	      this.history.pushState(null, '/' + this.props.note.id);
+	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
 	  },
 	
@@ -31275,7 +31279,7 @@
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
 	
 	    if (this.state.selected && this.props.className !== "selected") {
-	      this.history.pushState(null, '/' + this.props.note.id);
+	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
 	  },
 	
@@ -31283,7 +31287,7 @@
 	    $(".note-index-item").removeClass("selected");
 	    $(e.currentTarget).addClass('selected');
 	
-	    this.history.pushState(null, '/' + this.props.note.id);
+	    this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	  },
 	
 	  //TODO!!!refactor this
@@ -31346,7 +31350,7 @@
 	          React.createElement(
 	            'div',
 	            { className: 'note-index-item-title' },
-	            this.state.note.title
+	            this.props.note.title
 	          ),
 	          React.createElement(MiniMenu, { itemInfo: this.getNotesInfo })
 	        ),
@@ -31358,7 +31362,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'note-index-item-body' },
-	          this.state.note.body
+	          this.props.note.body
 	        )
 	      )
 	    );
@@ -31452,14 +31456,15 @@
 	  },
 	
 	  handleDeleteClick: function (e) {
-	    switch (this.state.parentInfo.type) {
+	    debugger;
+	    switch (this.props.itemInfo.type) {
 	      case "note":
 	        console.log('entered');
 	        NotesApiUtil.deleteNote(this.state.parentInfo.id);
 	        break;
-	      // case "notebook":
-	      //   NotebooksApiUtil.deleteNotebook(this.state.parentInfo.id);
-	      //   break;
+	      case "notebook":
+	        NotebooksApiUtil.deleteNotebook(this.state.parentInfo.id);
+	        break;
 	    }
 	    this.closeModal();
 	  },
@@ -33519,6 +33524,7 @@
 	  mixins: [History, LinkedStateMixin],
 	
 	  getInitialState: function () {
+	    debugger;
 	    edit = this.props.params.noteId === "new" ? false : true;
 	    var note = NoteStore.find(parseInt(this.props.params.noteId));
 	    return { id: note.id, title: note.title, body: note.body };
@@ -45644,7 +45650,6 @@
 	      dataType: "json",
 	      success: function (notebook) {
 	        NotebookActions.receiveSingleNotebook(notebook);
-	        alert("notebook has been created!");
 	      }
 	    });
 	  },
