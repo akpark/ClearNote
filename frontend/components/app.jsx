@@ -27,6 +27,9 @@ var App = React.createClass({
         var params = newProps.location.query;
         this.setState({slideoutOpen: false, indexInfo: {header: params.header, title: params.title, id: params.id} });
         break;
+      case "notes":
+        var params = newProps.location.query;
+        this.setState({slideoutOpen: false, indexInfo: {header: "notes", title: "notes"}});
       default:
         break;
     }

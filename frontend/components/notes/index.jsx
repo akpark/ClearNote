@@ -40,11 +40,11 @@ var NotesIndex = React.createClass({
       case "notebooks":
         this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
         break;
-      }
       // case "notes":
       //   this.setState({notes: NoteStore.all()});
       //   break;
     // }
+  }
   },
 
   render: function() {

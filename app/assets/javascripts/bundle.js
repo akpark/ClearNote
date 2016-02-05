@@ -24077,11 +24077,11 @@
 	      case "notebooks":
 	        this.setState({ notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id)) });
 	        break;
+	      // case "notes":
+	      //   this.setState({notes: NoteStore.all()});
+	      //   break;
+	      // }
 	    }
-	    // case "notes":
-	    //   this.setState({notes: NoteStore.all()});
-	    //   break;
-	    // }
 	  },
 	
 	  render: function () {
@@ -45887,6 +45887,9 @@
 	        var params = newProps.location.query;
 	        this.setState({ slideoutOpen: false, indexInfo: { header: params.header, title: params.title, id: params.id } });
 	        break;
+	      case "notes":
+	        var params = newProps.location.query;
+	        this.setState({ slideoutOpen: false, indexInfo: { header: "notes", title: "notes" } });
 	      default:
 	        break;
 	    }
@@ -45989,7 +45992,7 @@
 	  },
 	
 	  handleNotesClick: function () {
-	    this.history.pushState(null, '/home');
+	    this.history.pushState(null, '/home', { indexInfo: { header: "notes" } });
 	  },
 	
 	  handleNotebooksClick: function () {
