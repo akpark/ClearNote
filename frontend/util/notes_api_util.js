@@ -31,6 +31,7 @@ var NotesApiUtil = {
       data: {note: note},
       dataType: "json",
       success: function (note) {
+        console.log("created!");
         NoteActions.createNote(note);
       }
     });
@@ -54,7 +55,7 @@ var NotesApiUtil = {
       success: function (note) {
         NoteActions.deleteNote(note);
       }
-    })
+    });
   }
 
 };

@@ -43,7 +43,7 @@ var resetNotes = function(notes) {
   _notes = {};
   notes.forEach(function (note) {
     _notes[note.id] = note;
-  })
+  });
 };
 
 var resetNote = function(newNote) {

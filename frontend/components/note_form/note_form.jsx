@@ -34,7 +34,6 @@ var NoteForm = React.createClass({
   mixins: [History, LinkedStateMixin],
 
   getInitialState: function() {
-    debugger
     edit = (this.props.params.noteId === "new") ? false : true;
     var note = NoteStore.find(parseInt(this.props.params.noteId));
     return ({id: note.id, title: note.title, body: note.body});
@@ -58,7 +57,6 @@ var NoteForm = React.createClass({
   componentWillReceiveProps: function(newProps) {
     if (newProps.params.noteId === "new") {
       edit = false;
-      debugger
       this.setState({title: "", body: ""});
       return;
     }
@@ -73,10 +71,11 @@ var NoteForm = React.createClass({
     var notebook_id = $('.notebook-selection-dropdown option:selected').val();
     var note = {title: title, body: body, notebook_id: parseInt(notebook_id)};
     NotesApiUtil.createNote(note);
-
     $('.note-form-outer').removeClass('expanded');
     this.setState({id: note.id, title: note.title, body: note.body});
     this.history.pushState(null, '/home');
+    edit = true;
+    debugger
   },
 
   handleBodyChange: function () {
@@ -85,9 +84,8 @@ var NoteForm = React.createClass({
     }
 
     this.timer = setTimeout(function() {
-      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText() }
-      if (edit) { NotesApiUtil.editNote(note); };
-      debugger
+      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText() };
+      if (edit) { NotesApiUtil.editNote(note); }
     }.bind(this), 2000);
   },
 
@@ -112,10 +110,10 @@ var NoteForm = React.createClass({
 					<div className="note-form-header-minimenu">
 						{minimenu}
 					</div>
-          <div onClick={this.handleCancelClick}>Cancel</div>
-          <div onClick={this.handleNewNoteDoneClick} className="new-note-done-button">Done</div>
+          <div className="new-note-form-cancel-button" onClick={this.handleCancelClick}>Cancel</div>
+          <div className="new-note-form-done-button" onClick={this.handleNewNoteDoneClick}>Done</div>
         </div>
-      )
+      );
     }
   },
 
@@ -124,11 +122,11 @@ var NoteForm = React.createClass({
 			type: "note",
 			title: this.state.title,
 			id: this.state.id
-		}
+		};
 
 		return (
 			<MiniMenu className="note-form-minimenu" itemInfo={itemInfo} />
-		)
+		);
 	},
 
 	handleExpand: function () {
@@ -180,14 +178,14 @@ var NoteForm = React.createClass({
           <span className="ql-link ql-format-button"></span>
           <span className="ql-format-separator"></span>
           <select className="ql-background ql-format-button">
-            {defaultColors.map(function (color) {
-              return (<option value={color} />);
+            {defaultColors.map(function (color, key) {
+              return (<option key={key} value={color} />);
             })}
           </select>
           <span className="ql-format-separator"></span>
           <select className="ql-color ql-format-button">
-            {defaultColors.map(function (color) {
-              return (<option value={color} />);
+            {defaultColors.map(function (color, key) {
+              return (<option key={key} value={color} />);
             })}
           </select>
           <span className="ql-format-separator"></span>
@@ -209,12 +207,8 @@ var NoteForm = React.createClass({
     _quillEditor.setText(this.state.body);
     _quillEditor.on('text-change', function (delta, source) {
       if (edit && !sameEditor) {
-        // debugger
-        debugger
         this.handleBodyChange();
         this.setState({body: _quillEditor.getText()});
-        // console.log("text change on edit");
-        // debugger
       }
       console.log("text change on new");
     }.bind(this));

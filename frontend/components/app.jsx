@@ -9,7 +9,7 @@ var NotesApiUtil = require('../util/notes_api_util');
 
 var App = React.createClass({
   getInitialState: function () {
-    return { slideoutOpen: false, slideoutIndex: "", indexInfo: { header: "notes", title: "notes" } }
+    return { slideoutOpen: false, slideoutIndex: "", indexInfo: { header: "notes", title: "notes" } };
   },
 
   componentWillMount: function () {
@@ -18,10 +18,10 @@ var App = React.createClass({
 
   componentWillReceiveProps: function (newProps) {
     if (newProps.location.query.header === "notebooks") {
-      debugger
       var params = newProps.location.query;
       this.setState({indexInfo: {header: params.header, title: params.title, id: params.id} });
     }
+    debugger;
     // debugger
     // console.log("componentWillReceiveProps app");
     // if (!newProps.params.noteId && newProps.location) {

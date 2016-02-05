@@ -24,6 +24,7 @@ var NotesIndex = React.createClass({
 
   _onChange: function() {
     console.log(this.props.indexInfo.header);
+    debugger
     switch (this.props.indexInfo.header) {
       case "notes":
         this.setState({notes: NoteStore.all()});
@@ -32,15 +33,14 @@ var NotesIndex = React.createClass({
         this.setState({notes: NoteStore.findByNotebookId(parseInt(this.props.indexInfo.id))});
         break;
     }
-    debugger
     // this.setState({notes: NoteStore.all()});
   },
 
   componentWillReceiveProps: function (newProps) {
-    debugger
     if (newProps.indexInfo.header === "notebooks") {
-      debugger
       this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
+    } else {
+      this.setState({notes: NoteStore.all()});
     }
   },
   //
@@ -82,14 +82,11 @@ var NotesIndex = React.createClass({
 
   render: function() {
     console.log("render notes index");
-    // var notes = this.getNotesIndexItems();
-    // console.log("notes: " + notes);
+
     var noteItems = this.state.notes.map(function (note, key) {
       return (<NoteIndexItem key={key} note={note} />);
     });
-    // var notes = this.state.notes.map(function (note, key) {
-    //   return (<NoteIndexItem key={key} note={note} />);
-    // });
+
     var notesLength = (this.state.notes) ? this.state.notes.length : 0;
 
     var optionsDropdown;

@@ -26,7 +26,7 @@ var NavBar = React.createClass({
   // },
 
   handleNotesClick: function () {
-    this.history.pushState(null, '/home');
+    this.history.pushState(null, '/');
   },
 
   handleNotebooksClick: function () {
@@ -56,10 +56,10 @@ var NavBar = React.createClass({
   handleProfileButtonClick: function (e) {
     if (this.state.profileSettingsOpen) {
       $('.account-options-menu').hide();
-      this.setState({profileSettingsOpen: false})
+      this.setState({profileSettingsOpen: false});
     } else {
       $('.account-options-menu').show();
-      this.setState({profileSettingsOpen: true})
+      this.setState({profileSettingsOpen: true});
     }
   },
 

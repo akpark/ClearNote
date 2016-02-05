@@ -11,7 +11,7 @@ var NoteIndexItem = React.createClass({
   },
 
   componentWillMount: function () {
-    var noteId = NoteStore.findFirst().id
+    var noteId = NoteStore.findFirst().id;
 
     if (this.state.note.id === noteId) {
       this.history.pushState(null, 'home/notes/' + noteId);
@@ -27,7 +27,11 @@ var NoteIndexItem = React.createClass({
   },
 
   _onChange: function () {
-    this.setState({note: NoteStore.find(this.state.note.id)});
+    this.setState({note: NoteStore.find(this.props.note.id)});
+    if (this.props.note.id === NoteStore.findFirst().id) {
+      // debugger
+      this.history.pushState(null, 'home/notes/' + this.props.note.id);
+    }
   },
 
   showDetail: function(e) {
@@ -74,7 +78,7 @@ var NoteIndexItem = React.createClass({
       type: "note",
       id: this.props.note.id,
       title: this.props.note.title
-    }
+    };
   },
 
   render: function() {
