@@ -26,6 +26,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 gem 'bcrypt', '~> 3.1.7'
 
 gem 'kaminari'
+gem 'pg_search'
 
 gem 'paperclip'
 gem 'aws-sdk', '~> 1.6'

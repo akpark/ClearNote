@@ -19,7 +19,6 @@ const defaultColors = [
 
 var TextEditor = React.createClass({
   getInitialState: function () {
-    debugger
     edit = (this.props.params.noteId === "new") ? false : true;
     var note = NoteStore.find(parseInt(this.props.params.noteId));
     return ({id: note.id, title: note.title, body: note.body});

@@ -13,16 +13,19 @@ var UserForm = React.createClass({
     return (
       <div className="sign-up">
         <h1>Create Account</h1>
+
         <form onSubmit={ this.submit }>
           <div className="input">
             <label>Your Email Address
-            <input type="text" name="user[username]"/>
+              <input type="text"
+                     name="user[username]"/>
             </label>
           </div>
 
           <div className="input">
             <label>Create a password
-            <input type="password" name="user[password]"/>
+              <input type="password"
+                     name="user[password]"/>
             </label>
           </div>
 

@@ -70,10 +70,9 @@ var NotebooksIndex = React.createClass({
           </div>
 
           <div className="notebook-index-header-bottom">
-            <input
-              className="search-notebook-input"
-              type="text"
-              placeholder="Find a notebook"/>
+            <input className="search-notebook-input"
+                   type="text"
+                   placeholder="Find a notebook"/>
           </div>
         </div>
 
@@ -82,8 +81,8 @@ var NotebooksIndex = React.createClass({
         </div>
 
         <Modal isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-          style={customStyles}>
+               onRequestClose={this.closeModal}
+               style={customStyles}>
 
           <div className="new-notebook-modal">
             <h2 className="new-notebook-modal-title">Create Notebook</h2>
@@ -92,13 +91,15 @@ var NotebooksIndex = React.createClass({
                    placeholder="Title your notebook" />
 
             <div className="new-notebook-modal-bottom group">
-              <button className="new-notebook-cancel-button" onClick={this.closeModal}>Cancel</button>
-              <button className="new-notebook-create-button" onClick={this.handleNewNotebookClick}>Create Notebook</button>
+              <button className="new-notebook-cancel-button"
+                      onClick={this.closeModal}>Cancel</button>
+              <button className="new-notebook-create-button"
+                      onClick={this.handleNewNotebookClick}>Create Notebook</button>
             </div>
           </div>
         </Modal>
       </div>
-    )
+    );
   }
 });
 

@@ -1,11 +1,12 @@
 var React = require('react');
-var CurrentUserStore = require('../stores/current_user_store');
 var SessionsApiUtil = require('../util/sessions_api_util');
+var CurrentUserStore = require('../stores/current_user_store');
+var NotesApiUtil = require('../util/notes_api_util');
+var NoteStore = require('../stores/note_store');
 var Navbar = require('./navbar/navbar');
 var NotesIndex = require('./notes/index');
 var Slideout = require('./slideout/slideout');
-var NoteStore = require('../stores/note_store');
-var NotesApiUtil = require('../util/notes_api_util');
+var Search = require('./search');
 
 var App = React.createClass({
   getInitialState: function () {
@@ -16,14 +17,18 @@ var App = React.createClass({
     SessionsApiUtil.fetchCurrentUser();
   },
 
+  componentDidMount: function () {
+    $('.search').hide();
+  },
+
   componentWillReceiveProps: function (newProps) {
-    debugger
     switch (newProps.location.query.header) {
       case "notebooks":
         var params = newProps.location.query;
         this.setState({slideoutOpen: false, indexInfo: {header: params.header, title: params.title, id: params.id} });
         break;
-      
+      default:
+        break;
     }
   },
 
@@ -60,8 +65,10 @@ var App = React.createClass({
         <Navbar slideoutClickHandler={this.slideoutClickHandler}/>
         <div className="home-right group">
           <NotesIndex indexInfo={this.state.indexInfo}/>
-          <Slideout index={this.state.slideoutIndex} isOpen={this.state.slideoutOpen} />
+          <Slideout index={this.state.slideoutIndex}
+                    isOpen={this.state.slideoutOpen} />
           {this.props.children}
+          <Search />
         </div>
 
       </div>

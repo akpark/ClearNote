@@ -3,6 +3,8 @@ var History = require('react-router').History;
 var Account = require('./account');
 var Slideout = require('../slideout/slideout');
 
+var searchOpen = false;
+
 var NavBar = React.createClass({
   mixins: [History],
 
@@ -21,37 +23,27 @@ var NavBar = React.createClass({
     this.history.pushState(null, "home/notes/new");
   },
 
-  // handleSearchClick: function () {
-  //   // $('.notes-index').hide();
-  // },
+  handleSearchClick: function () {
+    if (!searchOpen) {
+      $('.notes-index').hide();
+      $('.note-form-outer').hide();
+      $('.search').show();
+      searchOpen = true;
+    } else {
+      $('.notes-index').show();
+      $('.note-form-outer').show();
+      $('.search').hide();
+      searchOpen = false;
+    }
+  },
 
   handleNotesClick: function () {
-    this.history.pushState(null, '/');
+    this.history.pushState(null, '/home');
   },
 
   handleNotebooksClick: function () {
     this.props.slideoutClickHandler("notebooks");
   },
-
-  // showSlideout: function () {
-  //   $('.slideout').show("slow");
-  //   slideoutShown = true;
-  //   this.handleBackgroundFade();
-  // },
-  //
-  // hideSlideout: function () {
-  //   $('.slideout').hide("slow");
-  //   slideoutShown = false;
-  //   $('.note-form-outer').fadeTo("slow", 1);
-  // },
-  //
-  // handleBackgroundFade: function () {
-  //   $('notes-index').hide();
-  //   $('.note-form-outer').fadeTo("slow", 0.2);
-  //   $('.note-form-outer').on('click', function () {
-  //     this.hideSlideout();
-  //   }.bind(this));
-  // },
 
   handleProfileButtonClick: function (e) {
     if (this.state.profileSettingsOpen) {
@@ -88,6 +80,7 @@ var NavBar = React.createClass({
 
         <div className="profile-button"
              onClick={this.handleProfileButtonClick}>ME
+
           <Account />
         </div>
 

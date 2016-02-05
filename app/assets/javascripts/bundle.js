@@ -24061,6 +24061,7 @@
 	
 	  _onChange: function () {
 	    console.log(this.props.indexInfo.header);
+	    debugger;
 	    switch (this.props.indexInfo.header) {
 	      case "notes":
 	        this.setState({ notes: NoteStore.all() });
@@ -24089,7 +24090,7 @@
 	      //if the first item in the array then send it a selected prop
 	      var selected = key === 0 ? true : false;
 	      var selectedClass = key === 0 ? "selected" : "";
-	
+	      debugger;
 	      return React.createElement(NoteIndexItem, { className: selectedClass, key: key, note: note, selected: selected });
 	    });
 	
@@ -31147,8 +31148,9 @@
 	
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
-	    debugger;
+	
 	    if (this.state.selected && this.props.className !== "selected") {
+	      debugger;
 	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
 	  },
@@ -31300,12 +31302,14 @@
 	            { className: 'delete-modal-bottom group' },
 	            React.createElement(
 	              'button',
-	              { className: 'delete-modal-cancel-button', onClick: this.closeModal },
+	              { className: 'delete-modal-cancel-button',
+	                onClick: this.closeModal },
 	              'Cancel'
 	            ),
 	            React.createElement(
 	              'button',
-	              { className: 'delete-modal-delete-button', onClick: this.handleDeleteClick },
+	              { className: 'delete-modal-delete-button',
+	                onClick: this.handleDeleteClick },
 	              'Delete'
 	            )
 	          )
@@ -31347,7 +31351,8 @@
 	        { className: 'mini-menu group' },
 	        React.createElement(
 	          'div',
-	          { className: 'mini-menu-link trash', onClick: this.openModal },
+	          { className: 'mini-menu-link trash',
+	            onClick: this.openModal },
 	          React.createElement('i', { className: 'fa fa-trash fa-lg' })
 	        )
 	      ),
@@ -33375,9 +33380,7 @@
 	var NoteStore = __webpack_require__(207);
 	var NotebookStore = __webpack_require__(267);
 	var NotebooksApiUtil = __webpack_require__(269);
-	// var QuillToolbar = require('./toolbar');
 	var MiniMenu = __webpack_require__(233);
-	// var QuillEditor = require('./text_editor');
 	
 	var _quillEditor;
 	var edit;
@@ -33423,12 +33426,13 @@
 	  },
 	
 	  handleNewNoteDoneClick: function (e) {
-	    this.showHome();
 	    var title = this.state.title;
 	    var body = _quillEditor.getText();
 	    var notebook_id = $('.notebook-selection-dropdown option:selected').val();
 	    var note = { title: title, body: body, notebook_id: parseInt(notebook_id) };
 	    NotesApiUtil.createNote(note);
+	
+	    this.showHome();
 	    $('.note-form-outer').removeClass('expanded');
 	    this.setState({ id: note.id, title: note.title, body: note.body });
 	    this.history.pushState(null, '/home');
@@ -33687,7 +33691,6 @@
 	  displayName: 'TextEditor',
 	
 	  getInitialState: function () {
-	    debugger;
 	    edit = this.props.params.noteId === "new" ? false : true;
 	    var note = NoteStore.find(parseInt(this.props.params.noteId));
 	    return { id: note.id, title: note.title, body: note.body };
@@ -45593,7 +45596,6 @@
 	
 	  submit: function (e) {
 	    e.preventDefault();
-	    debugger;
 	    var credentials = $(e.currentTarget).serializeJSON();
 	    SessionsApiUtil.login(credentials, function () {
 	      this.history.pushState({}, "home");
@@ -45781,7 +45783,8 @@
 	            'label',
 	            null,
 	            'Your Email Address',
-	            React.createElement('input', { type: 'text', name: 'user[username]' })
+	            React.createElement('input', { type: 'text',
+	              name: 'user[username]' })
 	          )
 	        ),
 	        React.createElement(
@@ -45791,7 +45794,8 @@
 	            'label',
 	            null,
 	            'Create a password',
-	            React.createElement('input', { type: 'password', name: 'user[password]' })
+	            React.createElement('input', { type: 'password',
+	              name: 'user[password]' })
 	          )
 	        ),
 	        React.createElement(
@@ -45854,13 +45858,14 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(277);
 	var SessionsApiUtil = __webpack_require__(273);
+	var CurrentUserStore = __webpack_require__(277);
+	var NotesApiUtil = __webpack_require__(230);
+	var NoteStore = __webpack_require__(207);
 	var Navbar = __webpack_require__(279);
 	var NotesIndex = __webpack_require__(206);
 	var Slideout = __webpack_require__(281);
-	var NoteStore = __webpack_require__(207);
-	var NotesApiUtil = __webpack_require__(230);
+	var Search = __webpack_require__(285);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -45873,14 +45878,18 @@
 	    SessionsApiUtil.fetchCurrentUser();
 	  },
 	
+	  componentDidMount: function () {
+	    $('.search').hide();
+	  },
+	
 	  componentWillReceiveProps: function (newProps) {
-	    debugger;
 	    switch (newProps.location.query.header) {
 	      case "notebooks":
 	        var params = newProps.location.query;
 	        this.setState({ slideoutOpen: false, indexInfo: { header: params.header, title: params.title, id: params.id } });
 	        break;
-	
+	      default:
+	        break;
 	    }
 	  },
 	
@@ -45924,8 +45933,10 @@
 	        'div',
 	        { className: 'home-right group' },
 	        React.createElement(NotesIndex, { indexInfo: this.state.indexInfo }),
-	        React.createElement(Slideout, { index: this.state.slideoutIndex, isOpen: this.state.slideoutOpen }),
-	        this.props.children
+	        React.createElement(Slideout, { index: this.state.slideoutIndex,
+	          isOpen: this.state.slideoutOpen }),
+	        this.props.children,
+	        React.createElement(Search, null)
 	      )
 	    );
 	  }
@@ -45941,6 +45952,8 @@
 	var History = __webpack_require__(159).History;
 	var Account = __webpack_require__(280);
 	var Slideout = __webpack_require__(281);
+	
+	var searchOpen = false;
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
@@ -45962,37 +45975,27 @@
 	    this.history.pushState(null, "home/notes/new");
 	  },
 	
-	  // handleSearchClick: function () {
-	  //   // $('.notes-index').hide();
-	  // },
+	  handleSearchClick: function () {
+	    if (!searchOpen) {
+	      $('.notes-index').hide();
+	      $('.note-form-outer').hide();
+	      $('.search').show();
+	      searchOpen = true;
+	    } else {
+	      $('.notes-index').show();
+	      $('.note-form-outer').show();
+	      $('.search').hide();
+	      searchOpen = false;
+	    }
+	  },
 	
 	  handleNotesClick: function () {
-	    this.history.pushState(null, '/');
+	    this.history.pushState(null, '/home');
 	  },
 	
 	  handleNotebooksClick: function () {
 	    this.props.slideoutClickHandler("notebooks");
 	  },
-	
-	  // showSlideout: function () {
-	  //   $('.slideout').show("slow");
-	  //   slideoutShown = true;
-	  //   this.handleBackgroundFade();
-	  // },
-	  //
-	  // hideSlideout: function () {
-	  //   $('.slideout').hide("slow");
-	  //   slideoutShown = false;
-	  //   $('.note-form-outer').fadeTo("slow", 1);
-	  // },
-	  //
-	  // handleBackgroundFade: function () {
-	  //   $('notes-index').hide();
-	  //   $('.note-form-outer').fadeTo("slow", 0.2);
-	  //   $('.note-form-outer').on('click', function () {
-	  //     this.hideSlideout();
-	  //   }.bind(this));
-	  // },
 	
 	  handleProfileButtonClick: function (e) {
 	    if (this.state.profileSettingsOpen) {
@@ -46104,12 +46107,14 @@
 	        { className: 'account-options-menu-links' },
 	        React.createElement(
 	          'div',
-	          { className: 'settings-link', onClick: this.handleSettingsClick },
+	          { className: 'settings-link',
+	            onClick: this.handleSettingsClick },
 	          'Settings'
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'sign-out-link', onClick: this.handleSignOutClick },
+	          { className: 'sign-out-link',
+	            onClick: this.handleSignOutClick },
 	          React.createElement('i', { className: 'fa fa-sign-out fa-lg' }),
 	          ' Log Out'
 	        )
@@ -46147,10 +46152,8 @@
 	    switch (this.state.index) {
 	      case "notebooks":
 	        return React.createElement(NotebookIndex, null);
-	        break;
 	      case "tags":
 	        return React.createElement(TagsIndex, null);
-	        break;
 	    }
 	    return null;
 	  },
@@ -46260,8 +46263,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'notebook-index-header-bottom' },
-	          React.createElement('input', {
-	            className: 'search-notebook-input',
+	          React.createElement('input', { className: 'search-notebook-input',
 	            type: 'text',
 	            placeholder: 'Find a notebook' })
 	        )
@@ -46292,12 +46294,14 @@
 	            { className: 'new-notebook-modal-bottom group' },
 	            React.createElement(
 	              'button',
-	              { className: 'new-notebook-cancel-button', onClick: this.closeModal },
+	              { className: 'new-notebook-cancel-button',
+	                onClick: this.closeModal },
 	              'Cancel'
 	            ),
 	            React.createElement(
 	              'button',
-	              { className: 'new-notebook-create-button', onClick: this.handleNewNotebookClick },
+	              { className: 'new-notebook-create-button',
+	                onClick: this.handleNewNotebookClick },
 	              'Create Notebook'
 	            )
 	          )
@@ -46419,6 +46423,173 @@
 	});
 	
 	module.exports = Home;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SearchApiUtil = __webpack_require__(288);
+	var SearchResultsStore = __webpack_require__(286);
+	var NoteIndexItem = __webpack_require__(232);
+	var LinkedStateMixin = __webpack_require__(263);
+	
+	var Search = React.createClass({
+	  displayName: 'Search',
+	
+	  getInitialState: function () {
+	    return { page: 1, query: "" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.listener = SearchResultsStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
+	  _onChange: function () {
+	    this.forceUpdate();
+	  },
+	
+	  search: function (e) {
+	    var query = e.target.value;
+	    SearchApiUtil.search(query, 1);
+	
+	    this.setState({ page: 1, query: query });
+	  },
+	
+	  render: function () {
+	
+	    var searchResults = SearchResultsStore.all().map(function (searchResult) {
+	      if (searchResult._type === "Note") {
+	        return React.createElement(
+	          'div',
+	          null,
+	          'Note: ',
+	          searchResult.title
+	        );
+	      } else if (searchResult._type === "Notebook") {
+	        return React.createElement(
+	          'div',
+	          null,
+	          'Notebook: ',
+	          searchResult.title
+	        );
+	      }
+	    });
+	
+	    debugger;
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'search' },
+	      React.createElement('input', {
+	        type: 'text',
+	        placeholder: 'search notes',
+	        onKeyUp: this.search }),
+	      React.createElement(
+	        'div',
+	        { className: 'search-location' },
+	        'searching in your notebooks'
+	      ),
+	      React.createElement(
+	        'ul',
+	        null,
+	        searchResults
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Search;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(208).Store;
+	var AppDispatcher = __webpack_require__(227);
+	var SearchConstants = __webpack_require__(287);
+	
+	var _searchResults = [];
+	var _meta = {};
+	
+	var SearchResultsStore = new Store(AppDispatcher);
+	
+	SearchResultsStore.all = function () {
+	  return _searchResults.slice();
+	};
+	
+	SearchResultsStore.meta = function () {
+	  return _meta;
+	};
+	
+	SearchResultsStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SearchConstants.RECEIVE_SEARCH_RESULTS:
+	      _searchResults = payload.searchResults;
+	      _meta = payload.meta;
+	      SearchResultsStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = SearchResultsStore;
+
+/***/ },
+/* 287 */
+/***/ function(module, exports) {
+
+	var SearchConstants = {
+	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS"
+	};
+	
+	module.exports = SearchConstants;
+
+/***/ },
+/* 288 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchActions = __webpack_require__(289);
+	
+	var SearchApiUtil = {
+	
+	  search: function (query, page) {
+	    $.ajax({
+	      url: '/api/search',
+	      type: 'GET',
+	      dataType: 'json',
+	      data: { query: query, page: page },
+	      success: function (data) {
+	        console.log("successful search!");
+	        SearchActions.receiveResults(data);
+	      }
+	    });
+	  }
+	};
+	
+	module.exports = SearchApiUtil;
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchConstants = __webpack_require__(287);
+	var AppDispatcher = __webpack_require__(227);
+	
+	var SearchActions = {
+	  receiveResults: function (data) {
+	    AppDispatcher.dispatch({
+	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
+	      searchResults: data.results,
+	      meta: { totalCount: data.total_count }
+	    });
+	  }
+	};
+	
+	module.exports = SearchActions;
 
 /***/ }
 /******/ ]);

@@ -12,7 +12,7 @@ var Home = React.createClass({
   },
 
   handleSignUpClick: function() {
-    this.history.pushState(null, 'register')
+    this.history.pushState(null, 'register');
   },
 
   componentWillMount: function() {

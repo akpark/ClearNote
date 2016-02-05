@@ -7,7 +7,6 @@ var SessionForm = React.createClass({
 
   submit: function (e) {
     e.preventDefault();
-    debugger
     var credentials = $(e.currentTarget).serializeJSON();
     SessionsApiUtil.login(credentials, function () {
       this.history.pushState({}, "home");

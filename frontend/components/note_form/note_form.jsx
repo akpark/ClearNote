@@ -7,9 +7,7 @@ var History = require('react-router').History;
 var NoteStore = require('../../stores/note_store');
 var NotebookStore = require('../../stores/notebook_store');
 var NotebooksApiUtil = require('../../util/notebooks_api_util');
-// var QuillToolbar = require('./toolbar');
 var MiniMenu = require('../mini_menu');
-// var QuillEditor = require('./text_editor');
 
 var _quillEditor;
 var edit;
@@ -66,12 +64,13 @@ var NoteForm = React.createClass({
   },
 
   handleNewNoteDoneClick: function(e) {
-    this.showHome();
     var title = this.state.title;
     var body = _quillEditor.getText();
     var notebook_id = $('.notebook-selection-dropdown option:selected').val();
     var note = {title: title, body: body, notebook_id: parseInt(notebook_id)};
     NotesApiUtil.createNote(note);
+
+    this.showHome();
     $('.note-form-outer').removeClass('expanded');
     this.setState({id: note.id, title: note.title, body: note.body});
     this.history.pushState(null, '/home');

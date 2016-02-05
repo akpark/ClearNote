@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     resources :notes, only: [:index, :create, :new, :show, :update, :destroy]
     resources :notebooks, only: [:index, :create, :new, :show, :update, :destroy]
     resource :session, only: [:create, :destroy, :show]
+    get "search", to: "utils#search"
   end
 
 end

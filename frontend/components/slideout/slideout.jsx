@@ -18,11 +18,9 @@ var SlideOut = React.createClass({
   setUpIndex: function () {
     switch (this.state.index) {
       case "notebooks":
-        return <NotebookIndex />
-        break;
+        return <NotebookIndex />;
       case "tags":
-        return <TagsIndex />
-        break;
+        return <TagsIndex />;
     }
     return null;
   },
@@ -34,7 +32,7 @@ var SlideOut = React.createClass({
       <div className="slideout">
         {index}
       </div>
-    )
+    );
   }
 });
 
