@@ -16,27 +16,51 @@ const defaultColors = [
 ];
 
 var Toolbar = React.createClass({
-  render: function () {
-    return (
-      <div id="toolbar" className="ql-toolbar-container toolbar">
-        <div className="ql-format-group">
-          <select className="ql-size">
-            <option value="10px">Small</option>
-            <option value="13px" defaultValue>Normal</option>
-            <option value="18px">Large</option>
-            <option value="32px">Huge</option>
-          </select>
-          <span className="ql-bold ql-format-button"></span>
-          <span className="ql-italic ql-format-button"></span>
-          <span className="ql-strike ql-format-button"></span>
-          <span className="ql-underline ql-format-button"></span>
-          <span className="ql-link ql-format-button"></span>
-          <span className="ql-background ql-format-button"></span>
-          <span className="ql-format-separator"></span>
-        </div>
-      </div>
-    )
-  }
+	render: function () {
+		return (
+			<div id="toolbar" className="ql-toolbar-container toolbar">
+				<div className="ql-format-group">
+					<select className="notebook-selection-dropdown">
+						{notebooks}
+					</select>
+					<select className="ql-font">
+						<option value="sans-serif">Sans Serif</option>
+						<option value="serif">Serif</option>
+						<option value="monospace">Monospace</option>
+					</select>
+					<span className="ql-format-separator"></span>
+					<select className="ql-size">
+						<option value="10px">Small</option>
+						<option value="13px" defaultValue>Normal</option>
+						<option value="18px">Large</option>
+						<option value="32px">Huge</option>
+					</select>
+					<span className="ql-format-separator"></span>
+					<span className="ql-bold ql-format-button"></span>
+					<span className="ql-italic ql-format-button"></span>
+					<span className="ql-strike ql-format-button"></span>
+					<span className="ql-underline ql-format-button"></span>
+					<span className="ql-format-separator"></span>
+					<span className="ql-link ql-format-button"></span>
+					<span className="ql-format-separator"></span>
+					<select className="ql-background ql-format-button">
+						{defaultColors.map(function (color) {
+							return (<option value={color} />);
+						})}
+					</select>
+					<span className="ql-format-separator"></span>
+					<select className="ql-color ql-format-button">
+						{defaultColors.map(function (color) {
+							return (<option value={color} />);
+						})}
+					</select>
+					<span className="ql-format-separator"></span>
+					<span className="ql-bullet ql-format-button"/>
+					<span className="ql-list ql-format-button"/>
+				</div>
+			</div>
+		);
+	}
 });
 
 module.exports = Toolbar;

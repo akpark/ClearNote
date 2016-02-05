@@ -24192,10 +24192,19 @@
 	        this.setState({ notes: NoteStore.all() });
 	        break;
 	      case "notebooks":
-	        this.setState({ notes: NoteStore.findByNotebookId(this.props.indexInfo.id) });
+	        this.setState({ notes: NoteStore.findByNotebookId(parseInt(this.props.indexInfo.id)) });
 	        break;
 	    }
+	    debugger;
 	    // this.setState({notes: NoteStore.all()});
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    debugger;
+	    if (newProps.indexInfo.header === "notebooks") {
+	      debugger;
+	      this.setState({ notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id)) });
+	    }
 	  },
 	  //
 	  // getNotes: function () {
@@ -24260,7 +24269,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'notes-index-title' },
-	          this.state.indexInfo.title
+	          this.props.indexInfo.title
 	        ),
 	        React.createElement(
 	          'div',
@@ -33530,6 +33539,7 @@
 	var NotebookStore = __webpack_require__(269);
 	var NotebooksApiUtil = __webpack_require__(271);
 	var QuillToolbar = __webpack_require__(273);
+	var MiniMenu = __webpack_require__(235);
 	
 	var _quillEditor;
 	var edit;
@@ -33550,7 +33560,7 @@
 	  },
 	
 	  componentDidMount: function () {
-	    // this.noteformListener = NoteStore.addListener(this._onChange);
+	    this.noteformListener = NoteStore.addListener(this._onChange);
 	    // this.notebookListener = NoteBookStore.addListener(this._onChange);
 	    this.setUpQuillEditor();
 	  },
@@ -33581,10 +33591,11 @@
 	    var body = _quillEditor.getText();
 	    var notebook_id = $('.notebook-selection-dropdown option:selected').val();
 	    var note = { title: title, body: body, notebook_id: parseInt(notebook_id) };
-	    $('.note-form-outer').removeClass('new-form');
 	    NotesApiUtil.createNote(note);
+	
+	    $('.note-form-outer').removeClass('expanded');
 	    this.setState({ id: note.id, title: note.title, body: note.body });
-	    // this.history.pushState(null, '/home/notes');
+	    this.history.pushState(null, '/home');
 	  },
 	
 	  handleBodyChange: function () {
@@ -33607,20 +33618,23 @@
 	  },
 	
 	  setUpHeader: function () {
+	    var minimenu = this.setUpMiniMenu();
 	    if (edit) {
 	      return React.createElement(
 	        'div',
 	        null,
+	        minimenu,
 	        React.createElement(
 	          'div',
-	          { onClick: this.handleExpand },
-	          'Expand'
+	          { className: 'expand-button', onClick: this.handleExpand },
+	          React.createElement('i', { className: 'fa fa-expand' })
 	        )
 	      );
 	    } else {
 	      return React.createElement(
 	        'div',
 	        null,
+	        minimenu,
 	        React.createElement(
 	          'div',
 	          { onClick: this.handleCancelClick },
@@ -33633,6 +33647,22 @@
 	        )
 	      );
 	    }
+	  },
+	
+	  setUpMiniMenu: function () {
+	    var itemInfo = {
+	      type: "note",
+	      title: this.state.title,
+	      id: this.state.id
+	    };
+	
+	    return React.createElement(MiniMenu, { className: 'note-form-minimenu', itemInfo: itemInfo });
+	  },
+	
+	  handleExpand: function () {
+	    $('.notes-index').hide("slow");
+	    $('.navbar').hide("slow");
+	    $('.note-form-outer').addClass("expanded");
 	  },
 	
 	  handleCancelClick: function () {
@@ -45560,49 +45590,93 @@
 	const defaultColors = ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)', 'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)', 'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)', 'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)', 'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)', 'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)', 'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)', 'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)', 'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)', 'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)', 'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)', 'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)'];
 	
 	var Toolbar = React.createClass({
-	  displayName: 'Toolbar',
+		displayName: 'Toolbar',
 	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { id: 'toolbar', className: 'ql-toolbar-container toolbar' },
-	      React.createElement(
-	        'div',
-	        { className: 'ql-format-group' },
-	        React.createElement(
-	          'select',
-	          { className: 'ql-size' },
-	          React.createElement(
-	            'option',
-	            { value: '10px' },
-	            'Small'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: '13px', defaultValue: true },
-	            'Normal'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: '18px' },
-	            'Large'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: '32px' },
-	            'Huge'
-	          )
-	        ),
-	        React.createElement('span', { className: 'ql-bold ql-format-button' }),
-	        React.createElement('span', { className: 'ql-italic ql-format-button' }),
-	        React.createElement('span', { className: 'ql-strike ql-format-button' }),
-	        React.createElement('span', { className: 'ql-underline ql-format-button' }),
-	        React.createElement('span', { className: 'ql-link ql-format-button' }),
-	        React.createElement('span', { className: 'ql-background ql-format-button' }),
-	        React.createElement('span', { className: 'ql-format-separator' })
-	      )
-	    );
-	  }
+		render: function () {
+			return React.createElement(
+				'div',
+				{ id: 'toolbar', className: 'ql-toolbar-container toolbar' },
+				React.createElement(
+					'div',
+					{ className: 'ql-format-group' },
+					React.createElement(
+						'select',
+						{ className: 'notebook-selection-dropdown' },
+						notebooks
+					),
+					React.createElement(
+						'select',
+						{ className: 'ql-font' },
+						React.createElement(
+							'option',
+							{ value: 'sans-serif' },
+							'Sans Serif'
+						),
+						React.createElement(
+							'option',
+							{ value: 'serif' },
+							'Serif'
+						),
+						React.createElement(
+							'option',
+							{ value: 'monospace' },
+							'Monospace'
+						)
+					),
+					React.createElement('span', { className: 'ql-format-separator' }),
+					React.createElement(
+						'select',
+						{ className: 'ql-size' },
+						React.createElement(
+							'option',
+							{ value: '10px' },
+							'Small'
+						),
+						React.createElement(
+							'option',
+							{ value: '13px', defaultValue: true },
+							'Normal'
+						),
+						React.createElement(
+							'option',
+							{ value: '18px' },
+							'Large'
+						),
+						React.createElement(
+							'option',
+							{ value: '32px' },
+							'Huge'
+						)
+					),
+					React.createElement('span', { className: 'ql-format-separator' }),
+					React.createElement('span', { className: 'ql-bold ql-format-button' }),
+					React.createElement('span', { className: 'ql-italic ql-format-button' }),
+					React.createElement('span', { className: 'ql-strike ql-format-button' }),
+					React.createElement('span', { className: 'ql-underline ql-format-button' }),
+					React.createElement('span', { className: 'ql-format-separator' }),
+					React.createElement('span', { className: 'ql-link ql-format-button' }),
+					React.createElement('span', { className: 'ql-format-separator' }),
+					React.createElement(
+						'select',
+						{ className: 'ql-background ql-format-button' },
+						defaultColors.map(function (color) {
+							return React.createElement('option', { value: color });
+						})
+					),
+					React.createElement('span', { className: 'ql-format-separator' }),
+					React.createElement(
+						'select',
+						{ className: 'ql-color ql-format-button' },
+						defaultColors.map(function (color) {
+							return React.createElement('option', { value: color });
+						})
+					),
+					React.createElement('span', { className: 'ql-format-separator' }),
+					React.createElement('span', { className: 'ql-bullet ql-format-button' }),
+					React.createElement('span', { className: 'ql-list ql-format-button' })
+				)
+			);
+		}
 	});
 	
 	module.exports = Toolbar;
@@ -45902,28 +45976,33 @@
 	    SessionsApiUtil.fetchCurrentUser();
 	  },
 	
-	  // componentWillReceiveProps: function (newProps) {
-	  //   debugger
-	  //   console.log("componentWillReceiveProps app");
-	  //   if (!newProps.params.noteId && newProps.location) {
-	  //     console.log('entered');
-	  //     var params = newProps.location.query;
-	  //     var notes = [];
-	  //     switch (params.header) {
-	  //       case "notes":
-	  //         break;
-	  //       case "notebooks":
-	  //         break;
-	  //       case "tags":
-	  //         //find notes by tag
-	  //         break;
-	  //       case "shortcuts":
-	  //         //find notes by shortcuts
-	  //         break;
-	  //     }
-	  //     this.setState({indexInfo: {header: params.header, title: params.title, id: params.id}});
-	  //   }
-	  // },
+	  componentWillReceiveProps: function (newProps) {
+	    if (newProps.location.query.header === "notebooks") {
+	      debugger;
+	      var params = newProps.location.query;
+	      this.setState({ indexInfo: { header: params.header, title: params.title, id: params.id } });
+	    }
+	    // debugger
+	    // console.log("componentWillReceiveProps app");
+	    // if (!newProps.params.noteId && newProps.location) {
+	    //   console.log('entered');
+	    //   var params = newProps.location.query;
+	    //   var notes = [];
+	    //   switch (params.header) {
+	    //     case "notes":
+	    //       break;
+	    //     case "notebooks":
+	    //       break;
+	    //     case "tags":
+	    //       //find notes by tag
+	    //       break;
+	    //     case "shortcuts":
+	    //       //find notes by shortcuts
+	    //       break;
+	    //   }
+	    //   this.setState({indexInfo: {header: params.header, title: params.title, id: params.id}});
+	    // }
+	  },
 	
 	  slideoutClickHandler: function (clickedIndex) {
 	    this.setState({ slideoutIndex: clickedIndex });
@@ -45993,12 +46072,12 @@
 	    $('.account-options-menu').hide();
 	  },
 	
-	  // handleNewNoteClick: function () {
-	  //   $('.notes-index').hide("slow");
-	  //   $('.navbar').hide("slow");
-	  //   $('.note-form-outer').addClass("new-form");
-	  //   this.history.pushState(null, "home/notes/new");
-	  // },
+	  handleNewNoteClick: function () {
+	    $('.notes-index').hide("slow");
+	    $('.navbar').hide("slow");
+	    $('.note-form-outer').addClass("expanded");
+	    this.history.pushState(null, "home/notes/new");
+	  },
 	
 	  // handleSearchClick: function () {
 	  //   // $('.notes-index').hide();

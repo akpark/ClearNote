@@ -29,10 +29,19 @@ var NotesIndex = React.createClass({
         this.setState({notes: NoteStore.all()});
         break;
       case "notebooks":
-        this.setState({notes: NoteStore.findByNotebookId(this.props.indexInfo.id)});
+        this.setState({notes: NoteStore.findByNotebookId(parseInt(this.props.indexInfo.id))});
         break;
     }
+    debugger
     // this.setState({notes: NoteStore.all()});
+  },
+
+  componentWillReceiveProps: function (newProps) {
+    debugger
+    if (newProps.indexInfo.header === "notebooks") {
+      debugger
+      this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
+    }
   },
   //
   // getNotes: function () {
@@ -90,7 +99,7 @@ var NotesIndex = React.createClass({
       <div className="notes-index">
 
         <div className="notes-index-header">
-          <div className="notes-index-title">{this.state.indexInfo.title}</div>
+          <div className="notes-index-title">{this.props.indexInfo.title}</div>
           <div className="notes-index-header-bottom group">
             <div className="number-of-notes">{notesLength} Notes</div>
             <div onClick={this.showOptions} className="options-dropdown-click">Options &#8964;

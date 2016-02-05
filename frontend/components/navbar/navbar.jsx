@@ -10,12 +10,12 @@ var NavBar = React.createClass({
     $('.account-options-menu').hide();
   },
 
-  // handleNewNoteClick: function () {
-  //   $('.notes-index').hide("slow");
-  //   $('.navbar').hide("slow");
-  //   $('.note-form-outer').addClass("new-form");
-  //   this.history.pushState(null, "home/notes/new");
-  // },
+  handleNewNoteClick: function () {
+    $('.notes-index').hide("slow");
+    $('.navbar').hide("slow");
+    $('.note-form-outer').addClass("expanded");
+    this.history.pushState(null, "home/notes/new");
+  },
 
   // handleSearchClick: function () {
   //   // $('.notes-index').hide();

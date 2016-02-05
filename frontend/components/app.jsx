@@ -16,28 +16,33 @@ var App = React.createClass({
     SessionsApiUtil.fetchCurrentUser();
   },
 
-  // componentWillReceiveProps: function (newProps) {
-  //   debugger
-  //   console.log("componentWillReceiveProps app");
-  //   if (!newProps.params.noteId && newProps.location) {
-  //     console.log('entered');
-  //     var params = newProps.location.query;
-  //     var notes = [];
-  //     switch (params.header) {
-  //       case "notes":
-  //         break;
-  //       case "notebooks":
-  //         break;
-  //       case "tags":
-  //         //find notes by tag
-  //         break;
-  //       case "shortcuts":
-  //         //find notes by shortcuts
-  //         break;
-  //     }
-  //     this.setState({indexInfo: {header: params.header, title: params.title, id: params.id}});
-  //   }
-  // },
+  componentWillReceiveProps: function (newProps) {
+    if (newProps.location.query.header === "notebooks") {
+      debugger
+      var params = newProps.location.query;
+      this.setState({indexInfo: {header: params.header, title: params.title, id: params.id} });
+    }
+    // debugger
+    // console.log("componentWillReceiveProps app");
+    // if (!newProps.params.noteId && newProps.location) {
+    //   console.log('entered');
+    //   var params = newProps.location.query;
+    //   var notes = [];
+    //   switch (params.header) {
+    //     case "notes":
+    //       break;
+    //     case "notebooks":
+    //       break;
+    //     case "tags":
+    //       //find notes by tag
+    //       break;
+    //     case "shortcuts":
+    //       //find notes by shortcuts
+    //       break;
+    //   }
+    //   this.setState({indexInfo: {header: params.header, title: params.title, id: params.id}});
+    // }
+  },
 
   slideoutClickHandler: function (clickedIndex) {
     this.setState({slideoutIndex: clickedIndex});

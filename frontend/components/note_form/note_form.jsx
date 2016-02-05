@@ -8,6 +8,7 @@ var NoteStore = require('../../stores/note_store');
 var NotebookStore = require('../../stores/notebook_store');
 var NotebooksApiUtil = require('../../util/notebooks_api_util');
 var QuillToolbar = require('./toolbar');
+var MiniMenu = require('../mini_menu');
 
 var _quillEditor;
 var edit;
@@ -39,7 +40,7 @@ var NoteForm = React.createClass({
   },
 
   componentDidMount: function() {
-    // this.noteformListener = NoteStore.addListener(this._onChange);
+    this.noteformListener = NoteStore.addListener(this._onChange);
     // this.notebookListener = NoteBookStore.addListener(this._onChange);
     this.setUpQuillEditor();
   },
@@ -70,10 +71,11 @@ var NoteForm = React.createClass({
     var body = _quillEditor.getText();
     var notebook_id = $('.notebook-selection-dropdown option:selected').val();
     var note = {title: title, body: body, notebook_id: parseInt(notebook_id)};
-    $('.note-form-outer').removeClass('new-form');
     NotesApiUtil.createNote(note);
+
+    $('.note-form-outer').removeClass('expanded');
     this.setState({id: note.id, title: note.title, body: note.body});
-    // this.history.pushState(null, '/home/notes');
+    this.history.pushState(null, '/home');
   },
 
   handleBodyChange: function () {
@@ -94,19 +96,41 @@ var NoteForm = React.createClass({
   },
 
   setUpHeader: function () {
+		var minimenu = this.setUpMiniMenu();
     if (edit) {
-      return (<div>
-        <div onClick={this.handleExpand}>Expand</div>
-      </div>);
+      return (
+        <div>
+					{minimenu}
+          <div className="expand-button" onClick={this.handleExpand}><i className="fa fa-expand"></i></div>
+        </div>);
     } else {
       return (
         <div>
+					{minimenu}
           <div onClick={this.handleCancelClick}>Cancel</div>
           <div onClick={this.handleNewNoteDoneClick} className="new-note-done-button">Done</div>
         </div>
       )
     }
   },
+
+	setUpMiniMenu: function () {
+		var itemInfo = {
+			type: "note",
+			title: this.state.title,
+			id: this.state.id
+		}
+
+		return (
+			<MiniMenu className="note-form-minimenu" itemInfo={itemInfo} />
+		)
+	},
+
+	handleExpand: function () {
+		$('.notes-index').hide("slow");
+    $('.navbar').hide("slow");
+		$('.note-form-outer').addClass("expanded");
+	},
 
   handleCancelClick: function () {
     this.showHome();

@@ -6,13 +6,26 @@
   height: 100%;
 }
 
-.new-form {
+.expanded {
   padding: 0 100px;
 }
 
 .note-form-header {
   text-align: right;
   padding: 10px;
+}
+
+.note-form-minimenu {
+  float:left;
+  background: green;
+}
+
+.expand-button {
+
+}
+
+.expand-button:hover {
+  cursor: pointer;
 }
 
 .done-button {
@@ -42,8 +55,6 @@
 .ql-editor {
   height: 100%;
   padding: 20px;
-  /*box-shadow: 2px 1px 5px rgba(0,0,0,0.2);*/
   box-shadow: 2px 2px 8px;
   color: #513207;
-  /*border: 1px solid #513207;*/
 }

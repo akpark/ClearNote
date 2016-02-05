@@ -15,7 +15,7 @@ var NotebookIndexItem = React.createClass({
     this.history.pushState(
       null,
       '/home',
-      {header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id }
+      { header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id }
     );
     $('.slideout').hide();
   },
