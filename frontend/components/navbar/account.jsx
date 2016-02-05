@@ -28,15 +28,14 @@ var Account = React.createClass({
     return (
       <div className="account-options-menu">
         <div className="account-options-menu-header">
-          <img/>
           <div className="username">
-            {this.state.user.username};
-          </div>
-          <div className="account-options-menu-links">
-            <div className="settings link" onClick={this.handleSettingsClick}>Settings</div>
-            <div className="sign-out-button link" onClick={this.handleSignOutClick}><i className="fa fa-sign-out fa-lg"></i> Log Out</div>
+            {this.state.user.username}
           </div>
         </div>
+          <div className="account-options-menu-links">
+            <div className="settings-link" onClick={this.handleSettingsClick}>Settings</div>
+            <div className="sign-out-link" onClick={this.handleSignOutClick}><i className="fa fa-sign-out fa-lg"></i> Log Out</div>
+          </div>
       </div>
     );
   }

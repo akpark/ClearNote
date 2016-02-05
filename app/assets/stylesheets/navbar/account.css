@@ -1,18 +1,26 @@
 .account-options-menu {
   position: absolute;
   display: block;
-  border: 1px solid #black;
-  top: 25px;
-  left: 82px;
+  border: 1px solid #ccc;
+  top: -250px;
+  left: 65px;
   z-index: 100;
-  background: white;
+  background: #fff;
   width: 300px;
-  height: 200px;
+  height: 350px;
 }
 
 .account-options-menu-header {
-  height: 150px;
+  height: 75px;
   text-align: center;
+  border-bottom: 1px solid #aaa;
+  text-transform: uppercase;
+}
+
+.settings-link,
+.sign-out-link {
+  border-top: 1px solid #aaa;
+  padding: 10px;
 }
 
 .sign-out-button {
@@ -23,7 +31,8 @@
   border-top: 1px solid #ccc;
 }
 
-.link:hover {
+.settings-link:hover,
+.sign-out-link:hover {
   background: #2dbe60;
 }
 

@@ -31,10 +31,14 @@
   border: 1px solid #2dbe60;
   border-radius: 50%;
   background: #fff;
-  display: relative;
+
   text-align: center;
-  padding: 10px;
-  position: relative;
+  padding: 12px;
+  position: absolute;
+  margin: auto;
+  margin-bottom: 10px;
+
+  bottom: 0;
 }
 
 .profile-button:hover {

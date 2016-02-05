@@ -59,9 +59,9 @@
 	var CurrentUserStore = __webpack_require__(279);
 	var SessionsApiUtil = __webpack_require__(275);
 	var App = __webpack_require__(280);
-	var Home = __webpack_require__(286);
-	var Slideout = __webpack_require__(283);
-	var NotebooksIndex = __webpack_require__(284);
+	var Home = __webpack_require__(285);
+	var Slideout = __webpack_require__(282);
+	var NotebooksIndex = __webpack_require__(283);
 	
 	var router = React.createElement(
 	  Router,
@@ -45961,7 +45961,7 @@
 	var SessionsApiUtil = __webpack_require__(275);
 	var Navbar = __webpack_require__(281);
 	var NotesIndex = __webpack_require__(208);
-	var Slideout = __webpack_require__(283);
+	var Slideout = __webpack_require__(282);
 	var NoteStore = __webpack_require__(209);
 	var NotesApiUtil = __webpack_require__(232);
 	
@@ -46060,13 +46060,17 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var Account = __webpack_require__(282);
-	var Slideout = __webpack_require__(283);
+	var Account = __webpack_require__(286);
+	var Slideout = __webpack_require__(282);
 	
 	var NavBar = React.createClass({
 	  displayName: 'NavBar',
 	
 	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { profileSettingsOpen: false };
+	  },
 	
 	  componentDidMount: function () {
 	    $('.account-options-menu').hide();
@@ -46112,7 +46116,13 @@
 	  // },
 	
 	  handleProfileButtonClick: function (e) {
-	    $('.account-options-menu').fadeIn();
+	    if (this.state.profileSettingsOpen) {
+	      $('.account-options-menu').hide();
+	      this.setState({ profileSettingsOpen: false });
+	    } else {
+	      $('.account-options-menu').show();
+	      this.setState({ profileSettingsOpen: true });
+	    }
 	  },
 	
 	  render: function () {
@@ -46170,75 +46180,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(275);
-	var CurrentUserStore = __webpack_require__(279);
-	var SessionsApiUtil = __webpack_require__(275);
-	var History = __webpack_require__(159).History;
-	
-	var Account = React.createClass({
-	  displayName: 'Account',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { user: CurrentUserStore.currentUser() };
-	  },
-	
-	  componentDidMount: function () {
-	    this.signOutListener = CurrentUserStore.addListener(this._onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.signOutListener.remove();
-	  },
-	
-	  handleSignOutClick: function () {
-	    SessionsApiUtil.logout();
-	    this.history.pushState(null, '/login');
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'account-options-menu' },
-	      React.createElement(
-	        'div',
-	        { className: 'account-options-menu-header' },
-	        React.createElement('img', null),
-	        React.createElement(
-	          'div',
-	          { className: 'username' },
-	          this.state.user.username,
-	          ';'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'account-options-menu-links' },
-	          React.createElement(
-	            'div',
-	            { className: 'settings link', onClick: this.handleSettingsClick },
-	            'Settings'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'sign-out-button link', onClick: this.handleSignOutClick },
-	            React.createElement('i', { className: 'fa fa-sign-out fa-lg' }),
-	            ' Log Out'
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Account;
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NotebookIndex = __webpack_require__(284);
+	var NotebookIndex = __webpack_require__(283);
 	
 	var SlideOut = React.createClass({
 	  displayName: 'SlideOut',
@@ -46282,13 +46224,13 @@
 	module.exports = SlideOut;
 
 /***/ },
-/* 284 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var NotebooksApiUtil = __webpack_require__(271);
 	var NotebookStore = __webpack_require__(269);
-	var NotebookIndexItem = __webpack_require__(285);
+	var NotebookIndexItem = __webpack_require__(284);
 	var Modal = __webpack_require__(236);
 	
 	const customStyles = {
@@ -46423,7 +46365,7 @@
 	module.exports = NotebooksIndex;
 
 /***/ },
-/* 285 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -46480,7 +46422,7 @@
 	module.exports = NotebookIndexItem;
 
 /***/ },
-/* 286 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -46532,6 +46474,72 @@
 	});
 	
 	module.exports = Home;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SessionsApiUtil = __webpack_require__(275);
+	var CurrentUserStore = __webpack_require__(279);
+	var SessionsApiUtil = __webpack_require__(275);
+	var History = __webpack_require__(159).History;
+	
+	var Account = React.createClass({
+	  displayName: 'Account',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { user: CurrentUserStore.currentUser() };
+	  },
+	
+	  componentDidMount: function () {
+	    this.signOutListener = CurrentUserStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.signOutListener.remove();
+	  },
+	
+	  handleSignOutClick: function () {
+	    SessionsApiUtil.logout();
+	    this.history.pushState(null, '/login');
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'account-options-menu' },
+	      React.createElement(
+	        'div',
+	        { className: 'account-options-menu-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'username' },
+	          this.state.user.username
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'account-options-menu-links' },
+	        React.createElement(
+	          'div',
+	          { className: 'settings-link', onClick: this.handleSettingsClick },
+	          'Settings'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'sign-out-link', onClick: this.handleSignOutClick },
+	          React.createElement('i', { className: 'fa fa-sign-out fa-lg' }),
+	          ' Log Out'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Account;
 
 /***/ }
 /******/ ]);

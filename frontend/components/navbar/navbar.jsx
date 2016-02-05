@@ -6,6 +6,10 @@ var Slideout = require('../slideout/slideout');
 var NavBar = React.createClass({
   mixins: [History],
 
+  getInitialState: function () {
+    return ({profileSettingsOpen: false});
+  },
+
   componentDidMount: function () {
     $('.account-options-menu').hide();
   },
@@ -50,7 +54,13 @@ var NavBar = React.createClass({
   // },
 
   handleProfileButtonClick: function (e) {
-    $('.account-options-menu').fadeIn();
+    if (this.state.profileSettingsOpen) {
+      $('.account-options-menu').hide();
+      this.setState({profileSettingsOpen: false})
+    } else {
+      $('.account-options-menu').show();
+      this.setState({profileSettingsOpen: true})
+    }
   },
 
   render: function() {
