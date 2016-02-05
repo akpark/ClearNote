@@ -7,10 +7,26 @@ var History = require('react-router').History;
 var NoteStore = require('../../stores/note_store');
 var NotebookStore = require('../../stores/notebook_store');
 var NotebooksApiUtil = require('../../util/notebooks_api_util');
+var QuillToolbar = require('./toolbar');
 
 var _quillEditor;
 var edit;
 var sameEditor = false;
+
+const defaultColors = [
+	'rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)',
+	'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)',
+	'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)',
+	'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)',
+	'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)',
+	'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)',
+	'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)',
+	'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)',
+	'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)',
+	'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)',
+	'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)',
+	'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)',
+];
 
 var NoteForm = React.createClass({
   mixins: [History, LinkedStateMixin],
@@ -23,13 +39,14 @@ var NoteForm = React.createClass({
   },
 
   componentDidMount: function() {
-    debugger
-    this.noteformListener = NoteStore.addListener(this._onChange);
+    // this.noteformListener = NoteStore.addListener(this._onChange);
+    // this.notebookListener = NoteBookStore.addListener(this._onChange);
     this.setUpQuillEditor();
   },
 
-  componentWillUnmount: function () {
+  componentWillMount: function () {
     NotesApiUtil.fetchAllNotes();
+    NotebooksApiUtil.fetchAllNotebooks();
   },
 
   componentWillUnmount: function () {
@@ -97,22 +114,48 @@ var NoteForm = React.createClass({
   },
 
   setUpToolbar: function () {
+    var notebooks = this.getNotebooks();
+
     return (
       <div id="toolbar" className="ql-toolbar-container toolbar">
         <div className="ql-format-group">
+          <select className="notebook-selection-dropdown">
+            {notebooks}
+          </select>
+          <select className="ql-font">
+            <option value="sans-serif">Sans Serif</option>
+            <option value="serif">Serif</option>
+            <option value="monospace">Monospace</option>
+          </select>
+          <span className="ql-format-separator"></span>
           <select className="ql-size">
             <option value="10px">Small</option>
             <option value="13px" defaultValue>Normal</option>
             <option value="18px">Large</option>
             <option value="32px">Huge</option>
           </select>
+          <span className="ql-format-separator"></span>
           <span className="ql-bold ql-format-button"></span>
           <span className="ql-italic ql-format-button"></span>
           <span className="ql-strike ql-format-button"></span>
           <span className="ql-underline ql-format-button"></span>
-          <span className="ql-link ql-format-button"></span>
-          <span className="ql-background ql-format-button"></span>
           <span className="ql-format-separator"></span>
+          <span className="ql-link ql-format-button"></span>
+          <span className="ql-format-separator"></span>
+          <select className="ql-background ql-format-button">
+            {defaultColors.map(function (color) {
+              return (<option value={color} />);
+            })}
+          </select>
+          <span className="ql-format-separator"></span>
+          <select className="ql-color ql-format-button">
+            {defaultColors.map(function (color) {
+              return (<option value={color} />);
+            })}
+          </select>
+          <span className="ql-format-separator"></span>
+          <span className="ql-bullet ql-format-button"/>
+          <span className="ql-list ql-format-button"/>
         </div>
       </div>
     );
@@ -129,11 +172,12 @@ var NoteForm = React.createClass({
     _quillEditor.setText(this.state.body);
     _quillEditor.on('text-change', function (delta, source) {
       if (edit && !sameEditor) {
+        // debugger
         debugger
         this.handleBodyChange();
         this.setState({body: _quillEditor.getText()});
-        console.log("text change on edit");
-        debugger
+        // console.log("text change on edit");
+        // debugger
       }
       console.log("text change on new");
     }.bind(this));
@@ -149,7 +193,6 @@ var NoteForm = React.createClass({
   render: function() {
     var header = this.setUpHeader();
     var toolbar = this.setUpToolbar();
-    var notebooks = this.getNotebooks();
 
     if (_quillEditor) {
       sameEditor = true;
@@ -163,10 +206,6 @@ var NoteForm = React.createClass({
           {header}
         </div>
         <div className="editor-outer">
-          <label htmlFor="notebook-selection-dropdown">Notebook </label>
-          <select className="notebook-selection-dropdown">
-            {notebooks}
-          </select>
           {toolbar}
           <input
             className="note-form-title"

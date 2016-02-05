@@ -2,19 +2,42 @@ var React = require('react');
 var CurrentUserStore = require('../stores/current_user_store');
 var SessionsApiUtil = require('../util/sessions_api_util');
 var Navbar = require('./navbar/navbar');
-var NotesIndex = require('./notes_index/index');
+var NotesIndex = require('./notes/index');
 var Slideout = require('./slideout/slideout');
 var NoteStore = require('../stores/note_store');
 var NotesApiUtil = require('../util/notes_api_util');
 
 var App = React.createClass({
   getInitialState: function () {
-    return { slideoutOpen: false, slideoutIndex: "" }
+    return { slideoutOpen: false, slideoutIndex: "", indexInfo: { header: "notes", title: "notes" } }
   },
 
   componentWillMount: function () {
     SessionsApiUtil.fetchCurrentUser();
   },
+
+  // componentWillReceiveProps: function (newProps) {
+  //   debugger
+  //   console.log("componentWillReceiveProps app");
+  //   if (!newProps.params.noteId && newProps.location) {
+  //     console.log('entered');
+  //     var params = newProps.location.query;
+  //     var notes = [];
+  //     switch (params.header) {
+  //       case "notes":
+  //         break;
+  //       case "notebooks":
+  //         break;
+  //       case "tags":
+  //         //find notes by tag
+  //         break;
+  //       case "shortcuts":
+  //         //find notes by shortcuts
+  //         break;
+  //     }
+  //     this.setState({indexInfo: {header: params.header, title: params.title, id: params.id}});
+  //   }
+  // },
 
   slideoutClickHandler: function (clickedIndex) {
     this.setState({slideoutIndex: clickedIndex});
@@ -49,7 +72,7 @@ var App = React.createClass({
       <div className="home group">
         <Navbar slideoutClickHandler={this.slideoutClickHandler}/>
         <div className="home-right group">
-          <NotesIndex />
+          <NotesIndex indexInfo={this.state.indexInfo}/>
           <Slideout index={this.state.slideoutIndex} isOpen={this.state.slideoutOpen} />
           {this.props.children}
         </div>

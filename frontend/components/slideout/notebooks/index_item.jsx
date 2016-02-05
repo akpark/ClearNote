@@ -17,8 +17,7 @@ var NotebookIndexItem = React.createClass({
       '/home',
       {header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id }
     );
-
-    // $('.slideout').hide();
+    $('.slideout').hide();
   },
 
   getNotebookInfo: function () {

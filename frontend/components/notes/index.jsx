@@ -10,7 +10,7 @@ var NotesIndex = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return ({notes: NoteStore.all(), indexInfo: {header: "notes", title: "notes"}});
+    return ({notes: NoteStore.all(), indexInfo: this.props.indexInfo});
   },
 
   componentWillMount: function () {
@@ -23,55 +23,65 @@ var NotesIndex = React.createClass({
   },
 
   _onChange: function() {
-    var notes;
-    console.log("on change");
-    switch (this.state.indexInfo.header) {
+    console.log(this.props.indexInfo.header);
+    switch (this.props.indexInfo.header) {
       case "notes":
-        console.log("inside on change for notes");
-        notes = NoteStore.all();
+        this.setState({notes: NoteStore.all()});
         break;
       case "notebooks":
-        notes = NoteStore.findByNotebookId(indexInfo.id);
-        break;
-      case "tags":
-        notes = NoteStore.findByTagId(indexInfo.id);
+        this.setState({notes: NoteStore.findByNotebookId(this.props.indexInfo.id)});
         break;
     }
-    console.log("reset the notes");
-    this.setState({notes: notes})
+    // this.setState({notes: NoteStore.all()});
   },
+  //
+  // getNotes: function () {
+  //   var notes;
+  //   switch (this.props.indexInfo.header) {
+  //     case "notes":
+  //       notes = NoteStore.all();
+  //       break;
+  //     case "notebooks":
+  //       notes = NoteStore.findByNotebookId(this.props.indexInfo.id);
+  //       break;
+  //   }
+  //   return notes;
+  // },
 
-  componentWillReceiveProps: function (newProps) {
-    debugger
-    if (newProps.location) {
-      var params = newProps.location.query;
-      var notes = [];
-      switch (params.header) {
-        case "notebooks":
-          notes = NoteStore.findByNotebook(parseInt(params.id));
-          break;
-        case "tags":
-          //find notes by tag
-          break;
-        case "shortcuts":
-          //find notes by shortcuts
-          break;
-      }
-      this.setState({notes: notes, indexInfo: {header: params.header, title: params.title, id: params.id}});
-    }
-  },
-
-  getNotes: function () {
-    console.log("create notes array");
-    var notes = this.state.notes.map(function (note, key) {
-      return (<NoteIndexItem key={key} note={note} />);
-    });
-    return notes;
-  },
+  // getNotesIndexItems: function () {
+  //   var notes = this.getNotes();
+  //   var noteItems = this.state.notes.map(function (note, key) {
+  //     return (<NoteIndexItem key={key} note={note} />);
+  //   });
+  //   return noteItems;
+  // },
+  //
+  // getNotesIndexItems: function () {
+  //   console.log("getNotesIndexItems");
+  //   debugger
+  //   var notes = [];
+  //   switch (this.props.indexInfo.header) {
+  //     case "notes":
+  //       notes = NoteStore.all();
+  //       break;
+  //     case "notebooks":
+  //       notes = NoteStore.findByNotebookId(this.props.indexInfo.id);
+  //       break;
+  //   }
+  //   return notes;
+  // },
 
   render: function() {
-    var notes = this.getNotes();
-    var notesLength = (notes) ? notes.length : 0;
+    console.log("render notes index");
+    // var notes = this.getNotesIndexItems();
+    // console.log("notes: " + notes);
+    var noteItems = this.state.notes.map(function (note, key) {
+      return (<NoteIndexItem key={key} note={note} />);
+    });
+    // var notes = this.state.notes.map(function (note, key) {
+    //   return (<NoteIndexItem key={key} note={note} />);
+    // });
+    var notesLength = (this.state.notes) ? this.state.notes.length : 0;
 
     var optionsDropdown;
     if (this.state.optionsClicked) { optionsDropdown = <OptionsDropdown />; }
@@ -90,7 +100,7 @@ var NotesIndex = React.createClass({
         </div>
 
         <div className="note-index-items">
-          {notes}
+          {noteItems}
         </div>
       </div>
     );
