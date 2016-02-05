@@ -51,7 +51,9 @@ var NotesIndex = React.createClass({
     var noteItems = this.state.notes.map(function (note, key) {
       //if the first item in the array then send it a selected prop
       var selected = (key === 0) ? true : false;
-      return (<NoteIndexItem key={key} note={note} selected={selected} />);
+      var selectedClass = (key === 0) ? "selected" : "";
+
+      return (<NoteIndexItem className={selectedClass} key={key} note={note} selected={selected} />);
     });
 
     var notesLength = (this.state.notes) ? this.state.notes.length : 0;

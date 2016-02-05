@@ -24088,7 +24088,9 @@
 	    var noteItems = this.state.notes.map(function (note, key) {
 	      //if the first item in the array then send it a selected prop
 	      var selected = key === 0 ? true : false;
-	      return React.createElement(NoteIndexItem, { key: key, note: note, selected: selected });
+	      var selectedClass = key === 0 ? "selected" : "";
+	
+	      return React.createElement(NoteIndexItem, { className: selectedClass, key: key, note: note, selected: selected });
 	    });
 	
 	    var notesLength = this.state.notes ? this.state.notes.length : 0;
@@ -31130,7 +31132,6 @@
 	  },
 	
 	  componentWillMount: function () {
-	    var noteId = NoteStore.findFirst().id;
 	    if (this.state.selected) {
 	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
@@ -31201,10 +31202,14 @@
 	  render: function () {
 	    var elapsed = this.getUpdatedDate();
 	    var notesInfo = this.getNotesInfo();
+	    var klass = "note-index-item";
+	    if (this.state.selected) {
+	      klass += " selected";
+	    }
 	
 	    return React.createElement(
 	      'div',
-	      { className: 'note-index-item', onClick: this.showDetail },
+	      { className: klass, onClick: this.showDetail },
 	      React.createElement(
 	        'div',
 	        { className: 'note-index-item-inner' },
@@ -45820,6 +45825,7 @@
 	        var params = newProps.location.query;
 	        this.setState({ slideoutOpen: false, indexInfo: { header: params.header, title: params.title, id: params.id } });
 	        break;
+	
 	    }
 	  },
 	

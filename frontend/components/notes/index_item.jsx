@@ -11,7 +11,6 @@ var NoteIndexItem = React.createClass({
   },
 
   componentWillMount: function () {
-    var noteId = NoteStore.findFirst().id;
     if (this.state.selected) {
       this.history.pushState(null, 'home/notes/' + this.props.note.id);
     }
@@ -82,9 +81,13 @@ var NoteIndexItem = React.createClass({
   render: function() {
     var elapsed = this.getUpdatedDate();
     var notesInfo = this.getNotesInfo();
+    var klass = "note-index-item";
+    if (this.state.selected) {
+      klass += " selected";
+    }
 
     return (
-      <div className="note-index-item" onClick={this.showDetail}>
+      <div className={klass} onClick={this.showDetail}>
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
             <div className="note-index-item-title">{this.state.note.title}</div>
