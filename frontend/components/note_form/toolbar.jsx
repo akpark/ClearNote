@@ -17,6 +17,7 @@ const defaultColors = [
 
 var Toolbar = React.createClass({
 	render: function () {
+    console.log('rendering toolbar');
 		return (
 			<div id="toolbar" className="ql-toolbar-container toolbar">
 				<div className="ql-format-group">

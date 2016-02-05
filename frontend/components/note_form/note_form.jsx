@@ -7,8 +7,9 @@ var History = require('react-router').History;
 var NoteStore = require('../../stores/note_store');
 var NotebookStore = require('../../stores/notebook_store');
 var NotebooksApiUtil = require('../../util/notebooks_api_util');
-var QuillToolbar = require('./toolbar');
+// var QuillToolbar = require('./toolbar');
 var MiniMenu = require('../mini_menu');
+// var QuillEditor = require('./text_editor');
 
 var _quillEditor;
 var edit;
@@ -83,7 +84,8 @@ var NoteForm = React.createClass({
     }
 
     this.timer = setTimeout(function() {
-      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText() };
+      var notebook_id = parseInt($('.notebook-selection-dropdown').val());
+      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText(), notebook_id: notebook_id };
       if (edit) { NotesApiUtil.editNote(note); }
     }.bind(this), 2000);
   },
@@ -196,6 +198,7 @@ var NoteForm = React.createClass({
   },
 
   setUpQuillEditor: function () {
+    console.log('set up quill editor');
     _quillEditor = new Quill('#editor', {
       modules: {
         'toolbar': { container: '#toolbar' },

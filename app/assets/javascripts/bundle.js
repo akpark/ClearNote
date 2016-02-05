@@ -31147,7 +31147,8 @@
 	
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
-	    if (this.state.selected) {
+	    debugger;
+	    if (this.state.selected && this.props.className !== "selected") {
 	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
 	  },
@@ -33374,8 +33375,9 @@
 	var NoteStore = __webpack_require__(207);
 	var NotebookStore = __webpack_require__(267);
 	var NotebooksApiUtil = __webpack_require__(269);
-	var QuillToolbar = __webpack_require__(271);
+	// var QuillToolbar = require('./toolbar');
 	var MiniMenu = __webpack_require__(233);
+	// var QuillEditor = require('./text_editor');
 	
 	var _quillEditor;
 	var edit;
@@ -33439,7 +33441,8 @@
 	    }
 	
 	    this.timer = setTimeout(function () {
-	      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText() };
+	      var notebook_id = parseInt($('.notebook-selection-dropdown').val());
+	      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText(), notebook_id: notebook_id };
 	      if (edit) {
 	        NotesApiUtil.editNote(note);
 	      }
@@ -33609,6 +33612,7 @@
 	  },
 	
 	  setUpQuillEditor: function () {
+	    console.log('set up quill editor');
 	    _quillEditor = new Quill('#editor', {
 	      modules: {
 	        'toolbar': { container: '#toolbar' },
@@ -33675,32 +33679,182 @@
 
 	var React = __webpack_require__(1);
 	var ReactQuill = __webpack_require__(257);
-	var ApiUtil = __webpack_require__(230);
+	var NotebookStore = __webpack_require__(267);
+	
+	const defaultColors = ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)', 'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)', 'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)', 'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)', 'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)', 'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)', 'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)', 'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)', 'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)', 'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)', 'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)', 'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)'];
 	
 	var TextEditor = React.createClass({
 	  displayName: 'TextEditor',
 	
-	  handleBodyChange: function (e) {
+	  getInitialState: function () {
+	    debugger;
+	    edit = this.props.params.noteId === "new" ? false : true;
+	    var note = NoteStore.find(parseInt(this.props.params.noteId));
+	    return { id: note.id, title: note.title, body: note.body };
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    if (newProps.params.noteId === "new") {
+	      edit = false;
+	      this.setState({ title: "", body: "" });
+	      return;
+	    }
+	    var note = NoteStore.find(parseInt(newProps.params.noteId));
+	    this.setState({ id: note.id, title: note.title, body: note.body });
+	  },
+	
+	  handleBodyChange: function () {
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }
 	
 	    this.timer = setTimeout(function () {
-	      var note = this.props.note;
-	      note.body = this.state.body;
-	      ApiUtil.editNote(note, function () {
-	        console.log("Successfully edited!");
-	      });
-	    }.bind(this), 3000);
+	      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText() };
+	      if (edit) {
+	        NotesApiUtil.editNote(note);
+	      }
+	    }.bind(this), 2000);
+	  },
 	
-	    this.setState({ body: e.target.value });
+	  setUpToolbar: function () {
+	    var notebooks = this.getNotebooks();
+	
+	    return React.createElement(
+	      'div',
+	      { id: 'toolbar', className: 'ql-toolbar-container toolbar' },
+	      React.createElement(
+	        'div',
+	        { className: 'ql-format-group' },
+	        React.createElement(
+	          'select',
+	          { className: 'notebook-selection-dropdown' },
+	          notebooks
+	        ),
+	        React.createElement(
+	          'select',
+	          { className: 'ql-font' },
+	          React.createElement(
+	            'option',
+	            { value: 'sans-serif' },
+	            'Sans Serif'
+	          ),
+	          React.createElement(
+	            'option',
+	            { value: 'serif' },
+	            'Serif'
+	          ),
+	          React.createElement(
+	            'option',
+	            { value: 'monospace' },
+	            'Monospace'
+	          )
+	        ),
+	        React.createElement('span', { className: 'ql-format-separator' }),
+	        React.createElement(
+	          'select',
+	          { className: 'ql-size' },
+	          React.createElement(
+	            'option',
+	            { value: '10px' },
+	            'Small'
+	          ),
+	          React.createElement(
+	            'option',
+	            { value: '13px', defaultValue: true },
+	            'Normal'
+	          ),
+	          React.createElement(
+	            'option',
+	            { value: '18px' },
+	            'Large'
+	          ),
+	          React.createElement(
+	            'option',
+	            { value: '32px' },
+	            'Huge'
+	          )
+	        ),
+	        React.createElement('span', { className: 'ql-format-separator' }),
+	        React.createElement('span', { className: 'ql-bold ql-format-button' }),
+	        React.createElement('span', { className: 'ql-italic ql-format-button' }),
+	        React.createElement('span', { className: 'ql-strike ql-format-button' }),
+	        React.createElement('span', { className: 'ql-underline ql-format-button' }),
+	        React.createElement('span', { className: 'ql-format-separator' }),
+	        React.createElement('span', { className: 'ql-link ql-format-button' }),
+	        React.createElement('span', { className: 'ql-format-separator' }),
+	        React.createElement(
+	          'select',
+	          { className: 'ql-background ql-format-button' },
+	          defaultColors.map(function (color, key) {
+	            return React.createElement('option', { key: key, value: color });
+	          })
+	        ),
+	        React.createElement('span', { className: 'ql-format-separator' }),
+	        React.createElement(
+	          'select',
+	          { className: 'ql-color ql-format-button' },
+	          defaultColors.map(function (color, key) {
+	            return React.createElement('option', { key: key, value: color });
+	          })
+	        ),
+	        React.createElement('span', { className: 'ql-format-separator' }),
+	        React.createElement('span', { className: 'ql-bullet ql-format-button' }),
+	        React.createElement('span', { className: 'ql-list ql-format-button' })
+	      )
+	    );
+	  },
+	
+	  // setUpQuillEditor: function () {
+	  //   console.log('set up quill editor');
+	  //   _quillEditor = new Quill('#editor', {
+	  //     modules: {
+	  //       'toolbar': { container: '#toolbar' },
+	  //       'link-tooltip': true
+	  //     },
+	  //     theme: 'snow'
+	  //   });
+	  //   _quillEditor.setText(this.state.body);
+	  //   _quillEditor.on('text-change', function (delta, source) {
+	  //     if (edit && !sameEditor) {
+	  //       this.handleBodyChange();
+	  //       this.setState({body: _quillEditor.getText()});
+	  //     }
+	  //     console.log("text change on new");
+	  //   }.bind(this));
+	  // },
+	
+	  getNotebooks: function () {
+	    var notebooks = NotebookStore.all().map(function (notebook, key) {
+	      return React.createElement(
+	        'option',
+	        { key: key, value: notebook.id },
+	        notebook.title
+	      );
+	    });
+	    return notebooks;
 	  },
 	
 	  render: function () {
-	    var note = this.props.note;
-	    if (!note.id) {}
+	    var toolbar = this.setUpToolbar();
+	    debugger;
+	    // if (_quillEditor) {
+	    //   sameEditor = true;
+	    //   _quillEditor.setText(this.state.body);
+	    //   sameEditor = false;
+	    // }
 	
-	    return React.createElement('div', { className: 'text-editor' });
+	    return React.createElement(
+	      'div',
+	      { className: 'editor-outer' },
+	      toolbar,
+	      React.createElement('input', {
+	        className: 'note-form-title',
+	        type: 'text',
+	        onKeyUp: this.handleBodyChange,
+	        valueLink: this.linkState('title'),
+	        placeholder: 'Title your note' }),
+	      React.createElement('div', { id: 'editor' })
+	    );
 	  }
 	});
 	
@@ -45424,106 +45578,7 @@
 	module.exports = NotebookActions;
 
 /***/ },
-/* 271 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	
-	const defaultColors = ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)', 'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)', 'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)', 'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)', 'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)', 'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)', 'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)', 'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)', 'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)', 'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)', 'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)', 'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)'];
-	
-	var Toolbar = React.createClass({
-		displayName: 'Toolbar',
-	
-		render: function () {
-			return React.createElement(
-				'div',
-				{ id: 'toolbar', className: 'ql-toolbar-container toolbar' },
-				React.createElement(
-					'div',
-					{ className: 'ql-format-group' },
-					React.createElement(
-						'select',
-						{ className: 'notebook-selection-dropdown' },
-						notebooks
-					),
-					React.createElement(
-						'select',
-						{ className: 'ql-font' },
-						React.createElement(
-							'option',
-							{ value: 'sans-serif' },
-							'Sans Serif'
-						),
-						React.createElement(
-							'option',
-							{ value: 'serif' },
-							'Serif'
-						),
-						React.createElement(
-							'option',
-							{ value: 'monospace' },
-							'Monospace'
-						)
-					),
-					React.createElement('span', { className: 'ql-format-separator' }),
-					React.createElement(
-						'select',
-						{ className: 'ql-size' },
-						React.createElement(
-							'option',
-							{ value: '10px' },
-							'Small'
-						),
-						React.createElement(
-							'option',
-							{ value: '13px', defaultValue: true },
-							'Normal'
-						),
-						React.createElement(
-							'option',
-							{ value: '18px' },
-							'Large'
-						),
-						React.createElement(
-							'option',
-							{ value: '32px' },
-							'Huge'
-						)
-					),
-					React.createElement('span', { className: 'ql-format-separator' }),
-					React.createElement('span', { className: 'ql-bold ql-format-button' }),
-					React.createElement('span', { className: 'ql-italic ql-format-button' }),
-					React.createElement('span', { className: 'ql-strike ql-format-button' }),
-					React.createElement('span', { className: 'ql-underline ql-format-button' }),
-					React.createElement('span', { className: 'ql-format-separator' }),
-					React.createElement('span', { className: 'ql-link ql-format-button' }),
-					React.createElement('span', { className: 'ql-format-separator' }),
-					React.createElement(
-						'select',
-						{ className: 'ql-background ql-format-button' },
-						defaultColors.map(function (color) {
-							return React.createElement('option', { value: color });
-						})
-					),
-					React.createElement('span', { className: 'ql-format-separator' }),
-					React.createElement(
-						'select',
-						{ className: 'ql-color ql-format-button' },
-						defaultColors.map(function (color) {
-							return React.createElement('option', { value: color });
-						})
-					),
-					React.createElement('span', { className: 'ql-format-separator' }),
-					React.createElement('span', { className: 'ql-bullet ql-format-button' }),
-					React.createElement('span', { className: 'ql-list ql-format-button' })
-				)
-			);
-		}
-	});
-	
-	module.exports = Toolbar;
-
-/***/ },
+/* 271 */,
 /* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
