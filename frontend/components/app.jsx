@@ -22,6 +22,10 @@ var App = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
+    if (newProps.location.query.index === "notes") {
+      this.setState({slideoutOpen: false, indexInfo: {header: "notes", title: "notes"}});
+      return;
+    }
     switch (newProps.location.query.header) {
       case "notebooks":
         var params = newProps.location.query;

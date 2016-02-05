@@ -1,6 +1,7 @@
 var React = require('react');
 var Modal = require('react-modal');
 var NotesApiUtil = require('../util/notes_api_util');
+var NotebooksApiUtil = require('../util/notebooks_api_util');
 var History = require('react-router').History;
 
 const customStyles = {
@@ -57,14 +58,14 @@ var MiniMenu = React.createClass({
     debugger
     switch (this.props.itemInfo.type) {
       case "note":
-        console.log('entered');
-        NotesApiUtil.deleteNote(this.state.parentInfo.id);
+        NotesApiUtil.deleteNote(this.props.itemInfo.id);
         break;
       case "notebook":
-        NotebooksApiUtil.deleteNotebook(this.state.parentInfo.id);
+        NotebooksApiUtil.deleteNotebook(this.props.itemInfo.id);
         break;
     }
     this.closeModal();
+    // this.history.pushState(null, '/home', {index: "notes"});
   },
 
   render: function () {

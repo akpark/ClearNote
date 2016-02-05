@@ -92,7 +92,7 @@ var NoteIndexItem = React.createClass({
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
             <div className="note-index-item-title">{this.props.note.title}</div>
-            <MiniMenu itemInfo={this.getNotesInfo} />
+            <MiniMenu itemInfo={this.getNotesInfo()} />
           </div>
           <div className="note-index-item-date">{elapsed}</div>
           <div className="note-index-item-body">{this.props.note.body}</div>

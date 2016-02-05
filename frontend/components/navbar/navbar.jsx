@@ -38,7 +38,7 @@ var NavBar = React.createClass({
   },
 
   handleNotesClick: function () {
-    this.history.pushState(null, '/home', {indexInfo: {header: "notes"}});
+    this.history.pushState(null, '/home', {index: "notes"});
   },
 
   handleNotebooksClick: function () {

@@ -33,7 +33,7 @@ var NotebookIndexItem = React.createClass({
       <div className="notebook-index-item" onClick={this.handleNotebookItemClick}>
         <div className="notebook-index-item-top group">
           <div className="notebook-index-item-title">{this.props.notebook.title}</div>
-          <MiniMenu itemInfo={this.getNotebookInfo}/>
+          <MiniMenu itemInfo={this.getNotebookInfo()}/>
         </div>
         <div className="number-of-notes-in-notebook">{this.props.notebook.notes.length}</div>
       </div>

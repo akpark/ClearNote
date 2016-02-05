@@ -35,16 +35,14 @@ var NotesIndex = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    debugger
     switch (newProps.indexInfo.header) {
       case "notebooks":
         this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
         break;
-      // case "notes":
-      //   this.setState({notes: NoteStore.all()});
-      //   break;
-    // }
-  }
+      case "notes":
+        this.setState({notes: NoteStore.all()});
+        break;
+    }
   },
 
   render: function() {
