@@ -17,7 +17,7 @@ var MiniMenu = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    return {parentInfo: this.props.itemInfo, modalIsOpen: false}
+    return {modalIsOpen: false}
   },
 
   setUpModal: function () {
@@ -30,8 +30,8 @@ var MiniMenu = React.createClass({
         <div className="delete-modal-middle">
           <div className="delete-modal-inner">
             <i className="fa fa-trash-o fa-2x"></i>
-            <div className="delete-modal-title">Delete {this.state.parentInfo.type}</div>
-            <h2 className="delete-modal-question">Are you sure you want to delete <b>{this.state.parentInfo.title}</b></h2>
+            <div className="delete-modal-title">Delete {this.props.itemInfo.type}</div>
+            <h2 className="delete-modal-question">Are you sure you want to delete <b>{this.props.itemInfo.title}</b></h2>
             <div className="delete-modal-bottom group">
               <button className="delete-modal-cancel-button" onClick={this.closeModal}>Cancel</button>
               <button className="delete-modal-delete-button" onClick={this.handleDeleteClick}>Delete</button>

@@ -17,20 +17,26 @@ var NotebookIndexItem = React.createClass({
       '/home',
       {header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id }
     );
-    
+
     // $('.slideout').hide();
   },
 
-  render: function () {
-    var notebook = this.state.notebook;
+  getNotebookInfo: function () {
+    return {
+      type: "notebook",
+      id: this.props.notebook.id,
+      title: this.props.notebook.title
+    }
+  },
 
+  render: function () {
     return (
       <div className="notebook-index-item" onClick={this.handleNotebookItemClick}>
         <div className="notebook-index-item-top group">
-          <div className="notebook-index-item-title">{notebook.title}</div>
-          <MiniMenu notebook={notebook}/>
+          <div className="notebook-index-item-title">{this.props.notebook.title}</div>
+          <MiniMenu itemInfo={this.getNotebookInfo}/>
         </div>
-        <div className="number-of-notes-in-notebook">{notebook.notes}</div>
+        <div className="number-of-notes-in-notebook">{this.props.notebook.notes.length}</div>
       </div>
     )
   }

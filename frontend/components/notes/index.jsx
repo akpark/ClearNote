@@ -61,7 +61,7 @@ var NotesIndex = React.createClass({
     }
   },
 
-  createNotesArray: function () {
+  getNotes: function () {
     console.log("create notes array");
     var notes = this.state.notes.map(function (note, key) {
       return (<NoteIndexItem key={key} note={note} />);
@@ -70,7 +70,7 @@ var NotesIndex = React.createClass({
   },
 
   render: function() {
-    var notes = this.createNotesArray();
+    var notes = this.getNotes();
     var notesLength = (notes) ? notes.length : 0;
 
     var optionsDropdown;

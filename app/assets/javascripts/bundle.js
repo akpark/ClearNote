@@ -43124,10 +43124,10 @@
 	      this.__emitChange();
 	      break;
 	
-	    // case NotebookConstants.CREATE_NOTEBOOK:
-	    //   addNotebook(payload.notebook);
-	    //   this.__emitChange();
-	    //   break;
+	    case NotebookConstants.CREATE_NOTEBOOK:
+	      addNotebook(payload.notebook);
+	      this.__emitChange();
+	      break;
 	
 	    case NotebookConstants.DELETE_NOTEBOOK:
 	      deleteNotebook(payload.notebook);
@@ -43558,6 +43558,7 @@
 	  closeSlideout: function () {
 	    this.setState({ slideoutOpen: false });
 	    $('.note-form-outer').fadeTo("slow", 1);
+	    console.log("entered");
 	  },
 	
 	  openSlideout: function () {
@@ -43565,6 +43566,7 @@
 	    $('.note-form-outer').fadeTo("slow", 0.2);
 	    $('.note-form-outer').on('click', function () {
 	      this.closeSlideout();
+	      // $('.note-form-outer').fadeTo('slow', 1);
 	    }.bind(this));
 	  },
 	
@@ -43832,17 +43834,17 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var NotebooksApiUtil = __webpack_require__(248);
 	var NotebookStore = __webpack_require__(246);
 	var NotebookIndexItem = __webpack_require__(261);
-	var NotebooksApiUtil = __webpack_require__(248);
 	var Modal = __webpack_require__(263);
 	
 	const customStyles = {
 	  content: {
-	    top: '25%',
-	    bottom: '25%',
-	    left: '25%',
-	    right: '25%'
+	    top: '0',
+	    bottom: '0',
+	    left: '0',
+	    right: '0'
 	  }
 	};
 	
@@ -43858,15 +43860,12 @@
 	    NotebooksApiUtil.fetchAllNotebooks();
 	  },
 	
-	  componentWillMount: function () {},
-	
 	  componentWillUnmount: function () {
 	    this.notebookListener.remove();
 	  },
 	
 	  _onChange: function () {
-	    var notebooks = NotebookStore.all();
-	    this.setState({ notebooks: notebooks });
+	    this.setState({ notebooks: NotebookStore.all() });
 	  },
 	
 	  openModal: function () {
@@ -43884,10 +43883,16 @@
 	    this.closeModal();
 	  },
 	
-	  render: function () {
+	  getNotebooks: function () {
 	    var notebooks = this.state.notebooks.map(function (notebook, key) {
 	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook });
 	    });
+	    return notebooks;
+	  },
+	
+	  render: function () {
+	    var notebooks = this.getNotebooks();
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'notebook-index' },
@@ -43923,38 +43928,41 @@
 	        )
 	      ),
 	      React.createElement(
-	        Modal,
-	        { className: 'new-notebook-modal',
-	          isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: customStyles },
-	        React.createElement(
-	          'h2',
-	          { className: 'new-notebook-modal-title' },
-	          'Create Notebook'
-	        ),
-	        React.createElement('input', { className: 'new-notebook-title-input',
-	          type: 'text',
-	          placeholder: 'Title your notebook' }),
-	        React.createElement(
-	          'div',
-	          { className: 'new-notebook-modal-bottom group' },
-	          React.createElement(
-	            'button',
-	            { className: 'new-notebook-cancel-button', onClick: this.closeModal },
-	            'Cancel'
-	          ),
-	          React.createElement(
-	            'button',
-	            { className: 'new-notebook-create-button', onClick: this.handleNewNotebookClick },
-	            'Create Notebook'
-	          )
-	        )
-	      ),
-	      React.createElement(
 	        'div',
 	        { className: 'notebook-index-items' },
 	        notebooks
+	      ),
+	      React.createElement(
+	        Modal,
+	        { isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'div',
+	          { className: 'new-notebook-modal' },
+	          React.createElement(
+	            'h2',
+	            { className: 'new-notebook-modal-title' },
+	            'Create Notebook'
+	          ),
+	          React.createElement('input', { className: 'new-notebook-title-input',
+	            type: 'text',
+	            placeholder: 'Title your notebook' }),
+	          React.createElement(
+	            'div',
+	            { className: 'new-notebook-modal-bottom group' },
+	            React.createElement(
+	              'button',
+	              { className: 'new-notebook-cancel-button', onClick: this.closeModal },
+	              'Cancel'
+	            ),
+	            React.createElement(
+	              'button',
+	              { className: 'new-notebook-create-button', onClick: this.handleNewNotebookClick },
+	              'Create Notebook'
+	            )
+	          )
+	        )
 	      )
 	    );
 	  }
@@ -43987,9 +43995,15 @@
 	    // $('.slideout').hide();
 	  },
 	
-	  render: function () {
-	    var notebook = this.state.notebook;
+	  getNotebookInfo: function () {
+	    return {
+	      type: "notebook",
+	      id: this.props.notebook.id,
+	      title: this.props.notebook.title
+	    };
+	  },
 	
+	  render: function () {
 	    return React.createElement(
 	      'div',
 	      { className: 'notebook-index-item', onClick: this.handleNotebookItemClick },
@@ -43999,14 +44013,14 @@
 	        React.createElement(
 	          'div',
 	          { className: 'notebook-index-item-title' },
-	          notebook.title
+	          this.props.notebook.title
 	        ),
-	        React.createElement(MiniMenu, { notebook: notebook })
+	        React.createElement(MiniMenu, { itemInfo: this.getNotebookInfo })
 	      ),
 	      React.createElement(
 	        'div',
 	        { className: 'number-of-notes-in-notebook' },
-	        notebook.notes
+	        this.props.notebook.notes.length
 	      )
 	    );
 	  }
@@ -44039,7 +44053,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { parentInfo: this.props.itemInfo, modalIsOpen: false };
+	    return { modalIsOpen: false };
 	  },
 	
 	  setUpModal: function () {
@@ -44060,7 +44074,7 @@
 	            'div',
 	            { className: 'delete-modal-title' },
 	            'Delete ',
-	            this.state.parentInfo.type
+	            this.props.itemInfo.type
 	          ),
 	          React.createElement(
 	            'h2',
@@ -44069,7 +44083,7 @@
 	            React.createElement(
 	              'b',
 	              null,
-	              this.state.parentInfo.title
+	              this.props.itemInfo.title
 	            )
 	          ),
 	          React.createElement(

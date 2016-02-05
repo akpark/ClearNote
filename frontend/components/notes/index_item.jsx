@@ -38,7 +38,7 @@ var NoteIndexItem = React.createClass({
   },
 
   //TODO!!!refactor this
-  getCreatedDate: function () {
+  getUpdatedDate: function () {
     var note = this.props.note;
     var updated_at = new Date(note.updated_at);
     var today = new Date();
@@ -69,15 +69,24 @@ var NoteIndexItem = React.createClass({
     return time + " ago";
   },
 
+  getNotesInfo: function () {
+    return {
+      type: "note",
+      id: this.props.note.id,
+      title: this.props.note.title
+    }
+  },
+
   render: function() {
-    var elapsed = this.getCreatedDate();
+    var elapsed = this.getUpdatedDate();
+    var notesInfo = this.getNotesInfo();
 
     return (
       <div className="note-index-item" onClick={this.showDetail}>
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
             <div className="note-index-item-title">{this.state.note.title}</div>
-            <MiniMenu note={this.state.note}/>
+            <MiniMenu itemInfo={this.getNotesInfo}/>
           </div>
           <div className="note-index-item-date">{elapsed}</div>
           <div className="note-index-item-body">{this.state.note.body}</div>

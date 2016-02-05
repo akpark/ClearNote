@@ -41,8 +41,8 @@
 
 .new-notebook-modal {
   text-align: center;
-  border-radius: 5px;
-  border: none;
+  z-index: 200;
+  position: relative;
 }
 
 .new-notebook-modal-title {
@@ -75,5 +75,5 @@
 }
 
 .mini-menu-delete {
-  
+
 }

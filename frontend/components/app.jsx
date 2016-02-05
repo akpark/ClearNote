@@ -28,6 +28,7 @@ var App = React.createClass({
   closeSlideout: function () {
     this.setState({slideoutOpen: false});
     $('.note-form-outer').fadeTo("slow", 1);
+    console.log("entered");
   },
 
   openSlideout: function () {
@@ -35,6 +36,7 @@ var App = React.createClass({
     $('.note-form-outer').fadeTo("slow", 0.2);
     $('.note-form-outer').on('click', function () {
       this.closeSlideout();
+      // $('.note-form-outer').fadeTo('slow', 1);
     }.bind(this));
   },
 
@@ -45,9 +47,7 @@ var App = React.createClass({
 
     return (
       <div className="home group">
-
         <Navbar slideoutClickHandler={this.slideoutClickHandler}/>
-
         <div className="home-right group">
           <NotesIndex />
           <Slideout index={this.state.slideoutIndex} isOpen={this.state.slideoutOpen} />

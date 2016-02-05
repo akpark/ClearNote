@@ -1,15 +1,15 @@
 var React = require('react');
+var NotebooksApiUtil = require('../../../util/notebooks_api_util');
 var NotebookStore = require('../../../stores/notebook_store');
 var NotebookIndexItem = require('./index_item');
-var NotebooksApiUtil = require('../../../util/notebooks_api_util');
 var Modal = require('react-modal');
 
 const customStyles = {
   content: {
-    top: '25%',
-    bottom: '25%',
-    left: '25%',
-    right: '25%',
+    top: '0',
+    bottom: '0',
+    left: '0',
+    right: '0',
   }
 };
 
@@ -23,16 +23,12 @@ var NotebooksIndex = React.createClass({
     NotebooksApiUtil.fetchAllNotebooks();
   },
 
-  componentWillMount: function () {
-  },
-
   componentWillUnmount: function () {
     this.notebookListener.remove();
   },
 
   _onChange: function () {
-    var notebooks = NotebookStore.all();
-    this.setState({notebooks: notebooks});
+    this.setState({notebooks: NotebookStore.all()});
   },
 
   openModal: function () {
@@ -50,12 +46,16 @@ var NotebooksIndex = React.createClass({
     this.closeModal();
   },
 
-  render: function () {
+  getNotebooks: function () {
     var notebooks = this.state.notebooks.map(function (notebook, key) {
-      return (
-        <NotebookIndexItem key={key} notebook={notebook} />
-      )
+      return (<NotebookIndexItem key={key} notebook={notebook} />);
     });
+    return notebooks;
+  },
+
+  render: function () {
+    var notebooks = this.getNotebooks();
+
     return (
       <div className="notebook-index">
         <div className="notebook-index-header">
@@ -77,24 +77,26 @@ var NotebooksIndex = React.createClass({
           </div>
         </div>
 
-        <Modal className="new-notebook-modal"
-               isOpen={this.state.modalIsOpen}
-               onRequestClose={this.closeModal}
-               style={customStyles} >
-
-          <h2 className="new-notebook-modal-title">Create Notebook</h2>
-          <input className="new-notebook-title-input"
-                 type="text"
-                 placeholder="Title your notebook" />
-               
-          <div className="new-notebook-modal-bottom group">
-            <button className="new-notebook-cancel-button" onClick={this.closeModal}>Cancel</button>
-            <button className="new-notebook-create-button" onClick={this.handleNewNotebookClick}>Create Notebook</button>
-          </div>
-        </Modal>
         <div className="notebook-index-items">
           {notebooks}
         </div>
+
+        <Modal isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}>
+
+          <div className="new-notebook-modal">
+            <h2 className="new-notebook-modal-title">Create Notebook</h2>
+            <input className="new-notebook-title-input"
+                   type="text"
+                   placeholder="Title your notebook" />
+
+            <div className="new-notebook-modal-bottom group">
+              <button className="new-notebook-cancel-button" onClick={this.closeModal}>Cancel</button>
+              <button className="new-notebook-create-button" onClick={this.handleNewNotebookClick}>Create Notebook</button>
+            </div>
+          </div>
+        </Modal>
       </div>
     )
   }
