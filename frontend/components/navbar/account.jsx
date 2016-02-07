@@ -11,17 +11,9 @@ var Account = React.createClass({
     return {user: CurrentUserStore.currentUser()};
   },
 
-  componentDidMount: function () {
-    this.signOutListener = CurrentUserStore.addListener(this._onChange);
-  },
-
-  componentWillUnmount: function () {
-    this.signOutListener.remove();
-  },
-
   handleSignOutClick: function () {
     SessionsApiUtil.logout();
-    this.history.pushState(null, '/welcome');
+    this.history.pushState(null, '/');
   },
 
   render: function () {

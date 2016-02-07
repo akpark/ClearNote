@@ -1,8 +1,12 @@
 var React = require('react');
 var SessionForm = require('./user_form');
 var UserForm = require('./new');
+var CurrentUserStore = require('../../stores/current_user_store');
+var SessionsApiUtil = require('../../util/sessions_api_util');
+var History = require('react-router').History;
 
 var Session = React.createClass({
+  mixins: [History],
 
   componentDidMount: function () {
     $('.sign-up').hide();

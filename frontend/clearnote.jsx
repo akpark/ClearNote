@@ -20,16 +20,21 @@ var WelcomeForm = require('./components/sessions/session');
 
 var router = (
   <Router>
-    <Route path="/" onEnter={_ensureLoggedIn}/>
-    <Route path="welcome" component={ WelcomeForm } />
-    <Route path="register" component={ UserForm } />
-    <Route path="home" component={ App } onEnter={_ensureLoggedIn}>
+    <Route path="/" component={ WelcomeForm } onEnter={_redirectIfLoggedIn}/>
+    <Route path="/home" component={ App } onEnter={_ensureLoggedIn}>
       <Route path="notes">
         <Route path=":noteId" component={ NoteForm }/>
       </Route>
     </Route>
   </Router>
 );
+
+function _redirectIfLoggedIn(nextState, replace) {
+  debugger
+  if (CurrentUserStore.isLoggedIn()) {
+    replace({}, "/home");
+  }
+}
 
 function _ensureLoggedIn(nextState, replace, callback) {
   if (CurrentUserStore.userHasBeenFetched()) {
@@ -40,7 +45,7 @@ function _ensureLoggedIn(nextState, replace, callback) {
 
   function _redirectIfNotLoggedIn() {
     if (!CurrentUserStore.isLoggedIn()) {
-      replace({}, "/welcome");
+      replace({}, "/");
     }
     callback();
   }
