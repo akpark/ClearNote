@@ -9,18 +9,19 @@ var NotesIndex = require('./components/notes/index');
 var NoteForm = require('./components/note_form/note_form');
 var NoteStore = require('./stores/note_store');
 var SessionForm = require('./components/sessions/new');
-var UserForm = require('./components/users/user_form');
+var UserForm = require('./components/sessions/user_form');
 var CurrentUserStore = require('./stores/current_user_store');
 var SessionsApiUtil = require('./util/sessions_api_util');
 var App = require('./components/app');
 var Home = require('./components/home');
 var Slideout = require('./components/slideout/slideout');
 var NotebooksIndex = require('./components/slideout/notebooks/index');
+var WelcomeForm = require('./components/sessions/session');
 
 var router = (
   <Router>
-    <Route path="/" component={ Home } onEnter={_ensureLoggedIn}/>
-    <Route path="login" component={ SessionForm } />
+    <Route path="/" onEnter={_ensureLoggedIn}/>
+    <Route path="welcome" component={ WelcomeForm } />
     <Route path="register" component={ UserForm } />
     <Route path="home" component={ App } onEnter={_ensureLoggedIn}>
       <Route path="notes">
@@ -39,7 +40,7 @@ function _ensureLoggedIn(nextState, replace, callback) {
 
   function _redirectIfNotLoggedIn() {
     if (!CurrentUserStore.isLoggedIn()) {
-      replace({}, "login");
+      replace({}, "/welcome");
     }
     callback();
   }

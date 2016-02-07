@@ -4,33 +4,99 @@
   background-repeat: no-repeat;
   background-position: center;
   background-size: 100%;
+  border: 1px solid white;
   width: 100%;
   height: 100%;
 }
 
-.sign-in-outer {
-  width: 100%;
-  height: 100%;
-  margin: auto auto;
-  position: relative;
-}
-
-.sign-in, .sign-up {
+.welcome-page-form {
   position: absolute;
-  display: inline-block;
-  left: 40%;
-  top: 52%;
-  width: 500px;
-  height: 300px;
+  left: 43%;
+  top: 54%;
+  width: 475px;
+  height: 280px;
   margin: auto auto;
   border: 1px solid #ccc;
   background-repeat: no-repeat;
-  background: white;
+  background: #dbd7cd;
   border: 1px solid #ccc;
   border-radius: 10px;
-  text-align: center;
 }
 
+.sign-in-button,
+.register-button {
+  width: 50%;
+  border: 0;
+  padding: 4px 5px;
+  font-size: 18px;
+  font-family: 'Bodoni MT';
+  font-weight: 100;
+  background-color: #4D3B07;
+  color: #fff;
+  border-bottom: 1px solid #80898E;
+}
+
+.sign-in-button:hover,
+.register-button:hover {
+  cursor: pointer;
+  background-color: #706238;
+}
+
+.sign-in-button {
+  border-radius: 5px 4px 0 0;
+  // border-right: 1px solid #ccc;
+}
+
+.register-button {
+  border-right: 2px solid #ccc;
+  // border-left: 2px solid #ccc;
+  border-radius: 4px 5px 0 0;
+}
+
+.sign-in, .sign-up {
+  padding: 20px;
+}
+
+.sign-in input,
+.sign-up input {
+  width: 410px;
+  padding: 10px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: left;
+  box-shadow: inset 0 1px 5px rgba(0,0,0,0.2), 0 1px rgba(255,255,255,.8);
+}
+
+::-webkit-input-placeholder {
+  color: black;
+  text-align: left;
+}
+
+.sign-in button,
+.sign-up button {
+  width: 430px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 0;
+  border-radius: 2px;
+  font-size: 16px;
+  background-color: #435E6E;
+  // background-color: #80898E;
+  color: white;
+  font-family: optima;
+}
+
+#guest-login-button {
+  // background-color: #512123;
+  background-color: #74292A;
+  color: white;
+}
+
+.sign-in button:hover,
+.sign-up button:hover {
+  cursor: pointer;
+}
 
 
 /*body {

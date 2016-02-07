@@ -9,46 +9,36 @@ var SessionForm = React.createClass({
     e.preventDefault();
     var credentials = $(e.currentTarget).serializeJSON();
     SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, "home");
+      this.history.pushState({}, "/home");
     }.bind(this));
   },
 
   handleGuestLogin: function () {
     var credentials = {username: "guest", password: "password"};
     SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, "home");
+      this.history.pushState({}, "/home");
     }.bind(this));
   },
 
   render: function() {
     return (
-      <div className="welcome-page">
-        <div className="sign-in-outer">
-          <div className="sign-in">
-            <h1>Sign in</h1>
-            <form onSubmit={ this.submit }>
+      <div className="sign-in">
+        <form onSubmit={ this.submit }>
 
-              <div className="input">
-                <label>Email address or username
-                <input type="text" name="username"/>
-                </label>
-              </div>
-
-              <div className="input">
-                <label>Password
-                <input type="password" name="password"/>
-                </label>
-              </div>
-
-              <button>Log In!</button>
-            </form>
-
-            <button className="guest-login-button"
-                    onClick={this.handleGuestLogin}>
-                    Guest Log In </button>
-
+          <div className="input">
+            <input type="text" name="username" placeholder="username or email"/>
           </div>
-        </div>
+
+          <div className="input">
+            <input type="password" name="password" placeholder="password"/>
+          </div>
+
+          <button>Log In</button>
+        </form>
+
+        <button id="guest-login-button"
+                onClick={this.handleGuestLogin}>
+                Guest Login</button>
       </div>
     );
   }

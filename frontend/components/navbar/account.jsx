@@ -21,7 +21,7 @@ var Account = React.createClass({
 
   handleSignOutClick: function () {
     SessionsApiUtil.logout();
-    this.history.pushState(null, '/login');
+    this.history.pushState(null, '/welcome');
   },
 
   render: function () {

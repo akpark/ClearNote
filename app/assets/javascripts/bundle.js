@@ -54,20 +54,21 @@
 	var NotesIndex = __webpack_require__(208);
 	var NoteForm = __webpack_require__(261);
 	var NoteStore = __webpack_require__(209);
-	var SessionForm = __webpack_require__(273);
-	var UserForm = __webpack_require__(277);
-	var CurrentUserStore = __webpack_require__(278);
-	var SessionsApiUtil = __webpack_require__(274);
-	var App = __webpack_require__(279);
-	var Home = __webpack_require__(290);
-	var Slideout = __webpack_require__(282);
-	var NotebooksIndex = __webpack_require__(283);
+	var SessionForm = __webpack_require__(291);
+	var UserForm = __webpack_require__(290);
+	var CurrentUserStore = __webpack_require__(273);
+	var SessionsApiUtil = __webpack_require__(275);
+	var App = __webpack_require__(277);
+	var Home = __webpack_require__(288);
+	var Slideout = __webpack_require__(280);
+	var NotebooksIndex = __webpack_require__(281);
+	var WelcomeForm = __webpack_require__(289);
 	
 	var router = React.createElement(
 	  Router,
 	  null,
-	  React.createElement(Route, { path: '/', component: Home, onEnter: _ensureLoggedIn }),
-	  React.createElement(Route, { path: 'login', component: SessionForm }),
+	  React.createElement(Route, { path: '/', onEnter: _ensureLoggedIn }),
+	  React.createElement(Route, { path: 'welcome', component: WelcomeForm }),
 	  React.createElement(Route, { path: 'register', component: UserForm }),
 	  React.createElement(
 	    Route,
@@ -89,7 +90,7 @@
 	
 	  function _redirectIfNotLoggedIn() {
 	    if (!CurrentUserStore.isLoggedIn()) {
-	      replace({}, "login");
+	      replace({}, "/welcome");
 	    }
 	    callback();
 	  }
@@ -45711,93 +45712,61 @@
 /* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	var SessionsApiUtil = __webpack_require__(274);
+	var Store = __webpack_require__(210).Store;
+	var AppDispatcher = __webpack_require__(229);
+	var CurrentUserConstants = __webpack_require__(274);
 	
-	var SessionForm = React.createClass({
-	  displayName: 'SessionForm',
+	var _currentUser = {};
+	var _currentUserHasBeenFetched = false;
+	var CurrentUserStore = new Store(AppDispatcher);
 	
-	  mixins: [History],
+	CurrentUserStore.currentUser = function () {
+	  return $.extend({}, _currentUser);
+	};
 	
-	  submit: function (e) {
-	    e.preventDefault();
-	    var credentials = $(e.currentTarget).serializeJSON();
-	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, "home");
-	    }.bind(this));
-	  },
+	CurrentUserStore.isLoggedIn = function () {
+	  return !!_currentUser.id;
+	};
 	
-	  handleGuestLogin: function () {
-	    var credentials = { username: "guest", password: "password" };
-	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, "home");
-	    }.bind(this));
-	  },
+	CurrentUserStore.userHasBeenFetched = function () {
+	  return _currentUserHasBeenFetched;
+	};
 	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'welcome-page' },
-	      React.createElement(
-	        'div',
-	        { className: 'sign-in-outer' },
-	        React.createElement(
-	          'div',
-	          { className: 'sign-in' },
-	          React.createElement(
-	            'h1',
-	            null,
-	            'Sign in'
-	          ),
-	          React.createElement(
-	            'form',
-	            { onSubmit: this.submit },
-	            React.createElement(
-	              'div',
-	              { className: 'input' },
-	              React.createElement(
-	                'label',
-	                null,
-	                'Email address or username',
-	                React.createElement('input', { type: 'text', name: 'username' })
-	              )
-	            ),
-	            React.createElement(
-	              'div',
-	              { className: 'input' },
-	              React.createElement(
-	                'label',
-	                null,
-	                'Password',
-	                React.createElement('input', { type: 'password', name: 'password' })
-	              )
-	            ),
-	            React.createElement(
-	              'button',
-	              null,
-	              'Log In!'
-	            )
-	          ),
-	          React.createElement(
-	            'button',
-	            { className: 'guest-login-button',
-	              onClick: this.handleGuestLogin },
-	            'Guest Log In '
-	          )
-	        )
-	      )
-	    );
+	CurrentUserStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case CurrentUserConstants.RECEIVE_CURRENT_USER:
+	      _currentUserHasBeenFetched = true;
+	      _currentUser = payload.currentUser;
+	      this.__emitChange();
+	      break;
+	
+	    case CurrentUserConstants.DELETE_USER:
+	      _currentUser = {};
+	      _currentUserHasBeenFetched = false;
+	      this.__emitChange();
+	      break;
 	  }
-	});
+	};
 	
-	module.exports = SessionForm;
+	module.exports = CurrentUserStore;
+	window.CurrentUserStore = CurrentUserStore;
 
 /***/ },
 /* 274 */
+/***/ function(module, exports) {
+
+	var CurrentUserConstants = {
+	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER",
+	  DELETE_USER: "DELETE_USER"
+	};
+	
+	module.exports = CurrentUserConstants;
+
+/***/ },
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(275);
+	var CurrentUserActions = __webpack_require__(276);
 	
 	var SessionsApiUtil = {
 	
@@ -45847,11 +45816,11 @@
 	module.exports = SessionsApiUtil;
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(229);
-	var CurrentUserConstants = __webpack_require__(276);
+	var CurrentUserConstants = __webpack_require__(274);
 	
 	var CurrentUserActions = {
 	  receiveCurrentUser: function (currentUser) {
@@ -45871,135 +45840,18 @@
 	module.exports = CurrentUserActions;
 
 /***/ },
-/* 276 */
-/***/ function(module, exports) {
-
-	var CurrentUserConstants = {
-	  RECEIVE_CURRENT_USER: "RECEIVE_CURRENT_USER",
-	  DELETE_USER: "DELETE_USER"
-	};
-	
-	module.exports = CurrentUserConstants;
-
-/***/ },
 /* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	
-	var UserForm = React.createClass({
-	  displayName: 'UserForm',
-	
-	  mixins: [History],
-	
-	  submit: function (e) {
-	    e.preventDefault();
-	    this.history.pushState(null, 'home/notes');
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'sign-up' },
-	      React.createElement(
-	        'h1',
-	        null,
-	        'Create Account'
-	      ),
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.submit },
-	        React.createElement(
-	          'div',
-	          { className: 'input' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'Your Email Address',
-	            React.createElement('input', { type: 'text',
-	              name: 'user[username]' })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'input' },
-	          React.createElement(
-	            'label',
-	            null,
-	            'Create a password',
-	            React.createElement('input', { type: 'password',
-	              name: 'user[password]' })
-	          )
-	        ),
-	        React.createElement(
-	          'button',
-	          null,
-	          'Create Account'
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = UserForm;
-
-/***/ },
-/* 278 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(210).Store;
-	var AppDispatcher = __webpack_require__(229);
-	var CurrentUserConstants = __webpack_require__(276);
-	
-	var _currentUser = {};
-	var _currentUserHasBeenFetched = false;
-	var CurrentUserStore = new Store(AppDispatcher);
-	
-	CurrentUserStore.currentUser = function () {
-	  return $.extend({}, _currentUser);
-	};
-	
-	CurrentUserStore.isLoggedIn = function () {
-	  return !!_currentUser.id;
-	};
-	
-	CurrentUserStore.userHasBeenFetched = function () {
-	  return _currentUserHasBeenFetched;
-	};
-	
-	CurrentUserStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case CurrentUserConstants.RECEIVE_CURRENT_USER:
-	      _currentUserHasBeenFetched = true;
-	      _currentUser = payload.currentUser;
-	      this.__emitChange();
-	      break;
-	
-	    case CurrentUserConstants.DELETE_USER:
-	      _currentUser = {};
-	      _currentUserHasBeenFetched = false;
-	      this.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = CurrentUserStore;
-	window.CurrentUserStore = CurrentUserStore;
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(274);
-	var CurrentUserStore = __webpack_require__(278);
+	var SessionsApiUtil = __webpack_require__(275);
+	var CurrentUserStore = __webpack_require__(273);
 	var NotesApiUtil = __webpack_require__(232);
 	var NoteStore = __webpack_require__(209);
-	var Navbar = __webpack_require__(280);
+	var Navbar = __webpack_require__(278);
 	var NotesIndex = __webpack_require__(208);
-	var Slideout = __webpack_require__(282);
-	var Search = __webpack_require__(285);
+	var Slideout = __webpack_require__(280);
+	var Search = __webpack_require__(283);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -46086,13 +45938,13 @@
 	module.exports = App;
 
 /***/ },
-/* 280 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var Account = __webpack_require__(281);
-	var Slideout = __webpack_require__(282);
+	var Account = __webpack_require__(279);
+	var Slideout = __webpack_require__(280);
 	
 	var searchOpen = false;
 	
@@ -46199,13 +46051,13 @@
 	module.exports = NavBar;
 
 /***/ },
-/* 281 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(274);
-	var CurrentUserStore = __webpack_require__(278);
-	var SessionsApiUtil = __webpack_require__(274);
+	var SessionsApiUtil = __webpack_require__(275);
+	var CurrentUserStore = __webpack_require__(273);
+	var SessionsApiUtil = __webpack_require__(275);
 	var History = __webpack_require__(159).History;
 	
 	var Account = React.createClass({
@@ -46227,7 +46079,7 @@
 	
 	  handleSignOutClick: function () {
 	    SessionsApiUtil.logout();
-	    this.history.pushState(null, '/login');
+	    this.history.pushState(null, '/welcome');
 	  },
 	
 	  render: function () {
@@ -46267,11 +46119,11 @@
 	module.exports = Account;
 
 /***/ },
-/* 282 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var NotebookIndex = __webpack_require__(283);
+	var NotebookIndex = __webpack_require__(281);
 	
 	var SlideOut = React.createClass({
 	  displayName: 'SlideOut',
@@ -46313,13 +46165,13 @@
 	module.exports = SlideOut;
 
 /***/ },
-/* 283 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var NotebooksApiUtil = __webpack_require__(256);
 	var NotebookStore = __webpack_require__(257);
-	var NotebookIndexItem = __webpack_require__(284);
+	var NotebookIndexItem = __webpack_require__(282);
 	var Modal = __webpack_require__(236);
 	
 	const customStyles = {
@@ -46455,7 +46307,7 @@
 	module.exports = NotebooksIndex;
 
 /***/ },
-/* 284 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -46512,12 +46364,12 @@
 	module.exports = NotebookIndexItem;
 
 /***/ },
-/* 285 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SearchApiUtil = __webpack_require__(286);
-	var SearchResultsStore = __webpack_require__(289);
+	var SearchApiUtil = __webpack_require__(284);
+	var SearchResultsStore = __webpack_require__(287);
 	var NoteIndexItem = __webpack_require__(234);
 	var LinkedStateMixin = __webpack_require__(269);
 	
@@ -46600,10 +46452,10 @@
 	module.exports = Search;
 
 /***/ },
-/* 286 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SearchActions = __webpack_require__(287);
+	var SearchActions = __webpack_require__(285);
 	
 	var SearchApiUtil = {
 	
@@ -46624,10 +46476,10 @@
 	module.exports = SearchApiUtil;
 
 /***/ },
-/* 287 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SearchConstants = __webpack_require__(288);
+	var SearchConstants = __webpack_require__(286);
 	var AppDispatcher = __webpack_require__(229);
 	
 	var SearchActions = {
@@ -46643,7 +46495,7 @@
 	module.exports = SearchActions;
 
 /***/ },
-/* 288 */
+/* 286 */
 /***/ function(module, exports) {
 
 	var SearchConstants = {
@@ -46653,12 +46505,12 @@
 	module.exports = SearchConstants;
 
 /***/ },
-/* 289 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(210).Store;
 	var AppDispatcher = __webpack_require__(229);
-	var SearchConstants = __webpack_require__(288);
+	var SearchConstants = __webpack_require__(286);
 	
 	var _searchResults = [];
 	var _meta = {};
@@ -46686,12 +46538,12 @@
 	module.exports = SearchResultsStore;
 
 /***/ },
-/* 290 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(278);
-	var SessionsApiUtil = __webpack_require__(274);
+	var CurrentUserStore = __webpack_require__(273);
+	var SessionsApiUtil = __webpack_require__(275);
 	var NotesIndex = __webpack_require__(208);
 	var History = __webpack_require__(159).History;
 	
@@ -46738,6 +46590,171 @@
 	});
 	
 	module.exports = Home;
+
+/***/ },
+/* 289 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SessionForm = __webpack_require__(290);
+	var UserForm = __webpack_require__(291);
+	
+	var Session = React.createClass({
+	  displayName: 'Session',
+	
+	  componentDidMount: function () {
+	    $('.sign-up').hide();
+	  },
+	
+	  handleSignInClick: function () {
+	    $('.sign-up').hide();
+	    $('.sign-in').show();
+	  },
+	
+	  handleRegisterClick: function () {
+	    $('.sign-in').hide();
+	    $('.sign-up').show();
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'welcome-page' },
+	      React.createElement(
+	        'div',
+	        { className: 'welcome-page-form' },
+	        React.createElement(
+	          'button',
+	          { className: 'register-button', onClick: this.handleRegisterClick },
+	          'Sign Up'
+	        ),
+	        React.createElement(
+	          'button',
+	          { className: 'sign-in-button', onClick: this.handleSignInClick },
+	          'Login'
+	        ),
+	        React.createElement(SessionForm, null),
+	        React.createElement(UserForm, null)
+	      )
+	    );
+	  }
+	
+	});
+	
+	module.exports = Session;
+
+/***/ },
+/* 290 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	
+	var UserForm = React.createClass({
+	  displayName: 'UserForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	    this.history.pushState(null, 'home/notes');
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'sign-up' },
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submit },
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement('input', { type: 'text',
+	            name: 'user[username]',
+	            placeholder: 'username or email' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement('input', { type: 'password',
+	            name: 'user[password]',
+	            placeholder: 'password' })
+	        ),
+	        React.createElement(
+	          'button',
+	          null,
+	          'Register!'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = UserForm;
+
+/***/ },
+/* 291 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	var SessionsApiUtil = __webpack_require__(275);
+	
+	var SessionForm = React.createClass({
+	  displayName: 'SessionForm',
+	
+	  mixins: [History],
+	
+	  submit: function (e) {
+	    e.preventDefault();
+	    var credentials = $(e.currentTarget).serializeJSON();
+	    SessionsApiUtil.login(credentials, function () {
+	      this.history.pushState({}, "/home");
+	    }.bind(this));
+	  },
+	
+	  handleGuestLogin: function () {
+	    var credentials = { username: "guest", password: "password" };
+	    SessionsApiUtil.login(credentials, function () {
+	      this.history.pushState({}, "/home");
+	    }.bind(this));
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'sign-in' },
+	      React.createElement(
+	        'form',
+	        { onSubmit: this.submit },
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement('input', { type: 'text', name: 'username', placeholder: 'username or email' })
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'input' },
+	          React.createElement('input', { type: 'password', name: 'password', placeholder: 'password' })
+	        ),
+	        React.createElement(
+	          'button',
+	          null,
+	          'Log In'
+	        )
+	      ),
+	      React.createElement(
+	        'button',
+	        { id: 'guest-login-button',
+	          onClick: this.handleGuestLogin },
+	        'Guest Login'
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = SessionForm;
 
 /***/ }
 /******/ ]);
