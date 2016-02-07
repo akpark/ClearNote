@@ -55,7 +55,6 @@ var MiniMenu = React.createClass({
   },
 
   handleDeleteClick: function (e) {
-    debugger
     switch (this.props.itemInfo.type) {
       case "note":
         NotesApiUtil.deleteNote(this.props.itemInfo.id);

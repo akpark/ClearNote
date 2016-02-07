@@ -31455,7 +31455,6 @@
 	  },
 	
 	  handleDeleteClick: function (e) {
-	    debugger;
 	    switch (this.props.itemInfo.type) {
 	      case "note":
 	        NotesApiUtil.deleteNote(this.props.itemInfo.id);
@@ -45739,46 +45738,54 @@
 	  render: function () {
 	    return React.createElement(
 	      'div',
-	      { className: 'sign-in' },
+	      { className: 'welcome-page' },
 	      React.createElement(
-	        'h1',
-	        null,
-	        'Sign in'
-	      ),
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.submit },
+	        'div',
+	        { className: 'sign-in-outer' },
 	        React.createElement(
 	          'div',
-	          { className: 'input' },
+	          { className: 'sign-in' },
 	          React.createElement(
-	            'label',
+	            'h1',
 	            null,
-	            'Email address or username',
-	            React.createElement('input', { type: 'text', name: 'username' })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'input' },
+	            'Sign in'
+	          ),
 	          React.createElement(
-	            'label',
-	            null,
-	            'Password',
-	            React.createElement('input', { type: 'password', name: 'password' })
+	            'form',
+	            { onSubmit: this.submit },
+	            React.createElement(
+	              'div',
+	              { className: 'input' },
+	              React.createElement(
+	                'label',
+	                null,
+	                'Email address or username',
+	                React.createElement('input', { type: 'text', name: 'username' })
+	              )
+	            ),
+	            React.createElement(
+	              'div',
+	              { className: 'input' },
+	              React.createElement(
+	                'label',
+	                null,
+	                'Password',
+	                React.createElement('input', { type: 'password', name: 'password' })
+	              )
+	            ),
+	            React.createElement(
+	              'button',
+	              null,
+	              'Log In!'
+	            )
+	          ),
+	          React.createElement(
+	            'button',
+	            { className: 'guest-login-button',
+	              onClick: this.handleGuestLogin },
+	            'Guest Log In '
 	          )
-	        ),
-	        React.createElement(
-	          'button',
-	          null,
-	          'Log In!'
 	        )
-	      ),
-	      React.createElement(
-	        'button',
-	        { className: 'guest-login-button',
-	          onClick: this.handleGuestLogin },
-	        'Guest Log In '
 	      )
 	    );
 	  }

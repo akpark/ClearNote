@@ -1,4 +1,39 @@
-body {
+.welcome-page {
+  background-color: #CDB79E;
+  background-image: url('welcome-background.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  width: 100%;
+  height: 100%;
+}
+
+.sign-in-outer {
+  width: 100%;
+  height: 100%;
+  margin: auto auto;
+  position: relative;
+}
+
+.sign-in, .sign-up {
+  position: absolute;
+  display: inline-block;
+  left: 40%;
+  top: 52%;
+  width: 500px;
+  height: 300px;
+  margin: auto auto;
+  border: 1px solid #ccc;
+  background-repeat: no-repeat;
+  background: white;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  text-align: center;
+}
+
+
+
+/*body {
   background: #f6f6f6;
   font-family: didot;
   color: #747474;
@@ -8,6 +43,7 @@ body {
 .sign-in, .sign-up {
   margin: auto auto;
   text-align: center;
+  height: 100%;
 }
 
 h1 {
@@ -82,4 +118,4 @@ button:hover {
 
 .guest-login-button {
   width: 250px;
-}
+}*/
