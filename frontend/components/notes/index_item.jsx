@@ -11,7 +11,6 @@ var NoteIndexItem = React.createClass({
   },
 
   componentWillMount: function () {
-    debugger
     if (this.state.selected) {
       this.history.pushState(null, 'home/notes/' + this.props.note.id);
     }
@@ -28,7 +27,6 @@ var NoteIndexItem = React.createClass({
   _onChange: function () {
     this.setState({note: NoteStore.find(this.props.note.id)});
 
-    debugger
     if (this.state.selected && this.props.className !== "selected") {
       this.history.pushState(null, 'home/notes/' + this.props.note.id);
     }

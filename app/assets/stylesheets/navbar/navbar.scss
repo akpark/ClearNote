@@ -10,12 +10,12 @@
 }
 
 .navbar-link {
-  margin: 10px auto;
+  margin: 15px auto;
   background: #fff;
-  border-radius: 50%;
+  border-radius: 5px;
   // color: white;
   border: 1px solid #2dbe60;
-  padding: 10px;
+  padding: 5px;
   // content: image-url('notebook.png');
 }
 
@@ -28,6 +28,18 @@
   content: image-url('notebook.png');
 }
 
+.search-link {
+  content: image-url('search.png');
+}
+
+.notes-link {
+  content: image-url('note.png');
+}
+
+.new-note-link {
+  content: image-url('new_note.png');
+}
+
 .bottom-bar {
   margin-top: 50px;
 }
@@ -38,17 +50,13 @@
   background: #fff;
 
   text-align: center;
-  padding: 12px;
+  padding: 10px;
   position: absolute;
-  margin: auto;
+  margin: 0 auto;
   margin-bottom: 10px;
 
   bottom: 0;
-}
-
-.profile-button:hover {
-  background: #2dbe60;
-  cursor: pointer;
+  content: image-url('profile.png');
 }
 
 .logo {

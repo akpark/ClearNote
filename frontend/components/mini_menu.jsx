@@ -64,7 +64,6 @@ var MiniMenu = React.createClass({
         break;
     }
     this.closeModal();
-    // this.history.pushState(null, '/home', {index: "notes"});
   },
 
   render: function () {

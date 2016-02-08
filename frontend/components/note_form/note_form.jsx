@@ -35,10 +35,11 @@ var NoteForm = React.createClass({
   getInitialState: function() {
     edit = (this.props.params.noteId === "new") ? false : true;
     var note = NoteStore.find(parseInt(this.props.params.noteId));
-    return ({id: note.id, title: note.title, body: note.body});
+    return ({id: note.id, title: note.title, body: note.body, body_delta: ""});
   },
 
   componentDidMount: function() {
+		debugger
     this.setUpQuillEditor();
   },
 
@@ -53,10 +54,11 @@ var NoteForm = React.createClass({
       this.setState({
 				title: "",
 				body: "",
-				body_delta: {} });
+				body_delta: {}
+			});
       return;
     }
-		// edit = true;
+		edit = true;
     var note = NoteStore.find(parseInt(newProps.params.noteId));
     this.setState({id: note.id, title: note.title, body_delta: JSON.parse(note.body_delta)});
   },
@@ -72,8 +74,6 @@ var NoteForm = React.createClass({
     this.showHome();
     $('.note-form-outer').removeClass('expanded');
 		this.setState({id: this.state.id+1, body_delta: body_delta});
-    // this.setState({id: note.id, title: note.title, body: note.body, body_delta: body_delta});
-    // this.history.pushState(null, '/home/notes');
     edit = true;
   },
 
@@ -91,8 +91,10 @@ var NoteForm = React.createClass({
 									 body_delta: JSON.stringify(_quillEditor.getContents()),
 									 notebook_id: notebook_id
 								 };
-      if (edit) { NotesApiUtil.editNote(note); }
+      if (edit) { NotesApiUtil.editNote(note); };
     }.bind(this), 2000);
+		this.setState({body_delta: _quillEditor.getContents()});
+		// _quillEditor.setContents(JSON.parse(note.body_delta));
   },
 
   showHome: function () {
@@ -101,12 +103,11 @@ var NoteForm = React.createClass({
   },
 
   setUpHeader: function () {
-		var minimenu = this.setUpMiniMenu();
+		// var minimenu = this.setUpMiniMenu();
     if (edit) {
       return (
         <div className="note-form-header">
 					<div className="note-form-header-minimenu">
-						{minimenu}
 					</div>
           <div className="expand-button" onClick={this.handleExpand}><i className="fa fa-expand"></i></div>
         </div>);
@@ -203,6 +204,7 @@ var NoteForm = React.createClass({
   },
 
   setUpQuillEditor: function () {
+		debugger
     console.log('set up quill editor');
     _quillEditor = new Quill('#editor', {
       modules: {
@@ -211,18 +213,16 @@ var NoteForm = React.createClass({
       },
       theme: 'snow'
     });
-    // _quillEditor.setText(this.state.body);
+    _quillEditor.setText(this.state.body);
     _quillEditor.on('text-change', function (delta, source) {
       if (edit && !sameEditor) {
         this.handleBodyChange();
-        // this.setState({body_delta: _quillEditor.getContents()});
       }
     }.bind(this));
   },
 
   getNotebooks: function () {
     var notebooks = NotebookStore.all().map(function (notebook, key) {
-      // var selected = (notebook.id === this.stat)
       return <option key={key} value={notebook.id}>{notebook.title}</option>;
     });
     return notebooks;
@@ -237,7 +237,6 @@ var NoteForm = React.createClass({
 			if (!edit) {
 	      _quillEditor.setText("");
 			} else {
-				// debugger
 				_quillEditor.setContents(this.state.body_delta);
 			}
       sameEditor = false;

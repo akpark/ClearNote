@@ -24225,7 +24225,6 @@
 	      var selectedClass = key === 0 ? "selected" : "";
 	      return React.createElement(NoteIndexItem, { className: selectedClass, key: key, note: note, selected: selected });
 	    });
-	    debugger;
 	
 	    var notesLength = this.state.notes ? this.state.notes.length : 0;
 	
@@ -31266,7 +31265,6 @@
 	  },
 	
 	  componentWillMount: function () {
-	    debugger;
 	    if (this.state.selected) {
 	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
@@ -31283,7 +31281,6 @@
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
 	
-	    debugger;
 	    if (this.state.selected && this.props.className !== "selected") {
 	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
 	    }
@@ -31472,7 +31469,6 @@
 	        break;
 	    }
 	    this.closeModal();
-	    // this.history.pushState(null, '/home', {index: "notes"});
 	  },
 	
 	  render: function () {
@@ -33708,10 +33704,11 @@
 	  getInitialState: function () {
 	    edit = this.props.params.noteId === "new" ? false : true;
 	    var note = NoteStore.find(parseInt(this.props.params.noteId));
-	    return { id: note.id, title: note.title, body: note.body };
+	    return { id: note.id, title: note.title, body: note.body, body_delta: "" };
 	  },
 	
 	  componentDidMount: function () {
+	    debugger;
 	    this.setUpQuillEditor();
 	  },
 	
@@ -33726,10 +33723,11 @@
 	      this.setState({
 	        title: "",
 	        body: "",
-	        body_delta: {} });
+	        body_delta: {}
+	      });
 	      return;
 	    }
-	    // edit = true;
+	    edit = true;
 	    var note = NoteStore.find(parseInt(newProps.params.noteId));
 	    this.setState({ id: note.id, title: note.title, body_delta: JSON.parse(note.body_delta) });
 	  },
@@ -33745,8 +33743,6 @@
 	    this.showHome();
 	    $('.note-form-outer').removeClass('expanded');
 	    this.setState({ id: this.state.id + 1, body_delta: body_delta });
-	    // this.setState({id: note.id, title: note.title, body: note.body, body_delta: body_delta});
-	    // this.history.pushState(null, '/home/notes');
 	    edit = true;
 	  },
 	
@@ -33766,8 +33762,10 @@
 	      };
 	      if (edit) {
 	        NotesApiUtil.editNote(note);
-	      }
+	      };
 	    }.bind(this), 2000);
+	    this.setState({ body_delta: _quillEditor.getContents() });
+	    // _quillEditor.setContents(JSON.parse(note.body_delta));
 	  },
 	
 	  showHome: function () {
@@ -33776,16 +33774,12 @@
 	  },
 	
 	  setUpHeader: function () {
-	    var minimenu = this.setUpMiniMenu();
+	    // var minimenu = this.setUpMiniMenu();
 	    if (edit) {
 	      return React.createElement(
 	        'div',
 	        { className: 'note-form-header' },
-	        React.createElement(
-	          'div',
-	          { className: 'note-form-header-minimenu' },
-	          minimenu
-	        ),
+	        React.createElement('div', { className: 'note-form-header-minimenu' }),
 	        React.createElement(
 	          'div',
 	          { className: 'expand-button', onClick: this.handleExpand },
@@ -33933,6 +33927,7 @@
 	  },
 	
 	  setUpQuillEditor: function () {
+	    debugger;
 	    console.log('set up quill editor');
 	    _quillEditor = new Quill('#editor', {
 	      modules: {
@@ -33941,18 +33936,16 @@
 	      },
 	      theme: 'snow'
 	    });
-	    // _quillEditor.setText(this.state.body);
+	    _quillEditor.setText(this.state.body);
 	    _quillEditor.on('text-change', function (delta, source) {
 	      if (edit && !sameEditor) {
 	        this.handleBodyChange();
-	        // this.setState({body_delta: _quillEditor.getContents()});
 	      }
 	    }.bind(this));
 	  },
 	
 	  getNotebooks: function () {
 	    var notebooks = NotebookStore.all().map(function (notebook, key) {
-	      // var selected = (notebook.id === this.stat)
 	      return React.createElement(
 	        'option',
 	        { key: key, value: notebook.id },
@@ -33971,7 +33964,6 @@
 	      if (!edit) {
 	        _quillEditor.setText("");
 	      } else {
-	        // debugger
 	        _quillEditor.setContents(this.state.body_delta);
 	      }
 	      sameEditor = false;
@@ -46169,7 +46161,7 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'profile-button',
+	        { className: 'navbar-link profile-button',
 	          onClick: this.handleProfileButtonClick },
 	        'ME',
 	        React.createElement(Account, null)

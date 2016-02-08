@@ -51,7 +51,6 @@ var NotesIndex = React.createClass({
       var selectedClass = (key === 0) ? "selected" : "";
       return (<NoteIndexItem className={selectedClass} key={key} note={note} selected={selected} />);
     });
-    debugger
 
     var notesLength = (this.state.notes) ? this.state.notes.length : 0;
 

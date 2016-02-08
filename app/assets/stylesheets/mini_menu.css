@@ -1,6 +1,7 @@
 .mini-menu {
   float: right;
   z-index: 500;
+  display: inline;
 }
 
 .mini-menu:hover {
@@ -9,7 +10,8 @@
 
 .mini-menu-delete {
   float: right;
-  margin-top: 5px;
+  display: block;
+  /*margin-top: 5px;*/
 }
 
 .mini-menu-link:hover {

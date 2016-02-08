@@ -16,14 +16,22 @@ batnb2 = Notebook.create(title: "Errands", author_id: batman.id)
 
 Note.destroy_all
 
-n1 = Note.create!({title: "Welcome", body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.", body_delta: "hi", author_id: u2.id, notebook_id: 1})
-# n2 = Note.create!({title: "Philosophy", body: "Awesome Indian restuarant", body_delta: "", author_id: u2.id, notebook_id: 1})
-# n3 = Note.create!({title: "Books", body: "Flowers of Algernon", body_delta: "", author_id: u2.id, notebook_id: 1})
-# n4 = Note.create!({title: "Life lessons", body: "Be humble", body_delta: "", author_id: u2.id, notebook_id: 1})
+n1 = Note.create!({
+  title: "Welcome",
+  body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.",
+  body_delta: "{'ops':[{'retain':22},{'attributes':{'size':'32px'},'insert':'e'}]}",
+  author_id: u2.id,
+  notebook_id: 1
+})
+
+
+# n2 = Note.create!({title: "Philosophy", body: "Awesome Indian restuarant", body_delta: "{}", author_id: u2.id, notebook_id: 1})
+# n3 = Note.create!({title: "Books", body: "Flowers of Algernon", body_delta: "{}", author_id: u2.id, notebook_id: 1})
+# n4 = Note.create!({title: "Life lessons", body: "Be humble", body_delta: "{}", author_id: u2.id, notebook_id: 1})
 #
-# bn6 = Note.create({title: "Goals", body: "Lose 10lbs, Stop eating sugar, Go out more", body_delta: "", author_id: batman.id, notebook_id: batnb2.id})
-# bn5 = Note.create({title: "Todos", body: "Buy more batarangs, Repair batmobile", body_delta: "", author_id: batman.id, notebook_id: batnb2.id})
-# bn3 = Note.create({title: "Hideouts", body: "Batcave", author_id: batman.id, body_delta: "", notebook_id: batnb1.id})
-# bn2 = Note.create({title: "Enemies", body: "Joker, Bane, Penguin, Riddler", body_delta: "", author_id: batman.id, notebook_id: batnb1.id})
-# bn4 = Note.create({title: "My toys", body: "Grappling Gun, Batarang, Explosive Gel, Memory Cloth Cape", body_delta: "", author_id: batman.id, notebook_id: batnb1.id})
-# bn1 = Note.create({title: "Friends", body: "Robin, Alfred", body_delta: "", author_id: batman.id, notebook_id: batnb1.id})
+# bn6 = Note.create({title: "Goals", body: "Lose 10lbs, Stop eating sugar, Go out more", body_delta: "{}", author_id: batman.id, notebook_id: batnb2.id})
+# bn5 = Note.create({title: "Todos", body: "Buy more batarangs, Repair batmobile", body_delta: "{}", author_id: batman.id, notebook_id: batnb2.id})
+# bn3 = Note.create({title: "Hideouts", body: "Batcave", author_id: batman.id, body_delta: "{}", notebook_id: batnb1.id})
+# bn2 = Note.create({title: "Enemies", body: "Joker, Bane, Penguin, Riddler", body_delta: "{}", author_id: batman.id, notebook_id: batnb1.id})
+# bn4 = Note.create({title: "My toys", body: "Grappling Gun, Batarang, Explosive Gel, Memory Cloth Cape", body_delta: "{}", author_id: batman.id, notebook_id: batnb1.id})
+# bn1 = Note.create({title: "Friends", body: "Robin, Alfred", body_delta: "{}", author_id: batman.id, notebook_id: batnb1.id})
