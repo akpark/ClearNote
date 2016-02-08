@@ -33704,7 +33704,7 @@
 	  getInitialState: function () {
 	    edit = this.props.params.noteId === "new" ? false : true;
 	    var note = NoteStore.find(parseInt(this.props.params.noteId));
-	    return { id: note.id, title: note.title, body: note.body, body_delta: "" };
+	    return { id: note.id, title: note.title, body: note.body, body_delta: JSON.parse(note.body_delta) };
 	  },
 	
 	  componentDidMount: function () {
@@ -33718,6 +33718,7 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
+	    debugger;
 	    if (newProps.params.noteId === "new") {
 	      edit = false;
 	      this.setState({
@@ -33774,12 +33775,10 @@
 	  },
 	
 	  setUpHeader: function () {
-	    // var minimenu = this.setUpMiniMenu();
 	    if (edit) {
 	      return React.createElement(
 	        'div',
 	        { className: 'note-form-header' },
-	        React.createElement('div', { className: 'note-form-header-minimenu' }),
 	        React.createElement(
 	          'div',
 	          { className: 'expand-button', onClick: this.handleExpand },
@@ -33790,11 +33789,6 @@
 	      return React.createElement(
 	        'div',
 	        { className: 'note-form-header' },
-	        React.createElement(
-	          'div',
-	          { className: 'note-form-header-minimenu' },
-	          minimenu
-	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'new-note-form-cancel-button', onClick: this.handleCancelClick },
@@ -33956,10 +33950,12 @@
 	  },
 	
 	  render: function () {
+	    debugger;
 	    var header = this.setUpHeader();
 	    var toolbar = this.setUpToolbar();
 	
 	    if (_quillEditor) {
+	      debugger;
 	      sameEditor = true;
 	      if (!edit) {
 	        _quillEditor.setText("");
@@ -46440,7 +46436,7 @@
 	  },
 	
 	  handleNotebookItemClick: function () {
-	    this.history.pushState(null, '/home', { header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id });
+	    this.history.pushState(null, '/home/notes', { header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id });
 	    $('.slideout').hide();
 	  },
 	

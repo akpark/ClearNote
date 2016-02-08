@@ -35,7 +35,7 @@ var NoteForm = React.createClass({
   getInitialState: function() {
     edit = (this.props.params.noteId === "new") ? false : true;
     var note = NoteStore.find(parseInt(this.props.params.noteId));
-    return ({id: note.id, title: note.title, body: note.body, body_delta: ""});
+    return ({id: note.id, title: note.title, body: note.body, body_delta: JSON.parse(note.body_delta)});
   },
 
   componentDidMount: function() {
@@ -49,6 +49,7 @@ var NoteForm = React.createClass({
   },
 
   componentWillReceiveProps: function(newProps) {
+		debugger
     if (newProps.params.noteId === "new") {
       edit = false;
       this.setState({
@@ -103,20 +104,14 @@ var NoteForm = React.createClass({
   },
 
   setUpHeader: function () {
-		// var minimenu = this.setUpMiniMenu();
     if (edit) {
       return (
         <div className="note-form-header">
-					<div className="note-form-header-minimenu">
-					</div>
           <div className="expand-button" onClick={this.handleExpand}><i className="fa fa-expand"></i></div>
         </div>);
     } else {
       return (
         <div className="note-form-header">
-					<div className="note-form-header-minimenu">
-						{minimenu}
-					</div>
           <div className="new-note-form-cancel-button" onClick={this.handleCancelClick}>Cancel</div>
           <div className="new-note-form-done-button" onClick={this.handleNewNoteDoneClick}>Done</div>
         </div>
@@ -229,10 +224,12 @@ var NoteForm = React.createClass({
   },
 
   render: function() {
+		debugger
     var header = this.setUpHeader();
     var toolbar = this.setUpToolbar();
 
     if (_quillEditor) {
+			debugger
       sameEditor = true;
 			if (!edit) {
 	      _quillEditor.setText("");
