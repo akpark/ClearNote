@@ -29,11 +29,13 @@ var router = (
   </Router>
 );
 
-function _redirectIfLoggedIn(nextState, replace) {
-  debugger
-  if (CurrentUserStore.isLoggedIn()) {
-    replace({}, "/home");
-  }
+function _redirectIfLoggedIn(nextState, replace, callback) {
+  SessionsApiUtil.fetchCurrentUser(function () {
+    if (CurrentUserStore.isLoggedIn()) {
+      replace({}, "/home");
+    }
+    callback();
+  });
 }
 
 function _ensureLoggedIn(nextState, replace, callback) {

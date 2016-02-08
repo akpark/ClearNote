@@ -38,6 +38,7 @@ class Api::NotesController < ApplicationController
     params.require(:note).permit(
       :title,
       :body,
+      :body_delta,
       :notebook_id
     )
   end

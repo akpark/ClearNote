@@ -23,7 +23,6 @@ var NotesIndex = React.createClass({
   },
 
   _onChange: function() {
-    console.log(this.props.indexInfo.header);
     switch (this.props.indexInfo.header) {
       case "notes":
         this.setState({notes: NoteStore.all()});
@@ -46,14 +45,13 @@ var NotesIndex = React.createClass({
   },
 
   render: function() {
-    console.log("render notes index");
-
     var noteItems = this.state.notes.map(function (note, key) {
       //if the first item in the array then send it a selected prop
       var selected = (key === 0) ? true : false;
       var selectedClass = (key === 0) ? "selected" : "";
       return (<NoteIndexItem className={selectedClass} key={key} note={note} selected={selected} />);
     });
+    debugger
 
     var notesLength = (this.state.notes) ? this.state.notes.length : 0;
 

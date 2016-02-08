@@ -33,15 +33,12 @@ var NoteForm = React.createClass({
   mixins: [History, LinkedStateMixin],
 
   getInitialState: function() {
-		debugger
     edit = (this.props.params.noteId === "new") ? false : true;
     var note = NoteStore.find(parseInt(this.props.params.noteId));
     return ({id: note.id, title: note.title, body: note.body});
   },
 
   componentDidMount: function() {
-    this.noteformListener = NoteStore.addListener(this._onChange);
-    // this.notebookListener = NoteBookStore.addListener(this._onChange);
     this.setUpQuillEditor();
   },
 
@@ -50,31 +47,33 @@ var NoteForm = React.createClass({
     NotebooksApiUtil.fetchAllNotebooks();
   },
 
-  componentWillUnmount: function () {
-    this.noteformListener.remove();
-  },
-
   componentWillReceiveProps: function(newProps) {
     if (newProps.params.noteId === "new") {
       edit = false;
-      this.setState({title: "", body: ""});
+      this.setState({
+				title: "",
+				body: "",
+				body_delta: {} });
       return;
     }
+		// edit = true;
     var note = NoteStore.find(parseInt(newProps.params.noteId));
-    this.setState({id: note.id, title: note.title, body: note.body});
+    this.setState({id: note.id, title: note.title, body_delta: JSON.parse(note.body_delta)});
   },
 
   handleNewNoteDoneClick: function(e) {
     var title = this.state.title;
-    var body = _quillEditor.getText();
+    var body_delta = _quillEditor.getContents();
     var notebook_id = $('.notebook-selection-dropdown option:selected').val();
-    var note = {title: title, body: body, notebook_id: parseInt(notebook_id)};
+    var note = {title: title, body: _quillEditor.getText(), body_delta: JSON.stringify(body_delta), notebook_id: parseInt(notebook_id)};
     NotesApiUtil.createNote(note);
 
+		//we want to get new id!
     this.showHome();
     $('.note-form-outer').removeClass('expanded');
-    this.setState({id: note.id, title: note.title, body: note.body});
-    this.history.pushState(null, '/home');
+		this.setState({id: this.state.id+1, body_delta: body_delta});
+    // this.setState({id: note.id, title: note.title, body: note.body, body_delta: body_delta});
+    // this.history.pushState(null, '/home/notes');
     edit = true;
   },
 
@@ -85,7 +84,13 @@ var NoteForm = React.createClass({
 
     this.timer = setTimeout(function() {
       var notebook_id = parseInt($('.notebook-selection-dropdown').val());
-      var note = { id: this.state.id, title: this.state.title, body: _quillEditor.getText(), notebook_id: notebook_id };
+      var note = {
+									 id: this.state.id,
+									 title: this.state.title,
+									 body: _quillEditor.getText(),
+									 body_delta: JSON.stringify(_quillEditor.getContents()),
+									 notebook_id: notebook_id
+								 };
       if (edit) { NotesApiUtil.editNote(note); }
     }.bind(this), 2000);
   },
@@ -206,11 +211,11 @@ var NoteForm = React.createClass({
       },
       theme: 'snow'
     });
-    _quillEditor.setText(this.state.body);
+    // _quillEditor.setText(this.state.body);
     _quillEditor.on('text-change', function (delta, source) {
       if (edit && !sameEditor) {
         this.handleBodyChange();
-        this.setState({body: _quillEditor.getText()});
+        // this.setState({body_delta: _quillEditor.getContents()});
       }
     }.bind(this));
   },
@@ -229,7 +234,12 @@ var NoteForm = React.createClass({
 
     if (_quillEditor) {
       sameEditor = true;
-      _quillEditor.setText(this.state.body);
+			if (!edit) {
+	      _quillEditor.setText("");
+			} else {
+				// debugger
+				_quillEditor.setContents(this.state.body_delta);
+			}
       sameEditor = false;
     }
 
