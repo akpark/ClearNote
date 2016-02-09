@@ -5,8 +5,14 @@ class Api::UsersController < ApplicationController
   end
 
   def create
-    @user = User.find(params[:id])
-    render :show
+    @user = User.create(user_params)
+    if @user
+      sign_in(@user)
+      render 'api/users/show'
+    else
+      flash[:errors] = @user.errors.full_messages
+    end
+
   end
 
   protected

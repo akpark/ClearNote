@@ -35,11 +35,14 @@ var NoteForm = React.createClass({
   getInitialState: function() {
     edit = (this.props.params.noteId === "new") ? false : true;
     var note = NoteStore.find(parseInt(this.props.params.noteId));
-    return ({id: note.id, title: note.title, body: note.body, body_delta: JSON.parse(note.body_delta)});
+		if (note) {
+	    return ({id: note.id, title: note.title, body: note.body, notebook_id: note.notebook_id});
+		} else {
+			return null;
+		}
   },
 
   componentDidMount: function() {
-		debugger
     this.setUpQuillEditor();
   },
 
@@ -49,7 +52,7 @@ var NoteForm = React.createClass({
   },
 
   componentWillReceiveProps: function(newProps) {
-		debugger
+		// debugger
     if (newProps.params.noteId === "new") {
       edit = false;
       this.setState({
@@ -59,6 +62,7 @@ var NoteForm = React.createClass({
 			});
       return;
     }
+		debugger
 		edit = true;
     var note = NoteStore.find(parseInt(newProps.params.noteId));
     this.setState({id: note.id, title: note.title, body_delta: JSON.parse(note.body_delta)});
@@ -74,7 +78,7 @@ var NoteForm = React.createClass({
 		//we want to get new id!
     this.showHome();
     $('.note-form-outer').removeClass('expanded');
-		this.setState({id: this.state.id+1, body_delta: body_delta});
+		this.setState({id: NoteStore.all()[0].id + 1, body_delta: body_delta});
     edit = true;
   },
 
@@ -82,7 +86,7 @@ var NoteForm = React.createClass({
     if (this.timer) {
       clearTimeout(this.timer);
     }
-
+		// debugger
     this.timer = setTimeout(function() {
       var notebook_id = parseInt($('.notebook-selection-dropdown').val());
       var note = {
@@ -92,10 +96,9 @@ var NoteForm = React.createClass({
 									 body_delta: JSON.stringify(_quillEditor.getContents()),
 									 notebook_id: notebook_id
 								 };
-      if (edit) { NotesApiUtil.editNote(note); };
+      if (edit) { NotesApiUtil.editNote(note); }
+			this.setState({body_delta: _quillEditor.getContents()});
     }.bind(this), 2000);
-		this.setState({body_delta: _quillEditor.getContents()});
-		// _quillEditor.setContents(JSON.parse(note.body_delta));
   },
 
   showHome: function () {
@@ -112,24 +115,12 @@ var NoteForm = React.createClass({
     } else {
       return (
         <div className="note-form-header">
+					<div className="new-note-form-done-button" onClick={this.handleNewNoteDoneClick}>Done</div>
           <div className="new-note-form-cancel-button" onClick={this.handleCancelClick}>Cancel</div>
-          <div className="new-note-form-done-button" onClick={this.handleNewNoteDoneClick}>Done</div>
         </div>
       );
     }
   },
-
-	setUpMiniMenu: function () {
-		var itemInfo = {
-			type: "note",
-			title: this.state.title,
-			id: this.state.id
-		};
-
-		return (
-			<MiniMenu className="note-form-minimenu" itemInfo={itemInfo} />
-		);
-	},
 
 	handleExpand: function () {
 		if (!_expanded) {
@@ -148,17 +139,25 @@ var NoteForm = React.createClass({
   handleCancelClick: function () {
     this.showHome();
     $('.note-form-outer').removeClass('expanded');
+		// edit = true;
+		this.forceUpdate();
   },
 
-  setUpToolbar: function () {
-    var notebooks = this.getNotebooks();
+	getNotebooks: function () {
+		var notebooks = NotebookStore.all().map(function (notebook, key) {
+			return (<option key={key} value={notebook.id}>{notebook.title}</option>);
+		});
+		return notebooks;
+	},
 
+  setUpToolbar: function () {
+		var notebooks = this.getNotebooks();
     return (
       <div id="toolbar" className="ql-toolbar-container toolbar">
         <div className="ql-format-group">
-          <select className="notebook-selection-dropdown">
-            {notebooks}
-          </select>
+					<select className="notebook-selection-dropdown">
+						{notebooks}
+					</select>
           <select className="ql-font">
             <option value="sans-serif">Sans Serif</option>
             <option value="serif">Serif</option>
@@ -216,24 +215,16 @@ var NoteForm = React.createClass({
     }.bind(this));
   },
 
-  getNotebooks: function () {
-    var notebooks = NotebookStore.all().map(function (notebook, key) {
-      return <option key={key} value={notebook.id}>{notebook.title}</option>;
-    });
-    return notebooks;
-  },
-
   render: function() {
-		debugger
     var header = this.setUpHeader();
     var toolbar = this.setUpToolbar();
 
+		debugger
     if (_quillEditor) {
-			debugger
       sameEditor = true;
 			if (!edit) {
 	      _quillEditor.setText("");
-			} else {
+			} else if (this.state.body_delta) {
 				_quillEditor.setContents(this.state.body_delta);
 			}
       sameEditor = false;

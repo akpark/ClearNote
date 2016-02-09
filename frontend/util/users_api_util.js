@@ -1,4 +1,4 @@
-var UserActions = require('../actions/user_actions');
+var UserActions = require('../actions/current_user_actions');
 
 var UsersApiUtil = {
   fetchUsers: function () {
@@ -22,6 +22,21 @@ var UsersApiUtil = {
       }
     });
   },
+
+  createUser: function (user, cb) {
+    $.ajax({
+      url: 'api/users',
+      type: 'POST',
+      data: user,
+      dataType: 'json',
+      success: function (data) {
+        cb && cb(data);
+        // UserActions.receiveCurrentUser(user);
+        // cb();
+        console.log("user created!");
+      }
+    });
+  }
 
 };
 

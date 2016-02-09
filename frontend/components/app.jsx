@@ -66,7 +66,7 @@ var App = React.createClass({
     if (!CurrentUserStore.userHasBeenFetched()) {
       return <p>Please Wait</p>;
     }
-
+    // debugger
     return (
       <div className="home group">
         <Navbar slideoutClickHandler={this.slideoutClickHandler}/>

@@ -68,12 +68,6 @@ var NotebooksIndex = React.createClass({
               </div>
             </div>
           </div>
-
-          <div className="notebook-index-header-bottom">
-            <input className="search-notebook-input"
-                   type="text"
-                   placeholder="Find a notebook"/>
-          </div>
         </div>
 
         <div className="notebook-index-items">

@@ -24,24 +24,26 @@ var NotebooksApiUtil = {
     });
   },
 
-  createNotebook: function (notebook) {
+  createNotebook: function (notebook, callback) {
     $.ajax({
       method: "POST",
       url: "api/notebooks",
       data: {notebook: notebook},
       dataType: "json",
       success: function (notebook) {
+        console.log("notebook created!");
         NotebookActions.receiveSingleNotebook(notebook);
+        callback && callback(notebook);
       }
     });
   },
 
-  deleteNotebook: function (notebook) {
+  deleteNotebook: function (notebookId) {
     $.ajax({
       method: "DELETE",
-      url: "api/notebooks/" + notebook.id,
+      url: "api/notebooks/" + notebookId,
       dataType: "json",
-      success: function () {
+      success: function (notebook) {
         console.log("notebook deleted!");
         NotebookActions.deleteNotebook(notebook);
       }

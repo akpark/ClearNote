@@ -4,7 +4,7 @@
   border-left: 1px solid #ccc;
   border-right: 1px solid #ccc;
   width: 350px;
-  background: white;
+  background: #FBFBF9;
 }
 
 .group:after {
@@ -19,9 +19,9 @@
 
 .notes-index-title {
   color: #878787;
-  font-weight: 200;
-  font-family: 'Copperplate Gothic Light';
-  font-size: 21px;
+  font-weight: 500;
+  font-family: didot;
+  font-size: 24px;
   vertical-align: top;
   letter-spacing: 1px;
   text-transform: uppercase;

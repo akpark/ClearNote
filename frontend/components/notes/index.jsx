@@ -63,10 +63,7 @@ var NotesIndex = React.createClass({
         <div className="notes-index-header">
           <div className="notes-index-title">{this.props.indexInfo.title}</div>
           <div className="notes-index-header-bottom group">
-            <div className="number-of-notes">{notesLength} Notes</div>
-            <div onClick={this.showOptions} className="options-dropdown-click">Options &#8964;
-              {optionsDropdown}
-            </div>
+            <div className="number-of-notes">{notesLength} Note(s)</div>
           </div>
         </div>
 

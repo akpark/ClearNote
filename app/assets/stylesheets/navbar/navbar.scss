@@ -33,6 +33,7 @@
 }
 
 .notes-link {
+  margin-top: 50px;
   content: image-url('note.png');
 }
 
@@ -50,13 +51,14 @@
   background: #fff;
 
   text-align: center;
-  padding: 10px;
+  padding: 10px 13px;
   position: absolute;
   margin: 0 auto;
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 
+  color: #2f32b6;
   bottom: 0;
-  content: image-url('profile.png');
+  // content: image-url('profile.png');
 }
 
 .logo {

@@ -8,6 +8,8 @@
   background: #fff;
   width: 300px;
   height: 350px;
+  border-radius: 5px;
+  background: #FBFAFA;
 }
 
 .account-options-menu-header {
@@ -15,6 +17,10 @@
   text-align: center;
   border-bottom: 1px solid #aaa;
   text-transform: uppercase;
+}
+
+.username {
+  margin: auto auto;
 }
 
 .settings-link,

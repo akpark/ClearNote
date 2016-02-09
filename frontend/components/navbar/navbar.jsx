@@ -17,8 +17,10 @@ var NavBar = React.createClass({
   },
 
   handleNewNoteClick: function () {
+    $('.search').hide();
     $('.notes-index').hide("slow");
     $('.navbar').hide("slow");
+    $('.note-form-outer').show();
     $('.note-form-outer').addClass("expanded");
     this.history.pushState(null, "home/notes/new");
   },
@@ -43,6 +45,10 @@ var NavBar = React.createClass({
 
   handleNotebooksClick: function () {
     this.props.slideoutClickHandler("notebooks");
+  },
+
+  goHome: function () {
+    this.history.pushState(null, '/home', {index: "notes"});
   },
 
   handleProfileButtonClick: function (e) {
@@ -78,9 +84,8 @@ var NavBar = React.createClass({
           </div>
         </div>
 
-        <div className="navbar-link profile-button"
-             onClick={this.handleProfileButtonClick}>ME
-
+        <div className="navbar-link profile-button" onClick={this.handleProfileButtonClick}>
+          <i className="fa fa-user fa-2x"></i>
           <Account />
         </div>
 

@@ -1,5 +1,4 @@
 class Notebook < ActiveRecord::Base
-
   include PgSearch
   multisearchable :against => [:title]
 

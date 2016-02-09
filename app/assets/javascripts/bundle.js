@@ -24251,13 +24251,7 @@
 	            'div',
 	            { className: 'number-of-notes' },
 	            notesLength,
-	            ' Notes'
-	          ),
-	          React.createElement(
-	            'div',
-	            { onClick: this.showOptions, className: 'options-dropdown-click' },
-	            'Options ⌄',
-	            optionsDropdown
+	            ' Note(s)'
 	          )
 	        )
 	      ),
@@ -31162,14 +31156,14 @@
 	    });
 	  },
 	
-	  createNote: function (note) {
+	  createNote: function (note, callback) {
 	    $.ajax({
 	      method: "POST",
 	      url: "api/notes",
 	      data: { note: note },
 	      dataType: "json",
 	      success: function (note) {
-	        console.log("created!");
+	        console.log("note created!");
 	        NoteActions.createNote(note);
 	      }
 	    });
@@ -31460,6 +31454,7 @@
 	  },
 	
 	  handleDeleteClick: function (e) {
+	    debugger;
 	    switch (this.props.itemInfo.type) {
 	      case "note":
 	        NotesApiUtil.deleteNote(this.props.itemInfo.id);
@@ -33451,24 +33446,26 @@
 	    });
 	  },
 	
-	  createNotebook: function (notebook) {
+	  createNotebook: function (notebook, callback) {
 	    $.ajax({
 	      method: "POST",
 	      url: "api/notebooks",
 	      data: { notebook: notebook },
 	      dataType: "json",
 	      success: function (notebook) {
+	        console.log("notebook created!");
 	        NotebookActions.receiveSingleNotebook(notebook);
+	        callback && callback(notebook);
 	      }
 	    });
 	  },
 	
-	  deleteNotebook: function (notebook) {
+	  deleteNotebook: function (notebookId) {
 	    $.ajax({
 	      method: "DELETE",
-	      url: "api/notebooks/" + notebook.id,
+	      url: "api/notebooks/" + notebookId,
 	      dataType: "json",
-	      success: function () {
+	      success: function (notebook) {
 	        console.log("notebook deleted!");
 	        NotebookActions.deleteNotebook(notebook);
 	      }
@@ -33704,11 +33701,14 @@
 	  getInitialState: function () {
 	    edit = this.props.params.noteId === "new" ? false : true;
 	    var note = NoteStore.find(parseInt(this.props.params.noteId));
-	    return { id: note.id, title: note.title, body: note.body, body_delta: JSON.parse(note.body_delta) };
+	    if (note) {
+	      return { id: note.id, title: note.title, body: note.body, notebook_id: note.notebook_id };
+	    } else {
+	      return null;
+	    }
 	  },
 	
 	  componentDidMount: function () {
-	    debugger;
 	    this.setUpQuillEditor();
 	  },
 	
@@ -33718,7 +33718,7 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    debugger;
+	    // debugger
 	    if (newProps.params.noteId === "new") {
 	      edit = false;
 	      this.setState({
@@ -33728,6 +33728,7 @@
 	      });
 	      return;
 	    }
+	    debugger;
 	    edit = true;
 	    var note = NoteStore.find(parseInt(newProps.params.noteId));
 	    this.setState({ id: note.id, title: note.title, body_delta: JSON.parse(note.body_delta) });
@@ -33743,7 +33744,7 @@
 	    //we want to get new id!
 	    this.showHome();
 	    $('.note-form-outer').removeClass('expanded');
-	    this.setState({ id: this.state.id + 1, body_delta: body_delta });
+	    this.setState({ id: NoteStore.all()[0].id + 1, body_delta: body_delta });
 	    edit = true;
 	  },
 	
@@ -33751,7 +33752,7 @@
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }
-	
+	    // debugger
 	    this.timer = setTimeout(function () {
 	      var notebook_id = parseInt($('.notebook-selection-dropdown').val());
 	      var note = {
@@ -33763,10 +33764,9 @@
 	      };
 	      if (edit) {
 	        NotesApiUtil.editNote(note);
-	      };
+	      }
+	      this.setState({ body_delta: _quillEditor.getContents() });
 	    }.bind(this), 2000);
-	    this.setState({ body_delta: _quillEditor.getContents() });
-	    // _quillEditor.setContents(JSON.parse(note.body_delta));
 	  },
 	
 	  showHome: function () {
@@ -33791,26 +33791,16 @@
 	        { className: 'note-form-header' },
 	        React.createElement(
 	          'div',
-	          { className: 'new-note-form-cancel-button', onClick: this.handleCancelClick },
-	          'Cancel'
+	          { className: 'new-note-form-done-button', onClick: this.handleNewNoteDoneClick },
+	          'Done'
 	        ),
 	        React.createElement(
 	          'div',
-	          { className: 'new-note-form-done-button', onClick: this.handleNewNoteDoneClick },
-	          'Done'
+	          { className: 'new-note-form-cancel-button', onClick: this.handleCancelClick },
+	          'Cancel'
 	        )
 	      );
 	    }
-	  },
-	
-	  setUpMiniMenu: function () {
-	    var itemInfo = {
-	      type: "note",
-	      title: this.state.title,
-	      id: this.state.id
-	    };
-	
-	    return React.createElement(MiniMenu, { className: 'note-form-minimenu', itemInfo: itemInfo });
 	  },
 	
 	  handleExpand: function () {
@@ -33830,11 +33820,23 @@
 	  handleCancelClick: function () {
 	    this.showHome();
 	    $('.note-form-outer').removeClass('expanded');
+	    // edit = true;
+	    this.forceUpdate();
+	  },
+	
+	  getNotebooks: function () {
+	    var notebooks = NotebookStore.all().map(function (notebook, key) {
+	      return React.createElement(
+	        'option',
+	        { key: key, value: notebook.id },
+	        notebook.title
+	      );
+	    });
+	    return notebooks;
 	  },
 	
 	  setUpToolbar: function () {
 	    var notebooks = this.getNotebooks();
-	
 	    return React.createElement(
 	      'div',
 	      { id: 'toolbar', className: 'ql-toolbar-container toolbar' },
@@ -33938,28 +33940,16 @@
 	    }.bind(this));
 	  },
 	
-	  getNotebooks: function () {
-	    var notebooks = NotebookStore.all().map(function (notebook, key) {
-	      return React.createElement(
-	        'option',
-	        { key: key, value: notebook.id },
-	        notebook.title
-	      );
-	    });
-	    return notebooks;
-	  },
-	
 	  render: function () {
-	    debugger;
 	    var header = this.setUpHeader();
 	    var toolbar = this.setUpToolbar();
 	
+	    debugger;
 	    if (_quillEditor) {
-	      debugger;
 	      sameEditor = true;
 	      if (!edit) {
 	        _quillEditor.setText("");
-	      } else {
+	      } else if (this.state.body_delta) {
 	        _quillEditor.setContents(this.state.body_delta);
 	      }
 	      sameEditor = false;
@@ -45870,15 +45860,46 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
+	var UsersApiUtil = __webpack_require__(292);
+	var NotebooksApiUtil = __webpack_require__(256);
+	var NotesApiUtil = __webpack_require__(232);
 	
 	var UserForm = React.createClass({
 	  displayName: 'UserForm',
 	
 	  mixins: [History],
 	
+	  //set up the user with default
+	  setUpUser: function (user) {
+	    var newNotebook = {
+	      title: "Welcome",
+	      author_id: user.id
+	    };
+	
+	    NotebooksApiUtil.createNotebook(newNotebook, function (notebook) {
+	      var newNote = {
+	        title: "Welcome",
+	        body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.",
+	        body_delta: "{'ops':[{'retain':22},{'attributes':{'size':'32px'},'insert':'e'}]}",
+	        author_id: user.id,
+	        notebook_id: notebook.id
+	      };
+	      NotesApiUtil.createNote(newNote);
+	    });
+	  },
+	
 	  submit: function (e) {
 	    e.preventDefault();
-	    this.history.pushState(null, 'home/notes');
+	    var fields = $(e.currentTarget).serializeArray();
+	    var credentials = {};
+	    fields.forEach(function (field) {
+	      credentials[field.name] = field.value;
+	    });
+	
+	    UsersApiUtil.createUser(credentials, function (user) {
+	      this.setUpUser(user);
+	      this.history.pushState(null, "home/notes");
+	    }.bind(this));
 	  },
 	
 	  render: function () {
@@ -46035,7 +46056,7 @@
 	        'Please Wait'
 	      );
 	    }
-	
+	    // debugger
 	    return React.createElement(
 	      'div',
 	      { className: 'home group' },
@@ -46080,8 +46101,10 @@
 	  },
 	
 	  handleNewNoteClick: function () {
+	    $('.search').hide();
 	    $('.notes-index').hide("slow");
 	    $('.navbar').hide("slow");
+	    $('.note-form-outer').show();
 	    $('.note-form-outer').addClass("expanded");
 	    this.history.pushState(null, "home/notes/new");
 	  },
@@ -46106,6 +46129,10 @@
 	
 	  handleNotebooksClick: function () {
 	    this.props.slideoutClickHandler("notebooks");
+	  },
+	
+	  goHome: function () {
+	    this.history.pushState(null, '/home', { index: "notes" });
 	  },
 	
 	  handleProfileButtonClick: function (e) {
@@ -46157,9 +46184,8 @@
 	      ),
 	      React.createElement(
 	        'div',
-	        { className: 'navbar-link profile-button',
-	          onClick: this.handleProfileButtonClick },
-	        'ME',
+	        { className: 'navbar-link profile-button', onClick: this.handleProfileButtonClick },
+	        React.createElement('i', { className: 'fa fa-user fa-2x' }),
 	        React.createElement(Account, null)
 	      )
 	    );
@@ -46362,13 +46388,6 @@
 	              React.createElement('i', { className: 'fa fa-book fa-2x' })
 	            )
 	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'notebook-index-header-bottom' },
-	          React.createElement('input', { className: 'search-notebook-input',
-	            type: 'text',
-	            placeholder: 'Find a notebook' })
 	        )
 	      ),
 	      React.createElement(
@@ -46481,10 +46500,14 @@
 	var SearchApiUtil = __webpack_require__(286);
 	var SearchResultsStore = __webpack_require__(289);
 	var NoteIndexItem = __webpack_require__(234);
+	var NotebookIndexItem = __webpack_require__(284);
 	var LinkedStateMixin = __webpack_require__(269);
+	var History = __webpack_require__(159).History;
 	
 	var Search = React.createClass({
 	  displayName: 'Search',
+	
+	  mixins: [History],
 	
 	  getInitialState: function () {
 	    return { page: 1, query: "" };
@@ -46509,32 +46532,34 @@
 	    this.setState({ page: 1, query: query });
 	  },
 	
+	  handleNoteClick: function (e) {
+	    var note = e.target.value;
+	    this.history.pushState(null, '/home/notes/' + note.id);
+	  },
+	
+	  handleNotebookClick: function (e) {
+	    var notebook = e.target.value;
+	    this.history.pushState(null, '/home/notes', { header: "notebooks", title: notebook.title, id: notebook.id });
+	  },
+	
 	  render: function () {
 	
 	    var searchResults = SearchResultsStore.all().map(function (searchResult) {
 	      if (searchResult._type === "Note") {
-	        return React.createElement(
-	          'div',
-	          { className: 'search-result' },
-	          React.createElement(
-	            'div',
-	            null,
-	            'Note: ',
-	            searchResult.title
-	          )
-	        );
+	        return React.createElement(NoteIndexItem, { note: searchResult });
+	        // return <div className="search-result" value={searchResult} onClick={this.handleNoteClick}><div>Note: {searchResult.title}</div></div>;
 	      } else if (searchResult._type === "Notebook") {
-	        return React.createElement(
-	          'div',
-	          { className: 'search-result' },
-	          React.createElement(
+	          return React.createElement(
 	            'div',
-	            null,
-	            'Notebook: ',
-	            searchResult.title
-	          )
-	        );
-	      }
+	            { className: 'search-result', value: searchResult, onClick: this.handleNotebookClick },
+	            React.createElement(
+	              'div',
+	              null,
+	              'Notebook: ',
+	              searchResult.title
+	            )
+	          );
+	        }
 	    });
 	
 	    return React.createElement(
@@ -46543,12 +46568,12 @@
 	      React.createElement('input', {
 	        className: 'search-input',
 	        type: 'text',
-	        placeholder: 'search notes',
+	        placeholder: 'search notes..',
 	        onKeyUp: this.search }),
 	      React.createElement(
 	        'div',
 	        { className: 'search-location' },
-	        'searching in your notebooks'
+	        'Searching in your notebooks...'
 	      ),
 	      React.createElement(
 	        'ul',
@@ -46757,6 +46782,54 @@
 	});
 	
 	module.exports = Session;
+
+/***/ },
+/* 292 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var UserActions = __webpack_require__(275);
+	
+	var UsersApiUtil = {
+	  fetchUsers: function () {
+	    $.ajax({
+	      url: '/api/users',
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (users) {
+	        UserActions.receiveUsers(users);
+	      }
+	    });
+	  },
+	
+	  fetchUser: function (id) {
+	    $.ajax({
+	      url: '/api/users/' + id,
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (user) {
+	        UserActions.receiveUser(user);
+	      }
+	    });
+	  },
+	
+	  createUser: function (user, cb) {
+	    $.ajax({
+	      url: 'api/users',
+	      type: 'POST',
+	      data: user,
+	      dataType: 'json',
+	      success: function (data) {
+	        cb && cb(data);
+	        // UserActions.receiveCurrentUser(user);
+	        // cb();
+	        console.log("user created!");
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = UsersApiUtil;
 
 /***/ }
 /******/ ]);

@@ -24,14 +24,14 @@ var NotesApiUtil = {
     });
   },
 
-  createNote: function (note) {
+  createNote: function (note, callback) {
     $.ajax({
       method: "POST",
       url: "api/notes",
       data: {note: note},
       dataType: "json",
       success: function (note) {
-        console.log("created!");
+        console.log("note created!");
         NoteActions.createNote(note);
       }
     });
