@@ -56,13 +56,13 @@
 	var NoteStore = __webpack_require__(209);
 	var SessionForm = __webpack_require__(273);
 	var UserForm = __webpack_require__(277);
-	var CurrentUserStore = __webpack_require__(278);
+	var CurrentUserStore = __webpack_require__(279);
 	var SessionsApiUtil = __webpack_require__(274);
-	var App = __webpack_require__(279);
-	var Home = __webpack_require__(290);
-	var Slideout = __webpack_require__(282);
-	var NotebooksIndex = __webpack_require__(283);
-	var WelcomeForm = __webpack_require__(291);
+	var App = __webpack_require__(280);
+	var Home = __webpack_require__(291);
+	var Slideout = __webpack_require__(283);
+	var NotebooksIndex = __webpack_require__(284);
+	var WelcomeForm = __webpack_require__(292);
 	
 	var router = React.createElement(
 	  Router,
@@ -45860,7 +45860,7 @@
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var UsersApiUtil = __webpack_require__(292);
+	var UsersApiUtil = __webpack_require__(278);
 	var NotebooksApiUtil = __webpack_require__(256);
 	var NotesApiUtil = __webpack_require__(232);
 	
@@ -45939,6 +45939,54 @@
 /* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var UserActions = __webpack_require__(275);
+	
+	var UsersApiUtil = {
+	  fetchUsers: function () {
+	    $.ajax({
+	      url: '/api/users',
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (users) {
+	        UserActions.receiveUsers(users);
+	      }
+	    });
+	  },
+	
+	  fetchUser: function (id) {
+	    $.ajax({
+	      url: '/api/users/' + id,
+	      type: 'GET',
+	      dataType: 'json',
+	      success: function (user) {
+	        UserActions.receiveUser(user);
+	      }
+	    });
+	  },
+	
+	  createUser: function (user, cb) {
+	    $.ajax({
+	      url: 'api/users',
+	      type: 'POST',
+	      data: user,
+	      dataType: 'json',
+	      success: function (data) {
+	        cb && cb(data);
+	        // UserActions.receiveCurrentUser(user);
+	        // cb();
+	        console.log("user created!");
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = UsersApiUtil;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var Store = __webpack_require__(210).Store;
 	var AppDispatcher = __webpack_require__(229);
 	var CurrentUserConstants = __webpack_require__(276);
@@ -45960,6 +46008,7 @@
 	};
 	
 	CurrentUserStore.__onDispatch = function (payload) {
+	  debugger;
 	  switch (payload.actionType) {
 	    case CurrentUserConstants.RECEIVE_CURRENT_USER:
 	      _currentUserHasBeenFetched = true;
@@ -45979,18 +46028,18 @@
 	window.CurrentUserStore = CurrentUserStore;
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionsApiUtil = __webpack_require__(274);
-	var CurrentUserStore = __webpack_require__(278);
+	var CurrentUserStore = __webpack_require__(279);
 	var NotesApiUtil = __webpack_require__(232);
 	var NoteStore = __webpack_require__(209);
-	var Navbar = __webpack_require__(280);
+	var Navbar = __webpack_require__(281);
 	var NotesIndex = __webpack_require__(208);
-	var Slideout = __webpack_require__(282);
-	var Search = __webpack_require__(285);
+	var Slideout = __webpack_require__(283);
+	var Search = __webpack_require__(286);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -46077,13 +46126,13 @@
 	module.exports = App;
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var Account = __webpack_require__(281);
-	var Slideout = __webpack_require__(282);
+	var Account = __webpack_require__(282);
+	var Slideout = __webpack_require__(283);
 	
 	var searchOpen = false;
 	
@@ -46195,12 +46244,12 @@
 	module.exports = NavBar;
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionsApiUtil = __webpack_require__(274);
-	var CurrentUserStore = __webpack_require__(278);
+	var CurrentUserStore = __webpack_require__(279);
 	var SessionsApiUtil = __webpack_require__(274);
 	var History = __webpack_require__(159).History;
 	
@@ -46255,11 +46304,11 @@
 	module.exports = Account;
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var NotebookIndex = __webpack_require__(283);
+	var NotebookIndex = __webpack_require__(284);
 	
 	var SlideOut = React.createClass({
 	  displayName: 'SlideOut',
@@ -46301,13 +46350,13 @@
 	module.exports = SlideOut;
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var NotebooksApiUtil = __webpack_require__(256);
 	var NotebookStore = __webpack_require__(257);
-	var NotebookIndexItem = __webpack_require__(284);
+	var NotebookIndexItem = __webpack_require__(285);
 	var Modal = __webpack_require__(236);
 	
 	const customStyles = {
@@ -46436,7 +46485,7 @@
 	module.exports = NotebooksIndex;
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -46493,14 +46542,14 @@
 	module.exports = NotebookIndexItem;
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SearchApiUtil = __webpack_require__(286);
-	var SearchResultsStore = __webpack_require__(289);
+	var SearchApiUtil = __webpack_require__(287);
+	var SearchResultsStore = __webpack_require__(290);
 	var NoteIndexItem = __webpack_require__(234);
-	var NotebookIndexItem = __webpack_require__(284);
+	var NotebookIndexItem = __webpack_require__(285);
 	var LinkedStateMixin = __webpack_require__(269);
 	var History = __webpack_require__(159).History;
 	
@@ -46587,10 +46636,10 @@
 	module.exports = Search;
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SearchActions = __webpack_require__(287);
+	var SearchActions = __webpack_require__(288);
 	
 	var SearchApiUtil = {
 	
@@ -46611,10 +46660,10 @@
 	module.exports = SearchApiUtil;
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SearchConstants = __webpack_require__(288);
+	var SearchConstants = __webpack_require__(289);
 	var AppDispatcher = __webpack_require__(229);
 	
 	var SearchActions = {
@@ -46630,7 +46679,7 @@
 	module.exports = SearchActions;
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports) {
 
 	var SearchConstants = {
@@ -46640,12 +46689,12 @@
 	module.exports = SearchConstants;
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(210).Store;
 	var AppDispatcher = __webpack_require__(229);
-	var SearchConstants = __webpack_require__(288);
+	var SearchConstants = __webpack_require__(289);
 	
 	var _searchResults = [];
 	var _meta = {};
@@ -46673,11 +46722,11 @@
 	module.exports = SearchResultsStore;
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(278);
+	var CurrentUserStore = __webpack_require__(279);
 	var SessionsApiUtil = __webpack_require__(274);
 	var NotesIndex = __webpack_require__(208);
 	var History = __webpack_require__(159).History;
@@ -46727,13 +46776,13 @@
 	module.exports = Home;
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionForm = __webpack_require__(277);
 	var UserForm = __webpack_require__(273);
-	var CurrentUserStore = __webpack_require__(278);
+	var CurrentUserStore = __webpack_require__(279);
 	var SessionsApiUtil = __webpack_require__(274);
 	var History = __webpack_require__(159).History;
 	
@@ -46782,54 +46831,6 @@
 	});
 	
 	module.exports = Session;
-
-/***/ },
-/* 292 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var UserActions = __webpack_require__(275);
-	
-	var UsersApiUtil = {
-	  fetchUsers: function () {
-	    $.ajax({
-	      url: '/api/users',
-	      type: 'GET',
-	      dataType: 'json',
-	      success: function (users) {
-	        UserActions.receiveUsers(users);
-	      }
-	    });
-	  },
-	
-	  fetchUser: function (id) {
-	    $.ajax({
-	      url: '/api/users/' + id,
-	      type: 'GET',
-	      dataType: 'json',
-	      success: function (user) {
-	        UserActions.receiveUser(user);
-	      }
-	    });
-	  },
-	
-	  createUser: function (user, cb) {
-	    $.ajax({
-	      url: 'api/users',
-	      type: 'POST',
-	      data: user,
-	      dataType: 'json',
-	      success: function (data) {
-	        cb && cb(data);
-	        // UserActions.receiveCurrentUser(user);
-	        // cb();
-	        console.log("user created!");
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = UsersApiUtil;
 
 /***/ }
 /******/ ]);
