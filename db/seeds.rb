@@ -20,7 +20,17 @@ n1 = Note.create!({
   title: "Welcome",
   body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.",
   # body_delta: "{'ops':[{'retain':12},{'delete':4},{'insert':'White','attributes':{'color':'#fff'}}]}",
-  body_delta: "{'ops':[{'retain':22},{'attributes':{'size':'32px'},'insert':'e'}]}",
+  body_delta: '{"ops":[{"retain":22},{"attributes":{"size":"32px"},"insert":"e"}]}',
+  # body_delta: "{}",
+  author_id: u2.id,
+  notebook_id: 1
+})
+
+n2 = Note.create!({
+  title: "Welcome",
+  body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.",
+  # body_delta: "{'ops':[{'retain':12},{'delete':4},{'insert':'White','attributes':{'color':'#fff'}}]}",
+  body_delta: '{"ops":[{"retain":22},{"attributes":{"size":"32px"},"insert":"e"}]}',
   # body_delta: "{}",
   author_id: u2.id,
   notebook_id: 1

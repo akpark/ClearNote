@@ -20,10 +20,6 @@ var NoteIndexItem = React.createClass({
     this.noteIndexItemListener = NoteStore.addListener(this._onChange);
   },
 
-  componentWillUnmount: function () {
-    this.noteIndexItemListener.remove();
-  },
-
   _onChange: function () {
     this.setState({note: NoteStore.find(this.props.note.id)});
 
@@ -32,14 +28,17 @@ var NoteIndexItem = React.createClass({
     }
   },
 
+  componentWillUnmount: function () {
+    this.noteIndexItemListener.remove();
+  },
+
   showDetail: function(e) {
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
 
-    this.history.pushState(null, 'home/notes/' + this.props.note.id);
+    this.history.pushState(null, 'home/note/' + this.props.note.id);
   },
 
-  //TODO!!!refactor this
   getUpdatedDate: function () {
     var note = this.props.note;
     var updated_at = new Date(note.updated_at);
@@ -71,17 +70,17 @@ var NoteIndexItem = React.createClass({
     return time + " ago";
   },
 
-  getNotesInfo: function () {
-    return {
-      type: "note",
-      id: this.props.note.id,
-      title: this.props.note.title
-    };
-  },
+  // getNotesInfo: function () {
+  //   return {
+  //     type: "note",
+  //     id: this.props.note.id,
+  //     title: this.props.note.title
+  //   };
+  // },
 
   render: function() {
     var elapsed = this.getUpdatedDate();
-    var notesInfo = this.getNotesInfo();
+    // var notesInfo = this.getNotesInfo();
     var klass = "note-index-item";
     if (this.state.selected) {
       klass += " selected";
@@ -89,14 +88,15 @@ var NoteIndexItem = React.createClass({
 
     return (
       <div className={klass} onClick={this.showDetail}>
+
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
             <div className="note-index-item-title">{this.props.note.title}</div>
-            <MiniMenu itemInfo={this.getNotesInfo()} />
           </div>
           <div className="note-index-item-date">{elapsed}</div>
           <div className="note-index-item-body">{this.props.note.body}</div>
         </div>
+
       </div>
     );
   }

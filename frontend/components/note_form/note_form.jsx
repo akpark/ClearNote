@@ -38,21 +38,30 @@ var NoteForm = React.createClass({
 		if (note) {
 	    return ({id: note.id, title: note.title, body: note.body, notebook_id: note.notebook_id});
 		} else {
+			NotesApiUtil.fetchSingleNote(parseInt(this.props.params.noteId));
 			return null;
 		}
   },
 
   componentDidMount: function() {
+		debugger
     this.setUpQuillEditor();
+		NotesApiUtil.fetchAllNotes();
+		NotebooksApiUtil.fetchAllNotebooks();
+		NoteStore.addListener(this._onChange);
   },
 
-  componentWillMount: function () {
-    NotesApiUtil.fetchAllNotes();
-    NotebooksApiUtil.fetchAllNotebooks();
-  },
+	_onChange: function () {
+		debugger
+		var note = NoteStore.find(parseInt(this.props.params.noteId));
+		this.setState({title: note.title});
+	},
+
+  // componentWillMount: function () {
+  // },
 
   componentWillReceiveProps: function(newProps) {
-		// debugger
+		debugger
     if (newProps.params.noteId === "new") {
       edit = false;
       this.setState({
@@ -62,7 +71,6 @@ var NoteForm = React.createClass({
 			});
       return;
     }
-		debugger
 		edit = true;
     var note = NoteStore.find(parseInt(newProps.params.noteId));
     this.setState({id: note.id, title: note.title, body_delta: JSON.parse(note.body_delta)});
@@ -198,8 +206,6 @@ var NoteForm = React.createClass({
   },
 
   setUpQuillEditor: function () {
-		debugger
-    console.log('set up quill editor');
     _quillEditor = new Quill('#editor', {
       modules: {
         'toolbar': { container: '#toolbar' },
@@ -219,7 +225,6 @@ var NoteForm = React.createClass({
     var header = this.setUpHeader();
     var toolbar = this.setUpToolbar();
 
-		debugger
     if (_quillEditor) {
       sameEditor = true;
 			if (!edit) {

@@ -19,7 +19,6 @@ CurrentUserStore.userHasBeenFetched = function () {
 };
 
 CurrentUserStore.__onDispatch = function (payload) {
-  debugger
   switch (payload.actionType) {
     case CurrentUserConstants.RECEIVE_CURRENT_USER:
       _currentUserHasBeenFetched = true;

@@ -1,16 +1,14 @@
 var React = require('react');
-var NoteStore = require('../../stores/note_store');
 var NotesApiUtil = require('../../util/notes_api_util');
-var NoteActions = require('../../actions/note_actions');
+var NoteStore = require('../../stores/note_store');
 var NoteIndexItem = require('./index_item');
-var OptionsDropdown = require('./options_dropdown');
 var History = require('react-router').History;
 
 var NotesIndex = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return ({notes: NoteStore.all(), indexInfo: this.props.indexInfo});
+    return { notes: NoteStore.all() };
   },
 
   componentWillMount: function () {
@@ -18,50 +16,38 @@ var NotesIndex = React.createClass({
     NotesApiUtil.fetchAllNotes();
   },
 
+  _onChange: function () {
+    this.setState({ notes: NoteStore.all() });
+  },
+
   componentWillUnmount: function() {
     this.notesListener.remove();
   },
 
-  _onChange: function() {
-    switch (this.props.indexInfo.header) {
-      case "notes":
-        this.setState({notes: NoteStore.all()});
-        break;
-      case "notebooks":
-        this.setState({notes: NoteStore.findByNotebookId(parseInt(this.props.indexInfo.id))});
-        break;
-    }
-  },
-
-  componentWillReceiveProps: function (newProps) {
-    switch (newProps.indexInfo.header) {
-      case "notebooks":
-        this.setState({notes: NoteStore.findByNotebookId(parseInt(newProps.indexInfo.id))});
-        break;
-      case "notes":
-        this.setState({notes: NoteStore.all()});
-        break;
-    }
-  },
-
   render: function() {
+    var first = true;
     var noteItems = this.state.notes.map(function (note, key) {
-      //if the first item in the array then send it a selected prop
-      var selected = (key === 0) ? true : false;
-      var selectedClass = (key === 0) ? "selected" : "";
-      return (<NoteIndexItem className={selectedClass} key={key} note={note} selected={selected} />);
+      var klass = "note-index-item";
+      if (first) {
+        klass += " selected";
+      }
+      first = false;
+
+      return (
+        <NoteIndexItem
+          onClick={this.handleNoteItemClick}
+          className={klass}
+          key={key}
+          note={note}>
+        </NoteIndexItem>
+      );
     });
 
     var notesLength = (this.state.notes) ? this.state.notes.length : 0;
 
-    var optionsDropdown;
-    if (this.state.optionsClicked) { optionsDropdown = <OptionsDropdown />; }
-
     return(
       <div className="notes-index">
-
         <div className="notes-index-header">
-          <div className="notes-index-title">{this.props.indexInfo.title}</div>
           <div className="notes-index-header-bottom group">
             <div className="number-of-notes">{notesLength} Note(s)</div>
           </div>
