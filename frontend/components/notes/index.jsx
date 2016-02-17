@@ -4,6 +4,8 @@ var NoteStore = require('../../stores/note_store');
 var NoteIndexItem = require('./index_item');
 var History = require('react-router').History;
 
+var type = "notes";
+
 var NotesIndex = React.createClass({
   mixins: [History],
 
@@ -17,7 +19,6 @@ var NotesIndex = React.createClass({
   },
 
   _onChange: function () {
-    debugger
     this.setState({ notes: this.getNotes(this.props) });
   },
 
@@ -32,30 +33,36 @@ var NotesIndex = React.createClass({
   getNotes: function (props) {
     switch (props.indexInfo.header) {
       case "notes":
+        type = "notes";
         return NoteStore.all();
       case "notebooks":
+        type = "notebooks";
         return NoteStore.findByNotebookId(props.indexInfo.id);
     }
   },
 
   render: function() {
-    var first = true;
+    var first = 0;
+    var selected = false;
     var noteItems = this.state.notes.map(function (note, key) {
-      var klass = "note-index-item";
-      if (first) {
-        klass += " selected";
+      if (first === 0) {
+        selected = true;
+      } else {
+        selected = false;
       }
-      first = false;
+      first += 1;
 
       return (
         <NoteIndexItem
           onClick={this.handleNoteItemClick}
-          className={klass}
           key={key}
-          note={note}>
+          note={note}
+          type={type}
+          notebookId={this.props.indexInfo.id}
+          selected={selected}>
         </NoteIndexItem>
       );
-    });
+    }.bind(this));
 
     var notesLength = (this.state.notes) ? this.state.notes.length : 0;
 

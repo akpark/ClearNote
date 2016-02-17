@@ -11,8 +11,21 @@ var NoteIndexItem = React.createClass({
   },
 
   componentWillMount: function () {
+    //fix this
     if (this.state.selected) {
-      this.history.pushState(null, 'home/notes/' + this.props.note.id);
+      this.indexItemClick();
+    }
+  },
+
+  indexItemClick: function () {
+    //check whether it is from notes or notebook
+    switch (this.props.type) {
+      case "notes":
+        this.history.pushState(null, 'home/note/' + this.props.note.id);
+        break;
+      case "notebooks":
+        this.history.pushState(null, 'home/notebook/' + this.props.notebookId + '/note/' + this.props.note.id);
+        break;
     }
   },
 
@@ -24,7 +37,7 @@ var NoteIndexItem = React.createClass({
     this.setState({note: NoteStore.find(this.props.note.id)});
 
     if (this.state.selected && this.props.className !== "selected") {
-      this.history.pushState(null, 'home/notes/' + this.props.note.id);
+      this.indexItemClick();
     }
   },
 
@@ -35,8 +48,8 @@ var NoteIndexItem = React.createClass({
   showDetail: function(e) {
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
-    
-    this.history.pushState(null, 'home/note/' + this.props.note.id);
+
+    this.indexItemClick();
   },
 
   getUpdatedDate: function () {
@@ -69,14 +82,6 @@ var NoteIndexItem = React.createClass({
     }
     return time + " ago";
   },
-
-  // getNotesInfo: function () {
-  //   return {
-  //     type: "note",
-  //     id: this.props.note.id,
-  //     title: this.props.note.title
-  //   };
-  // },
 
   render: function() {
     var elapsed = this.getUpdatedDate();

@@ -74,7 +74,7 @@
 	    React.createElement(
 	      Route,
 	      { path: 'notebook/:notebookId' },
-	      React.createElement(Route, { path: 'note/:noteId' })
+	      React.createElement(Route, { path: 'note/:noteId', component: NoteForm })
 	    ),
 	    React.createElement(Route, { path: 'note/:noteId', component: NoteForm }),
 	    React.createElement(Route, { path: 'search', component: Search })
@@ -24178,6 +24178,8 @@
 	var NoteIndexItem = __webpack_require__(234);
 	var History = __webpack_require__(159).History;
 	
+	var type = "notes";
+	
 	var NotesIndex = React.createClass({
 	  displayName: 'NotesIndex',
 	
@@ -24193,7 +24195,6 @@
 	  },
 	
 	  _onChange: function () {
-	    debugger;
 	    this.setState({ notes: this.getNotes(this.props) });
 	  },
 	
@@ -24208,27 +24209,33 @@
 	  getNotes: function (props) {
 	    switch (props.indexInfo.header) {
 	      case "notes":
+	        type = "notes";
 	        return NoteStore.all();
 	      case "notebooks":
+	        type = "notebooks";
 	        return NoteStore.findByNotebookId(props.indexInfo.id);
 	    }
 	  },
 	
 	  render: function () {
-	    var first = true;
+	    var first = 0;
+	    var selected = false;
 	    var noteItems = this.state.notes.map(function (note, key) {
-	      var klass = "note-index-item";
-	      if (first) {
-	        klass += " selected";
+	      if (first === 0) {
+	        selected = true;
+	      } else {
+	        selected = false;
 	      }
-	      first = false;
+	      first += 1;
 	
 	      return React.createElement(NoteIndexItem, {
 	        onClick: this.handleNoteItemClick,
-	        className: klass,
 	        key: key,
-	        note: note });
-	    });
+	        note: note,
+	        type: type,
+	        notebookId: this.props.indexInfo.id,
+	        selected: selected });
+	    }.bind(this));
 	
 	    var notesLength = this.state.notes ? this.state.notes.length : 0;
 	
@@ -31254,8 +31261,21 @@
 	  },
 	
 	  componentWillMount: function () {
+	    //fix this
 	    if (this.state.selected) {
-	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
+	      this.indexItemClick();
+	    }
+	  },
+	
+	  indexItemClick: function () {
+	    //check whether it is from notes or notebook
+	    switch (this.props.type) {
+	      case "notes":
+	        this.history.pushState(null, 'home/note/' + this.props.note.id);
+	        break;
+	      case "notebooks":
+	        this.history.pushState(null, 'home/notebook/' + this.props.notebookId + '/note/' + this.props.note.id);
+	        break;
 	    }
 	  },
 	
@@ -31267,7 +31287,7 @@
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
 	
 	    if (this.state.selected && this.props.className !== "selected") {
-	      this.history.pushState(null, 'home/notes/' + this.props.note.id);
+	      this.indexItemClick();
 	    }
 	  },
 	
@@ -31279,7 +31299,7 @@
 	    $(".note-index-item").removeClass("selected");
 	    $(e.currentTarget).addClass('selected');
 	
-	    this.history.pushState(null, 'home/note/' + this.props.note.id);
+	    this.indexItemClick();
 	  },
 	
 	  getUpdatedDate: function () {
@@ -31312,14 +31332,6 @@
 	    }
 	    return time + " ago";
 	  },
-	
-	  // getNotesInfo: function () {
-	  //   return {
-	  //     type: "note",
-	  //     id: this.props.note.id,
-	  //     title: this.props.note.title
-	  //   };
-	  // },
 	
 	  render: function () {
 	    var elapsed = this.getUpdatedDate();
