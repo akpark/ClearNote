@@ -14,16 +14,25 @@
   height: 100px;
 }
 
+.notebook-index-item:hover {
+  background: #2dbe60;
+  cursor: pointer;
+}
+
 .notebook-index-item-title {
   padding: 5px 0 2px 0;
   font-family: futura;
   font-size: 16px;
   font-weight: 400;
+  float: left;
 }
 
-.notebook-index-item:hover {
-  background: #2dbe60;
-  cursor: pointer;
+.notebook-index-item-trash {
+  float: right;
+}
+
+.notebook-index-item-trash:hover {
+  color: white;
 }
 
 .search-notebook-input {

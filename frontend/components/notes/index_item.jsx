@@ -97,6 +97,7 @@ var NoteIndexItem = React.createClass({
     NotesApiUtil.deleteNote(this.props.note.id, function() {
       this.history.pushState(null, '/home');
     }.bind(this));
+    this.closeModal();
   },
 
   showModal: function () {
@@ -124,8 +125,8 @@ var NoteIndexItem = React.createClass({
           style={customStyles}>
 
           <h1>Are you sure you want to delete this note?</h1>
-          <button onClick={this.closeModal}>Close</button>
-          <button onClick={this.andleNoteDelete}>Delete</button>
+          <button onClick={this.closeModal}>Cancel</button>
+          <button onClick={this.handleNoteDelete}>Delete</button>
         </Modal>
 
         <div className="note-index-item-inner">

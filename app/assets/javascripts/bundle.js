@@ -31353,6 +31353,7 @@
 	    NotesApiUtil.deleteNote(this.props.note.id, function () {
 	      this.history.pushState(null, '/home');
 	    }.bind(this));
+	    this.closeModal();
 	  },
 	
 	  showModal: function () {
@@ -31388,11 +31389,11 @@
 	        React.createElement(
 	          'button',
 	          { onClick: this.closeModal },
-	          'Close'
+	          'Cancel'
 	        ),
 	        React.createElement(
 	          'button',
-	          { onClick: this.andleNoteDelete },
+	          { onClick: this.handleNoteDelete },
 	          'Delete'
 	        )
 	      ),
@@ -34232,7 +34233,17 @@
 	var React = __webpack_require__(1);
 	var NotebookStore = __webpack_require__(257);
 	var NotebooksApiUtil = __webpack_require__(256);
+	var Modal = __webpack_require__(236);
 	var History = __webpack_require__(159).History;
+	
+	var customStyles = {
+	  content: {
+	    top: '30%',
+	    left: '35%',
+	    right: 'auto',
+	    bottom: 'auto'
+	  }
+	};
 	
 	var NotebookIndexItem = React.createClass({
 	  displayName: 'NotebookIndexItem',
@@ -34240,12 +34251,27 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { notebook: this.props.notebook };
+	    return { notebook: this.props.notebook, modalIsOpen: false };
 	  },
 	
-	  handleNotebookItemClick: function () {
+	  handleNotebookItemClick: function (e) {
+	    if (e.target.className === "fa fa-trash") {
+	      return;
+	    }
 	    this.props.toggleSlideout();
 	    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  handleNotebookDelete: function () {
+	    NotebooksApiUtil.deleteNotebook(this.props.notebook.id);
 	  },
 	
 	  render: function () {
@@ -34253,12 +34279,40 @@
 	      'div',
 	      { className: 'notebook-index-item', onClick: this.handleNotebookItemClick },
 	      React.createElement(
+	        Modal,
+	        {
+	          className: 'delete-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Are you sure you want to delete this notebook?'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.closeModal },
+	          'Cancel'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.handleNotebookDelete },
+	          'Delete'
+	        )
+	      ),
+	      React.createElement(
 	        'div',
 	        { className: 'notebook-index-item-top group' },
 	        React.createElement(
 	          'div',
 	          { className: 'notebook-index-item-title' },
 	          this.props.notebook.title
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-item-trash', onClick: this.openModal },
+	          React.createElement('i', { className: 'fa fa-trash' })
 	        )
 	      ),
 	      React.createElement(

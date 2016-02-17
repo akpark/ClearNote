@@ -75,9 +75,7 @@
 
 .delete-modal button {
   width: 150px;
-  margin-top: 70px;
-  margin-bottom: 25px;
+  margin: 50px 5px;
   height: 25px;
   border: 1px solid #2A2C05;
-  margin: 0 5px;
 }
