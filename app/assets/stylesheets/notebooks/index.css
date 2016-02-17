@@ -1,11 +1,16 @@
 .slideout-notebooks {
   height: 100%;
   position: absolute;
+  top: 0;
+  left: 80px;
 }
 
 .notebook-index {
+  position: relative;
+  z-index: 1;
   height: 100%;
-  border-right: 1px solid #ccc;
+  border-right: 3px solid #ccc;
+  border-left: 3px solid #ccc;
   width: 400px;
   background: white;
 }
@@ -14,14 +19,6 @@
   display: block;
   padding: 20px 20px 15px 10px;
 }
-
-/*.slideout {
-  width: 400px;
-  z-index: 0.1;
-  position: fixed;
-  float: left;
-  height: 100%;
-}*/
 
 .notebook-index-title {
   text-transform: uppercase;

@@ -30,13 +30,6 @@ var router = (
   </Router>
 );
 
-// var router = (
-//   <Router>
-//     <Route path="/" component={ WelcomeForm } onEnter={_redirectIfLoggedIn}/>
-//     <Route path="/home/notes/:noteId" component={ App } onEnter={_ensureLoggedIn}/>
-//   </Router>
-// )
-
 function _redirectIfLoggedIn(nextState, replace, callback) {
   SessionsApiUtil.fetchCurrentUser(function () {
     if (CurrentUserStore.isLoggedIn()) {

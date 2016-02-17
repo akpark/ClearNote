@@ -5,12 +5,13 @@ var Slideout = require('../slideout/slideout');
 var NotebookIndex = require('../slideout/notebooks/index');
 
 var searchOpen = false;
+var slideoutOpen = false;
 
 var NavBar = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    return ({profileSettingsOpen: false});
+    return ({profileSettingsOpen: false, slideoutOpen: false});
   },
 
   componentDidMount: function () {
@@ -50,7 +51,14 @@ var NavBar = React.createClass({
 
   handleNotebooksClick: function () {
     // $('.slideout-notebooks').hide();
-    $('.slideout-notebooks').show("slow");
+    if (slideoutOpen) {
+      $('.slideout-notebooks').hide("slow");
+      slideoutOpen = false;
+      // this.setState(slideout)
+    } else {
+      $('.slideout-notebooks').show("slow");
+      slideoutOpen = true;
+    }
   },
 
   goHome: function () {
@@ -74,34 +82,35 @@ var NavBar = React.createClass({
       </div>;
 
     return (
-      <div className="navbar group">
-        <img className="app-logo" />
-
-        <div className="navbar-top">
-          <div className="navbar-link new-note-link"
-               onClick={this.handleNewNoteClick}><i className="fa fa-plus"></i>
-          </div>
-          <div className="navbar-link search-link"
-               onClick={this.handleSearchClick}><i className="fa fa-search"></i>
-          </div>
-        </div>
-
-        <div className="navbar-bottom">
-          <div className="navbar-link notes-link"
-               onClick={this.handleNotesClick}>
-          </div>
-          <div className="navbar-link notebooks-link"
-               onClick={this.handleNotebooksClick}><i className="fa fa-book"></i>
-          </div>
-        </div>
-
+      <div className="navbar-outer">
         {slideout}
 
-        <div className="navbar-link profile-button" onClick={this.handleProfileButtonClick}>
-          <i className="fa fa-user fa-2x"></i>
-          <Account />
-        </div>
+        <div className="navbar group">
+          <img className="app-logo" />
 
+          <div className="navbar-top">
+            <div className="navbar-link new-note-link"
+                 onClick={this.handleNewNoteClick}><i className="fa fa-plus"></i>
+            </div>
+            <div className="navbar-link search-link"
+                 onClick={this.handleSearchClick}><i className="fa fa-search"></i>
+            </div>
+          </div>
+
+          <div className="navbar-bottom">
+            <div className="navbar-link notes-link"
+                 onClick={this.handleNotesClick}>
+            </div>
+            <div className="navbar-link notebooks-link"
+                 onClick={this.handleNotebooksClick}><i className="fa fa-book"></i>
+            </div>
+          </div>
+
+          <div className="navbar-link profile-button" onClick={this.handleProfileButtonClick}>
+            <i className="fa fa-user fa-2x"></i>
+          </div>
+
+        </div>
       </div>
     );
   }
