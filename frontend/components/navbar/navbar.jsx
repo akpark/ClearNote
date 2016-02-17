@@ -32,7 +32,7 @@ var NavBar = React.createClass({
     this.history.pushState(null, '/home', {index: "notes"});
   },
 
-  handleNotebooksClick: function () {
+  toggleSlideout: function () {
     if (slideoutOpen) {
       $('.slideout-notebooks').hide("slow");
       $('.home-right').fadeTo("fast", 1);
@@ -49,14 +49,14 @@ var NavBar = React.createClass({
       });
     }
   },
-  
+
   reset: function () {
-    if (slideoutOpen) { this.handleNotebooksClick(); }
+    if (slideoutOpen) { this.toggleSlideout(); }
   },
 
-  goHome: function () {
-    this.history.pushState(null, '/home', {index: "notes"});
-  },
+  // goHome: function () {
+  //   this.history.pushState(null, '/home', {index: "notes"});
+  // },
 
   handleProfileButtonClick: function (e) {
     if (this.state.profileSettingsOpen) {
@@ -71,7 +71,7 @@ var NavBar = React.createClass({
   render: function() {
     var slideout =
       <div className="slideout-notebooks">
-        <NotebookIndex />
+        <NotebookIndex toggleSlideout={this.toggleSlideout} />
       </div>;
 
     return (
@@ -95,7 +95,7 @@ var NavBar = React.createClass({
                  onClick={this.handleNotesClick}>
             </div>
             <div className="navbar-link notebooks-link"
-                 onClick={this.handleNotebooksClick}><i className="fa fa-book"></i>
+                 onClick={this.toggleSlideout}><i className="fa fa-book"></i>
             </div>
           </div>
 

@@ -18,7 +18,6 @@ var NoteIndexItem = React.createClass({
   },
 
   indexItemClick: function () {
-    //check whether it is from notes or notebook
     switch (this.props.type) {
       case "notes":
         this.history.pushState(null, 'home/note/' + this.props.note.id);
@@ -85,7 +84,6 @@ var NoteIndexItem = React.createClass({
 
   render: function() {
     var elapsed = this.getUpdatedDate();
-    // var notesInfo = this.getNotesInfo();
     var klass = "note-index-item";
     if (this.state.selected) {
       klass += " selected";

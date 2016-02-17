@@ -11,6 +11,8 @@ var NotebookIndexItem = React.createClass({
   },
 
   handleNotebookItemClick: function () {
+    this.props.toggleSlideout();
+    // $('.slideout-notebooks').hide("slow");
     this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
   },
 

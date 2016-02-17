@@ -31268,7 +31268,6 @@
 	  },
 	
 	  indexItemClick: function () {
-	    //check whether it is from notes or notebook
 	    switch (this.props.type) {
 	      case "notes":
 	        this.history.pushState(null, 'home/note/' + this.props.note.id);
@@ -31335,7 +31334,6 @@
 	
 	  render: function () {
 	    var elapsed = this.getUpdatedDate();
-	    // var notesInfo = this.getNotesInfo();
 	    var klass = "note-index-item";
 	    if (this.state.selected) {
 	      klass += " selected";
@@ -34093,8 +34091,8 @@
 	
 	  getNotebooks: function () {
 	    var notebooks = this.state.notebooks.map(function (notebook, key) {
-	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook });
-	    });
+	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook, toggleSlideout: this.props.toggleSlideout });
+	    }.bind(this));
 	    return notebooks;
 	  },
 	
@@ -34191,6 +34189,8 @@
 	  },
 	
 	  handleNotebookItemClick: function () {
+	    this.props.toggleSlideout();
+	    // $('.slideout-notebooks').hide("slow");
 	    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
 	  },
 	
@@ -35019,7 +35019,7 @@
 	    this.history.pushState(null, '/home', { index: "notes" });
 	  },
 	
-	  handleNotebooksClick: function () {
+	  toggleSlideout: function () {
 	    if (slideoutOpen) {
 	      $('.slideout-notebooks').hide("slow");
 	      $('.home-right').fadeTo("fast", 1);
@@ -35039,13 +35039,13 @@
 	
 	  reset: function () {
 	    if (slideoutOpen) {
-	      this.handleNotebooksClick();
+	      this.toggleSlideout();
 	    }
 	  },
 	
-	  goHome: function () {
-	    this.history.pushState(null, '/home', { index: "notes" });
-	  },
+	  // goHome: function () {
+	  //   this.history.pushState(null, '/home', {index: "notes"});
+	  // },
 	
 	  handleProfileButtonClick: function (e) {
 	    if (this.state.profileSettingsOpen) {
@@ -35061,7 +35061,7 @@
 	    var slideout = React.createElement(
 	      'div',
 	      { className: 'slideout-notebooks' },
-	      React.createElement(NotebookIndex, null)
+	      React.createElement(NotebookIndex, { toggleSlideout: this.toggleSlideout })
 	    );
 	
 	    return React.createElement(
@@ -35096,7 +35096,7 @@
 	          React.createElement(
 	            'div',
 	            { className: 'navbar-link notebooks-link',
-	              onClick: this.handleNotebooksClick },
+	              onClick: this.toggleSlideout },
 	            React.createElement('i', { className: 'fa fa-book' })
 	          )
 	        ),

@@ -48,8 +48,8 @@ var NotebooksIndex = React.createClass({
 
   getNotebooks: function () {
     var notebooks = this.state.notebooks.map(function (notebook, key) {
-      return (<NotebookIndexItem key={key} notebook={notebook} />);
-    });
+      return (<NotebookIndexItem key={key} notebook={notebook} toggleSlideout={this.props.toggleSlideout} />);
+    }.bind(this));
     return notebooks;
   },
 
