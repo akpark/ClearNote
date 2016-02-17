@@ -54,10 +54,6 @@ var NavBar = React.createClass({
     if (slideoutOpen) { this.toggleSlideout(); }
   },
 
-  // goHome: function () {
-  //   this.history.pushState(null, '/home', {index: "notes"});
-  // },
-
   handleProfileButtonClick: function (e) {
     if (this.state.profileSettingsOpen) {
       $('.account-options-menu').hide();

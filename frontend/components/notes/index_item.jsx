@@ -1,4 +1,5 @@
 var React = require('react');
+var NotesApiUtil = require('../../util/notes_api_util');
 var NoteStore = require('../../stores/note_store');
 var History = require('react-router').History;
 var MiniMenu = require('../mini_menu');
@@ -76,6 +77,11 @@ var NoteIndexItem = React.createClass({
     return time + " ago";
   },
 
+  handleNoteDelete: function () {
+    //show a modal of some sort
+    NotesApiUtil.deleteNote(this.props.note.id);
+  },
+
   render: function() {
     var elapsed = this.getUpdatedDate();
     var klass = "note-index-item";
@@ -89,6 +95,7 @@ var NoteIndexItem = React.createClass({
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
             <div className="note-index-item-title">{this.props.note.title}</div>
+            <div className="note-index-item-delete" onClick={this.handleNoteDelete}><i className="fa fa-trash"></i></div>
           </div>
           <div className="note-index-item-date">{elapsed}</div>
           <div className="note-index-item-body">{this.props.note.body}</div>

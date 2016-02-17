@@ -31247,6 +31247,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var NotesApiUtil = __webpack_require__(209);
 	var NoteStore = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
 	var MiniMenu = __webpack_require__(235);
@@ -31326,6 +31327,11 @@
 	    return time + " ago";
 	  },
 	
+	  handleNoteDelete: function () {
+	    //show a modal of some sort
+	    NotesApiUtil.deleteNote(this.props.note.id);
+	  },
+	
 	  render: function () {
 	    var elapsed = this.getUpdatedDate();
 	    var klass = "note-index-item";
@@ -31346,6 +31352,11 @@
 	            'div',
 	            { className: 'note-index-item-title' },
 	            this.props.note.title
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'note-index-item-delete', onClick: this.handleNoteDelete },
+	            React.createElement('i', { className: 'fa fa-trash' })
 	          )
 	        ),
 	        React.createElement(
@@ -34176,7 +34187,6 @@
 	
 	  handleNotebookItemClick: function () {
 	    this.props.toggleSlideout();
-	    // $('.slideout-notebooks').hide("slow");
 	    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
 	  },
 	
@@ -35032,10 +35042,6 @@
 	      this.toggleSlideout();
 	    }
 	  },
-	
-	  // goHome: function () {
-	  //   this.history.pushState(null, '/home', {index: "notes"});
-	  // },
 	
 	  handleProfileButtonClick: function (e) {
 	    if (this.state.profileSettingsOpen) {

@@ -30,6 +30,14 @@
   width: 280px;
 }
 
+.note-index-item-delete {
+  float: right;
+}
+
+.note-index-item-delete:hover {
+  color: white;
+}
+
 .note-index-item-date {
   text-transform: uppercase;
   font-family: gotham, helvetica, arial, sans-serif;;
@@ -37,7 +45,6 @@
   letter-spacing: .5px;
   font-weight: lighter;
   overflow: hidden;
-  /*height: 10px;*/
 }
 
 .note-index-item-body {
