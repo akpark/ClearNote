@@ -31261,7 +31261,6 @@
 	  },
 	
 	  componentWillMount: function () {
-	    //fix this
 	    if (this.state.selected) {
 	      this.indexItemClick();
 	    }
@@ -31298,8 +31297,7 @@
 	  },
 	
 	  getUpdatedDate: function () {
-	    var note = this.props.note;
-	    var updated_at = new Date(note.updated_at);
+	    var updated_at = new Date(this.props.note.updated_at);
 	    var today = new Date();
 	    var elapsedTime = today.getTime() - updated_at.getTime();
 	
@@ -34362,6 +34360,7 @@
 	
 	  componentWillMount: function () {
 	    console.log("component will mount");
+	
 	    if (this.props.noteId !== "new") {
 	      NotesApiUtil.fetchSingleNote(parseInt(this.props.noteId));
 	    }
@@ -34379,12 +34378,13 @@
 	
 	    if (this.props.noteId === "new") {} else {
 	      var note = NoteStore.find(this.props.noteId);
-	      this.setState({ title: note.title, note: note });
 	      fetched = true;
+	      this.setState({ title: note.title, note: note });
 	    }
 	  },
 	
 	  componentWillUnmount: function () {
+	    console.log("component will unmount");
 	    fetched = false;
 	    this.noteListener.remove();
 	  },
@@ -34538,7 +34538,6 @@
 	
 	    if (fetched) {
 	      _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
-	      fetched = false;
 	    }
 	
 	    var input = React.createElement('input', {

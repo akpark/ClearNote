@@ -11,7 +11,6 @@ var NoteIndexItem = React.createClass({
   },
 
   componentWillMount: function () {
-    //fix this
     if (this.state.selected) {
       this.indexItemClick();
     }
@@ -48,8 +47,7 @@ var NoteIndexItem = React.createClass({
   },
 
   getUpdatedDate: function () {
-    var note = this.props.note;
-    var updated_at = new Date(note.updated_at);
+    var updated_at = new Date(this.props.note.updated_at);
     var today = new Date();
     var elapsedTime = today.getTime() - updated_at.getTime();
 

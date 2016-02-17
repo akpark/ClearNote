@@ -34,6 +34,7 @@ var TextEditor = React.createClass({
 
   componentWillMount: function () {
     console.log("component will mount");
+
     if (this.props.noteId !== "new") {
       NotesApiUtil.fetchSingleNote(parseInt(this.props.noteId));
     }
@@ -52,12 +53,13 @@ var TextEditor = React.createClass({
     if (this.props.noteId === "new") {
     } else {
       var note = NoteStore.find(this.props.noteId);
-      this.setState({ title: note.title, note: note});
       fetched = true;
+      this.setState({ title: note.title, note: note});
     }
   },
 
   componentWillUnmount: function () {
+    console.log("component will unmount");
     fetched = false;
     this.noteListener.remove();
   },
@@ -173,7 +175,6 @@ var TextEditor = React.createClass({
 
     if (fetched) {
       _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
-      fetched = false;
     }
 
     var input = <input
