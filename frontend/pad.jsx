@@ -22,7 +22,9 @@ var router = (
   <Router>
     <Route path="/" component={ WelcomeForm } onEnter={_redirectIfLoggedIn}/>
     <Route path="home" component={ App } onEnter={_ensureLoggedIn}>
-      <Route path="notebook/:notebookId" />
+      <Route path="notebook/:notebookId" >
+        <Route path="note/:noteId"/>
+      </Route>
       <Route path="note/:noteId" component={ NoteForm } />
       <Route path="search" component={ Search } />
     </Route>

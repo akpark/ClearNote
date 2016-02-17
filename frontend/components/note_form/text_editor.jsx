@@ -20,6 +20,7 @@ const defaultColors = [
 ];
 
 var _quillEditor;
+var fetched = false;
 var created = false;
 
 var TextEditor = React.createClass({
@@ -42,18 +43,23 @@ var TextEditor = React.createClass({
     console.log("component did mount");
 
     this.setUpQuillEditor();
-    NoteStore.addListener(this._onChange);
+    this.noteListener = NoteStore.addListener(this._onChange);
   },
 
   _onChange: function () {
     console.log("on change");
     //just for the initial fetch
     if (this.props.noteId === "new") {
-
     } else {
       var note = NoteStore.find(this.props.noteId);
       this.setState({ title: note.title, note: note});
     }
+    fetched = true;
+  },
+
+  componentWillUnmount: function () {
+    fetched = false;
+    this.noteListener.remove();
   },
 
   setUpToolbar: function () {
@@ -163,7 +169,7 @@ var TextEditor = React.createClass({
     console.log("render");
     var toolbar = this.setUpToolbar();
 
-    if (_quillEditor) {
+    if (fetched) {
       _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
     }
 

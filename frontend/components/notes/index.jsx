@@ -8,9 +8,7 @@ var NotesIndex = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return {
-      notes: this.getNotes(this.props)
-    };
+    return { notes: this.getNotes(this.props) };
   },
 
   componentWillMount: function () {
@@ -19,6 +17,7 @@ var NotesIndex = React.createClass({
   },
 
   _onChange: function () {
+    debugger
     this.setState({ notes: this.getNotes(this.props) });
   },
 
@@ -27,7 +26,6 @@ var NotesIndex = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    debugger
     this.setState({ notes: this.getNotes(newProps) });
   },
 

@@ -35,7 +35,7 @@ var NoteIndexItem = React.createClass({
   showDetail: function(e) {
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
-
+    
     this.history.pushState(null, 'home/note/' + this.props.note.id);
   },
 

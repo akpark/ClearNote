@@ -12,12 +12,7 @@ var NoteForm = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    debugger
     this.setState( {noteId: newProps.params.noteId });
-  },
-
-  componentWillUnmount: function () {
-    this.noteListener.remove();
   },
 
   handleExpand: function () {

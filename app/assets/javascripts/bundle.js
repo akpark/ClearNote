@@ -71,7 +71,11 @@
 	  React.createElement(
 	    Route,
 	    { path: 'home', component: App, onEnter: _ensureLoggedIn },
-	    React.createElement(Route, { path: 'notebook/:notebookId' }),
+	    React.createElement(
+	      Route,
+	      { path: 'notebook/:notebookId' },
+	      React.createElement(Route, { path: 'note/:noteId' })
+	    ),
 	    React.createElement(Route, { path: 'note/:noteId', component: NoteForm }),
 	    React.createElement(Route, { path: 'search', component: Search })
 	  )
@@ -24180,9 +24184,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return {
-	      notes: this.getNotes(this.props)
-	    };
+	    return { notes: this.getNotes(this.props) };
 	  },
 	
 	  componentWillMount: function () {
@@ -24191,6 +24193,7 @@
 	  },
 	
 	  _onChange: function () {
+	    debugger;
 	    this.setState({ notes: this.getNotes(this.props) });
 	  },
 	
@@ -24199,7 +24202,6 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    debugger;
 	    this.setState({ notes: this.getNotes(newProps) });
 	  },
 	
@@ -34281,12 +34283,7 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    debugger;
 	    this.setState({ noteId: newProps.params.noteId });
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.noteListener.remove();
 	  },
 	
 	  handleExpand: function () {
@@ -34349,6 +34346,7 @@
 	const defaultColors = ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)', 'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)', 'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)', 'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)', 'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)', 'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)', 'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)', 'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)', 'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)', 'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)', 'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)', 'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)'];
 	
 	var _quillEditor;
+	var fetched = false;
 	var created = false;
 	
 	var TextEditor = React.createClass({
@@ -34373,7 +34371,7 @@
 	    console.log("component did mount");
 	
 	    this.setUpQuillEditor();
-	    NoteStore.addListener(this._onChange);
+	    this.noteListener = NoteStore.addListener(this._onChange);
 	  },
 	
 	  _onChange: function () {
@@ -34383,6 +34381,12 @@
 	      var note = NoteStore.find(this.props.noteId);
 	      this.setState({ title: note.title, note: note });
 	    }
+	    fetched = true;
+	  },
+	
+	  componentWillUnmount: function () {
+	    fetched = false;
+	    this.noteListener.remove();
 	  },
 	
 	  setUpToolbar: function () {
@@ -34530,7 +34534,7 @@
 	    console.log("render");
 	    var toolbar = this.setUpToolbar();
 	
-	    if (_quillEditor) {
+	    if (fetched) {
 	      _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
 	    }
 	
