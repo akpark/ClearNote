@@ -5,7 +5,7 @@ var History = require('react-router').History;
 var MiniMenu = require('../mini_menu');
 var Modal = require('react-modal');
 
-customStyles={
+var customStyles={
   content: {
     top: '30%',
     left: '35%',

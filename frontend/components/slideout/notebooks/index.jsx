@@ -4,12 +4,12 @@ var NotebookStore = require('../../../stores/notebook_store');
 var NotebookIndexItem = require('./index_item');
 var Modal = require('react-modal');
 
-const customStyles = {
+var customStyles = {
   content: {
-    top: '0',
-    bottom: '0',
-    left: '0',
-    right: '0',
+    top: '27%',
+    left: '35%',
+    right: 'auto',
+    bottom: 'auto',
   }
 };
 
@@ -31,18 +31,26 @@ var NotebooksIndex = React.createClass({
     this.setState({ notebooks: NotebookStore.all() });
   },
 
-  handleNewNotebookClick: function (e) {
-    var title = $('.new-notebook-title-input').val();
-    var notebook = {title: title};
-    NotebooksApiUtil.createNotebook(notebook);
-    this.closeModal();
-  },
-
   getNotebooks: function () {
     var notebooks = this.state.notebooks.map(function (notebook, key) {
       return (<NotebookIndexItem key={key} notebook={notebook} toggleSlideout={this.props.toggleSlideout} />);
     }.bind(this));
     return notebooks;
+  },
+
+  openModal: function () {
+    this.setState({modalIsOpen: true});
+  },
+
+  closeModal: function () {
+    this.setState({modalIsOpen: false});
+  },
+
+  handleNewNotebookClick: function (e) {
+    var title = $('.new-notebook-title-input').val();
+    var notebook = {title: title};
+    NotebooksApiUtil.createNotebook(notebook);
+    this.closeModal();
   },
 
   render: function () {
@@ -66,22 +74,20 @@ var NotebooksIndex = React.createClass({
           {notebooks}
         </div>
 
-        <Modal isOpen={this.state.modalIsOpen}
-               onRequestClose={this.closeModal}
-               style={customStyles}>
+        <Modal
+          className="new-notebook-modal"
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}>
 
-          <div className="new-notebook-modal">
-            <h2 className="new-notebook-modal-title">Create Notebook</h2>
-            <input className="new-notebook-title-input"
-                   type="text"
-                   placeholder="Title your notebook" />
+          <h2 className="new-notebook-modal-title">Create Notebook</h2>
+          <input className="new-notebook-title-input"
+                 type="text"
+                 placeholder="Title your notebook" />
 
-            <div className="new-notebook-modal-bottom group">
-              <button className="new-notebook-cancel-button"
-                      onClick={this.closeModal}>Cancel</button>
-              <button className="new-notebook-create-button"
-                      onClick={this.handleNewNotebookClick}>Create Notebook</button>
-            </div>
+          <div className="new-notebook-modal-bottom group">
+            <button onClick={this.closeModal}>Cancel</button>
+            <button onClick={this.handleNewNotebookClick}>Create</button>
           </div>
         </Modal>
       </div>

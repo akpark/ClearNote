@@ -31259,7 +31259,7 @@
 	var MiniMenu = __webpack_require__(235);
 	var Modal = __webpack_require__(236);
 	
-	customStyles = {
+	var customStyles = {
 	  content: {
 	    top: '30%',
 	    left: '35%',
@@ -34104,12 +34104,12 @@
 	var NotebookIndexItem = __webpack_require__(270);
 	var Modal = __webpack_require__(236);
 	
-	const customStyles = {
+	var customStyles = {
 	  content: {
-	    top: '0',
-	    bottom: '0',
-	    left: '0',
-	    right: '0'
+	    top: '27%',
+	    left: '35%',
+	    right: 'auto',
+	    bottom: 'auto'
 	  }
 	};
 	
@@ -34133,18 +34133,26 @@
 	    this.setState({ notebooks: NotebookStore.all() });
 	  },
 	
-	  handleNewNotebookClick: function (e) {
-	    var title = $('.new-notebook-title-input').val();
-	    var notebook = { title: title };
-	    NotebooksApiUtil.createNotebook(notebook);
-	    this.closeModal();
-	  },
-	
 	  getNotebooks: function () {
 	    var notebooks = this.state.notebooks.map(function (notebook, key) {
 	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook, toggleSlideout: this.props.toggleSlideout });
 	    }.bind(this));
 	    return notebooks;
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  handleNewNotebookClick: function (e) {
+	    var title = $('.new-notebook-title-input').val();
+	    var notebook = { title: title };
+	    NotebooksApiUtil.createNotebook(notebook);
+	    this.closeModal();
 	  },
 	
 	  render: function () {
@@ -34183,35 +34191,31 @@
 	      ),
 	      React.createElement(
 	        Modal,
-	        { isOpen: this.state.modalIsOpen,
+	        {
+	          className: 'new-notebook-modal',
+	          isOpen: this.state.modalIsOpen,
 	          onRequestClose: this.closeModal,
 	          style: customStyles },
 	        React.createElement(
+	          'h2',
+	          { className: 'new-notebook-modal-title' },
+	          'Create Notebook'
+	        ),
+	        React.createElement('input', { className: 'new-notebook-title-input',
+	          type: 'text',
+	          placeholder: 'Title your notebook' }),
+	        React.createElement(
 	          'div',
-	          { className: 'new-notebook-modal' },
+	          { className: 'new-notebook-modal-bottom group' },
 	          React.createElement(
-	            'h2',
-	            { className: 'new-notebook-modal-title' },
-	            'Create Notebook'
+	            'button',
+	            { onClick: this.closeModal },
+	            'Cancel'
 	          ),
-	          React.createElement('input', { className: 'new-notebook-title-input',
-	            type: 'text',
-	            placeholder: 'Title your notebook' }),
 	          React.createElement(
-	            'div',
-	            { className: 'new-notebook-modal-bottom group' },
-	            React.createElement(
-	              'button',
-	              { className: 'new-notebook-cancel-button',
-	                onClick: this.closeModal },
-	              'Cancel'
-	            ),
-	            React.createElement(
-	              'button',
-	              { className: 'new-notebook-create-button',
-	                onClick: this.handleNewNotebookClick },
-	              'Create Notebook'
-	            )
+	            'button',
+	            { onClick: this.handleNewNotebookClick },
+	            'Create'
 	          )
 	        )
 	      )

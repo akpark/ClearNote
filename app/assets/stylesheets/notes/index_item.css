@@ -60,7 +60,7 @@
 }
 
 .note-index-item:hover {
-  background: #BAA378;
+  background: #B4A28F;
   cursor: pointer;
 }
 
@@ -78,5 +78,6 @@
   margin-top: 70px;
   margin-bottom: 25px;
   height: 25px;
-  border: 3px solid #2A2C05;
+  border: 1px solid #2A2C05;
+  margin: 0 5px;
 }
