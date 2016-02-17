@@ -3,12 +3,22 @@ var NotesApiUtil = require('../../util/notes_api_util');
 var NoteStore = require('../../stores/note_store');
 var History = require('react-router').History;
 var MiniMenu = require('../mini_menu');
+var Modal = require('react-modal');
+
+customStyles={
+  content: {
+    top: '30%',
+    left: '35%',
+    right: 'auto',
+    bottom: 'auto',
+  }
+};
 
 var NoteIndexItem = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return {note: this.props.note, selected: this.props.selected};
+    return {note: this.props.note, selected: this.props.selected, modalIsOpen: false};
   },
 
   componentWillMount: function () {
@@ -41,6 +51,10 @@ var NoteIndexItem = React.createClass({
   },
 
   showDetail: function(e) {
+    if (e.target.className === "fa fa-trash") {
+      return;
+    }
+
     $(".note-index-item").removeClass("selected");
     $(e.currentTarget).addClass('selected');
 
@@ -79,7 +93,18 @@ var NoteIndexItem = React.createClass({
 
   handleNoteDelete: function () {
     //show a modal of some sort
-    NotesApiUtil.deleteNote(this.props.note.id);
+
+    NotesApiUtil.deleteNote(this.props.note.id, function() {
+      this.history.pushState(null, '/home');
+    }.bind(this));
+  },
+
+  showModal: function () {
+    this.setState({modalIsOpen: true});
+  },
+
+  closeModal: function () {
+    this.setState({modalIsOpen: false});
   },
 
   render: function() {
@@ -92,10 +117,21 @@ var NoteIndexItem = React.createClass({
     return (
       <div className={klass} onClick={this.showDetail}>
 
+        <Modal
+          className="delete-modal"
+          isOpen={this.state.modalIsOpen}
+          onRequestClose={this.closeModal}
+          style={customStyles}>
+
+          <h1>Are you sure you want to delete this note?</h1>
+          <button onClick={this.closeModal}>Close</button>
+          <button onClick={this.andleNoteDelete}>Delete</button>
+        </Modal>
+
         <div className="note-index-item-inner">
           <div className="note-index-item-top group">
             <div className="note-index-item-title">{this.props.note.title}</div>
-            <div className="note-index-item-delete" onClick={this.handleNoteDelete}><i className="fa fa-trash"></i></div>
+            <div className="note-index-item-delete" onClick={this.showModal}><i className="fa fa-trash"></i></div>
           </div>
           <div className="note-index-item-date">{elapsed}</div>
           <div className="note-index-item-body">{this.props.note.body}</div>

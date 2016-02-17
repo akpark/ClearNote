@@ -69,6 +69,7 @@ var NotesIndex = React.createClass({
     return(
       <div className="notes-index">
         <div className="notes-index-header">
+          <div className="notes-index-title">notes</div>
           <div className="notes-index-header-bottom group">
             <div className="number-of-notes">{notesLength} Note(s)</div>
           </div>

@@ -50,11 +50,12 @@ var NotesApiUtil = {
     });
   },
 
-  deleteNote: function (noteId) {
+  deleteNote: function (noteId, callback) {
     $.ajax({
       method: "DELETE",
       url: "api/notes/" + noteId,
       success: function (note) {
+        callback();
         NoteActions.deleteNote(note);
       }
     });

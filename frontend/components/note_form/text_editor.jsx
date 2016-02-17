@@ -52,7 +52,9 @@ var TextEditor = React.createClass({
 
     if (this.props.noteId === "new") {
     } else {
-      var note = NoteStore.find(this.props.noteId);
+      debugger
+      var note = NoteStore.find(parseInt(this.props.noteId));
+      //note is undefined after deletion
       fetched = true;
       this.setState({ title: note.title, note: note});
     }
@@ -139,8 +141,6 @@ var TextEditor = React.createClass({
   },
 
   handleBodyChange: function () {
-    //if new note, create note
-    //otherwise edit the note
     var id = this.props.noteId;
     if (id === "new") {
       if (!created) {

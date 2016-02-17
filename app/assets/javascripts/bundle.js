@@ -24247,6 +24247,11 @@
 	        { className: 'notes-index-header' },
 	        React.createElement(
 	          'div',
+	          { className: 'notes-index-title' },
+	          'notes'
+	        ),
+	        React.createElement(
+	          'div',
 	          { className: 'notes-index-header-bottom group' },
 	          React.createElement(
 	            'div',
@@ -24323,11 +24328,12 @@
 	    });
 	  },
 	
-	  deleteNote: function (noteId) {
+	  deleteNote: function (noteId, callback) {
 	    $.ajax({
 	      method: "DELETE",
 	      url: "api/notes/" + noteId,
 	      success: function (note) {
+	        callback();
 	        NoteActions.deleteNote(note);
 	      }
 	    });
@@ -31251,6 +31257,16 @@
 	var NoteStore = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
 	var MiniMenu = __webpack_require__(235);
+	var Modal = __webpack_require__(236);
+	
+	customStyles = {
+	  content: {
+	    top: '30%',
+	    left: '35%',
+	    right: 'auto',
+	    bottom: 'auto'
+	  }
+	};
 	
 	var NoteIndexItem = React.createClass({
 	  displayName: 'NoteIndexItem',
@@ -31258,7 +31274,7 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    return { note: this.props.note, selected: this.props.selected };
+	    return { note: this.props.note, selected: this.props.selected, modalIsOpen: false };
 	  },
 	
 	  componentWillMount: function () {
@@ -31291,6 +31307,10 @@
 	  },
 	
 	  showDetail: function (e) {
+	    if (e.target.className === "fa fa-trash") {
+	      return;
+	    }
+	
 	    $(".note-index-item").removeClass("selected");
 	    $(e.currentTarget).addClass('selected');
 	
@@ -31329,7 +31349,18 @@
 	
 	  handleNoteDelete: function () {
 	    //show a modal of some sort
-	    NotesApiUtil.deleteNote(this.props.note.id);
+	
+	    NotesApiUtil.deleteNote(this.props.note.id, function () {
+	      this.history.pushState(null, '/home');
+	    }.bind(this));
+	  },
+	
+	  showModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
 	  },
 	
 	  render: function () {
@@ -31343,6 +31374,29 @@
 	      'div',
 	      { className: klass, onClick: this.showDetail },
 	      React.createElement(
+	        Modal,
+	        {
+	          className: 'delete-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Are you sure you want to delete this note?'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.closeModal },
+	          'Close'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.andleNoteDelete },
+	          'Delete'
+	        )
+	      ),
+	      React.createElement(
 	        'div',
 	        { className: 'note-index-item-inner' },
 	        React.createElement(
@@ -31355,7 +31409,7 @@
 	          ),
 	          React.createElement(
 	            'div',
-	            { className: 'note-index-item-delete', onClick: this.handleNoteDelete },
+	            { className: 'note-index-item-delete', onClick: this.showModal },
 	            React.createElement('i', { className: 'fa fa-trash' })
 	          )
 	        ),
@@ -34387,7 +34441,9 @@
 	    console.log("on change");
 	
 	    if (this.props.noteId === "new") {} else {
-	      var note = NoteStore.find(this.props.noteId);
+	      debugger;
+	      var note = NoteStore.find(parseInt(this.props.noteId));
+	      //note is undefined after deletion
 	      fetched = true;
 	      this.setState({ title: note.title, note: note });
 	    }
@@ -34512,8 +34568,6 @@
 	  },
 	
 	  handleBodyChange: function () {
-	    //if new note, create note
-	    //otherwise edit the note
 	    var id = this.props.noteId;
 	    if (id === "new") {
 	      if (!created) {
