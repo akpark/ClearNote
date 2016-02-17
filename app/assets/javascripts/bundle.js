@@ -52,7 +52,6 @@
 	var IndexRoute = ReactRouter.IndexRoute;
 	var root = document.getElementById('root');
 	var NotesIndex = __webpack_require__(208);
-	// var NoteForm = require('./components/note_form/note_form');
 	var NoteStore = __webpack_require__(210);
 	var SessionForm = __webpack_require__(260);
 	var UserForm = __webpack_require__(264);
@@ -60,7 +59,6 @@
 	var SessionsApiUtil = __webpack_require__(261);
 	var App = __webpack_require__(267);
 	var Home = __webpack_require__(282);
-	var Slideout = __webpack_require__(270);
 	var NotebooksIndex = __webpack_require__(271);
 	var WelcomeForm = __webpack_require__(283);
 	var NoteForm = __webpack_require__(284);
@@ -33950,7 +33948,6 @@
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	var Account = __webpack_require__(269);
-	var Slideout = __webpack_require__(270);
 	var NotebookIndex = __webpack_require__(271);
 	
 	var searchOpen = false;
@@ -33979,45 +33976,29 @@
 	    this.history.pushState(null, "home/note/new");
 	  },
 	
-	  // handleSearchClick: function () {
-	  //   if (!searchOpen) {
-	  //     $('.notes-index').hide();
-	  //     $('.note-form-outer').hide();
-	  //     $('.search').show();
-	  //     searchOpen = true;
-	  //   } else {
-	  //     $('.notes-index').show();
-	  //     $('.note-form-outer').show();
-	  //     $('.search').hide();
-	  //     searchOpen = false;
-	  //   }
-	  // },
-	
 	  handleNotesClick: function () {
 	    this.reset();
 	    this.history.pushState(null, '/home', { index: "notes" });
 	  },
 	
 	  handleNotebooksClick: function () {
-	    //add click listener for all other divs
 	    if (slideoutOpen) {
 	      $('.slideout-notebooks').hide("slow");
-	      $('.home-right').fadeTo("slow", 1);
+	      $('.home-right').fadeTo("fast", 1);
 	      slideoutOpen = false;
 	    } else {
 	      $('.slideout-notebooks').show("slow");
-	      $('.home-right').fadeTo("slow", 0.2);
+	      $('.home-right').fadeTo("fast", 0.2);
 	      slideoutOpen = true;
 	
 	      $('.home-right').on('click', function () {
 	        $('.slideout-notebooks').hide("slow");
-	        $('.home-right').fadeTo("slow", 1);
+	        $('.home-right').fadeTo("fast", 1);
 	        slideoutOpen = false;
 	      });
 	    }
 	  },
 	
-	  //make sure that everything else is hidden
 	  reset: function () {
 	    if (slideoutOpen) {
 	      this.handleNotebooksClick();
@@ -34154,52 +34135,7 @@
 	module.exports = Account;
 
 /***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NotebookIndex = __webpack_require__(271);
-	
-	var SlideOut = React.createClass({
-	  displayName: 'SlideOut',
-	
-	  getInitialState: function () {
-	    return { index: this.props.index, isOpen: false };
-	  },
-	
-	  componentDidMount: function () {
-	    $('.slideout').hide();
-	  },
-	
-	  componentWillReceiveProps: function (newProps) {
-	    this.setState({ index: newProps.index, isOpen: newProps.isOpen });
-	    newProps.isOpen ? $('.slideout').show('slow') : $('.slideout').hide('slow');
-	  },
-	
-	  setUpIndex: function () {
-	    switch (this.state.index) {
-	      case "notebooks":
-	        return React.createElement(NotebookIndex, null);
-	      case "tags":
-	        return React.createElement(TagsIndex, null);
-	    }
-	    return null;
-	  },
-	
-	  render: function () {
-	    var index = this.setUpIndex();
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'slideout' },
-	      index
-	    );
-	  }
-	});
-	
-	module.exports = SlideOut;
-
-/***/ },
+/* 270 */,
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -34238,13 +34174,13 @@
 	    this.setState({ notebooks: NotebookStore.all() });
 	  },
 	
-	  openModal: function () {
-	    this.setState({ modalIsOpen: true });
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
+	  // openModal: function () {
+	  //   this.setState({modalIsOpen: true});
+	  // },
+	  //
+	  // closeModal: function () {
+	  //   this.setState({modalIsOpen: false});
+	  // },
 	
 	  handleNewNotebookClick: function (e) {
 	    var title = $('.new-notebook-title-input').val();
@@ -34341,7 +34277,6 @@
 	var React = __webpack_require__(1);
 	var NotebookStore = __webpack_require__(257);
 	var NotebooksApiUtil = __webpack_require__(256);
-	var MiniMenu = __webpack_require__(235);
 	var History = __webpack_require__(159).History;
 	
 	var NotebookIndexItem = React.createClass({
@@ -34377,8 +34312,7 @@
 	          'div',
 	          { className: 'notebook-index-item-title' },
 	          this.props.notebook.title
-	        ),
-	        React.createElement(MiniMenu, { itemInfo: this.getNotebookInfo() })
+	        )
 	      ),
 	      React.createElement(
 	        'div',

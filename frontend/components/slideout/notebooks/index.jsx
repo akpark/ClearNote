@@ -28,16 +28,16 @@ var NotebooksIndex = React.createClass({
   },
 
   _onChange: function () {
-    this.setState({notebooks: NotebookStore.all()});
+    this.setState({ notebooks: NotebookStore.all() });
   },
 
-  openModal: function () {
-    this.setState({modalIsOpen: true});
-  },
-
-  closeModal: function () {
-    this.setState({modalIsOpen: false});
-  },
+  // openModal: function () {
+  //   this.setState({modalIsOpen: true});
+  // },
+  //
+  // closeModal: function () {
+  //   this.setState({modalIsOpen: false});
+  // },
 
   handleNewNotebookClick: function (e) {
     var title = $('.new-notebook-title-input').val();

@@ -1,7 +1,6 @@
 var React = require('react');
 var History = require('react-router').History;
 var Account = require('./account');
-var Slideout = require('../slideout/slideout');
 var NotebookIndex = require('../slideout/notebooks/index');
 
 var searchOpen = false;
@@ -28,45 +27,29 @@ var NavBar = React.createClass({
     this.history.pushState(null, "home/note/new");
   },
 
-  // handleSearchClick: function () {
-  //   if (!searchOpen) {
-  //     $('.notes-index').hide();
-  //     $('.note-form-outer').hide();
-  //     $('.search').show();
-  //     searchOpen = true;
-  //   } else {
-  //     $('.notes-index').show();
-  //     $('.note-form-outer').show();
-  //     $('.search').hide();
-  //     searchOpen = false;
-  //   }
-  // },
-
   handleNotesClick: function () {
     this.reset();
     this.history.pushState(null, '/home', {index: "notes"});
   },
 
   handleNotebooksClick: function () {
-    //add click listener for all other divs
     if (slideoutOpen) {
       $('.slideout-notebooks').hide("slow");
-      $('.home-right').fadeTo("slow", 1);
+      $('.home-right').fadeTo("fast", 1);
       slideoutOpen = false;
     } else {
       $('.slideout-notebooks').show("slow");
-      $('.home-right').fadeTo("slow",0.2);
+      $('.home-right').fadeTo("fast",0.2);
       slideoutOpen = true;
 
       $('.home-right').on('click', function () {
         $('.slideout-notebooks').hide("slow");
-        $('.home-right').fadeTo("slow", 1);
+        $('.home-right').fadeTo("fast", 1);
         slideoutOpen = false;
       });
     }
   },
-
-  //make sure that everything else is hidden
+  
   reset: function () {
     if (slideoutOpen) { this.handleNotebooksClick(); }
   },
