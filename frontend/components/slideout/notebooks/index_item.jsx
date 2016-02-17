@@ -11,20 +11,7 @@ var NotebookIndexItem = React.createClass({
   },
 
   handleNotebookItemClick: function () {
-    this.history.pushState(
-      null,
-      '/home/notes',
-      { header: "notebooks", title: this.state.notebook.title, id: this.state.notebook.id }
-    );
-    $('.slideout').hide();
-  },
-
-  getNotebookInfo: function () {
-    return {
-      type: "notebook",
-      id: this.props.notebook.id,
-      title: this.props.notebook.title
-    };
+    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
   },
 
   render: function () {

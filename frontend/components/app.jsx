@@ -9,11 +9,17 @@ var Search = require('./search');
 
 var App = React.createClass({
   getInitialState: function () {
-    return { slideoutOpen: false, slideoutIndex: "", indexInfo: { header: "notes", title: "notes" } };
+    return { slideoutOpen: false, indexInfo: { header: "notes" } };
   },
 
   componentWillMount: function () {
     SessionsApiUtil.fetchCurrentUser();
+  },
+
+  componentWillReceiveProps: function (newProps) {
+    if (newProps.params.notebookId) {
+      this.setState({indexInfo: {header: "notebooks", id: parseInt(newProps.params.notebookId)} });
+    }
   },
 
   render: function () {
@@ -25,7 +31,7 @@ var App = React.createClass({
       <div className="home group">
         <Navbar />
         <div className="home-right group">
-          <NotesIndex />
+          <NotesIndex indexInfo={this.state.indexInfo} />
           {this.props.children}
         </div>
 

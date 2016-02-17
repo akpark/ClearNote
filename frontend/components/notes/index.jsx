@@ -8,7 +8,9 @@ var NotesIndex = React.createClass({
   mixins: [History],
 
   getInitialState: function() {
-    return { notes: NoteStore.all() };
+    return {
+      notes: this.getNotes(this.props)
+    };
   },
 
   componentWillMount: function () {
@@ -17,11 +19,25 @@ var NotesIndex = React.createClass({
   },
 
   _onChange: function () {
-    this.setState({ notes: NoteStore.all() });
+    this.setState({ notes: this.getNotes(this.props) });
   },
 
   componentWillUnmount: function() {
     this.notesListener.remove();
+  },
+
+  componentWillReceiveProps: function (newProps) {
+    debugger
+    this.setState({ notes: this.getNotes(newProps) });
+  },
+
+  getNotes: function (props) {
+    switch (props.indexInfo.header) {
+      case "notes":
+        return NoteStore.all();
+      case "notebooks":
+        return NoteStore.findByNotebookId(props.indexInfo.id);
+    }
   },
 
   render: function() {
