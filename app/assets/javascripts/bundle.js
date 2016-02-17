@@ -31284,10 +31284,6 @@
 	
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
-	
-	    if (this.state.selected && this.props.className !== "selected") {
-	      this.indexItemClick();
-	    }
 	  },
 	
 	  componentWillUnmount: function () {
@@ -34074,14 +34070,6 @@
 	    this.setState({ notebooks: NotebookStore.all() });
 	  },
 	
-	  // openModal: function () {
-	  //   this.setState({modalIsOpen: true});
-	  // },
-	  //
-	  // closeModal: function () {
-	  //   this.setState({modalIsOpen: false});
-	  // },
-	
 	  handleNewNotebookClick: function (e) {
 	    var title = $('.new-notebook-title-input').val();
 	    var notebook = { title: title };
@@ -34388,12 +34376,12 @@
 	
 	  _onChange: function () {
 	    console.log("on change");
-	    //just for the initial fetch
+	
 	    if (this.props.noteId === "new") {} else {
 	      var note = NoteStore.find(this.props.noteId);
 	      this.setState({ title: note.title, note: note });
+	      fetched = true;
 	    }
-	    fetched = true;
 	  },
 	
 	  componentWillUnmount: function () {
@@ -34491,6 +34479,7 @@
 	    });
 	
 	    _quillEditor.on('text-change', function () {
+	      console.log("i be changin the txt");
 	      this.handleBodyChange();
 	    }.bind(this));
 	  },
@@ -34539,6 +34528,7 @@
 	    this.timer = setTimeout(function () {
 	      var note = { id: this.state.note.id, title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()) };
 	      NotesApiUtil.editNote(note);
+	      console.log("EDITED");
 	    }.bind(this), 3000);
 	  },
 	
@@ -34548,6 +34538,7 @@
 	
 	    if (fetched) {
 	      _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
+	      fetched = false;
 	    }
 	
 	    var input = React.createElement('input', {

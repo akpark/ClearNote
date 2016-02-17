@@ -48,13 +48,13 @@ var TextEditor = React.createClass({
 
   _onChange: function () {
     console.log("on change");
-    //just for the initial fetch
+
     if (this.props.noteId === "new") {
     } else {
       var note = NoteStore.find(this.props.noteId);
       this.setState({ title: note.title, note: note});
+      fetched = true;
     }
-    fetched = true;
   },
 
   componentWillUnmount: function () {
@@ -114,6 +114,7 @@ var TextEditor = React.createClass({
     });
 
     _quillEditor.on('text-change', function() {
+      console.log("i be changin the txt");
       this.handleBodyChange();
     }.bind(this));
   },
@@ -162,6 +163,7 @@ var TextEditor = React.createClass({
     this.timer = setTimeout(function() {
       var note = { id: this.state.note.id, title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()) };
       NotesApiUtil.editNote(note);
+      console.log("EDITED");
     }.bind(this), 3000);
   },
 
@@ -171,6 +173,7 @@ var TextEditor = React.createClass({
 
     if (fetched) {
       _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
+      fetched = false;
     }
 
     var input = <input

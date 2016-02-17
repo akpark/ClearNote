@@ -34,10 +34,6 @@ var NoteIndexItem = React.createClass({
 
   _onChange: function () {
     this.setState({note: NoteStore.find(this.props.note.id)});
-
-    if (this.state.selected && this.props.className !== "selected") {
-      this.indexItemClick();
-    }
   },
 
   componentWillUnmount: function () {
