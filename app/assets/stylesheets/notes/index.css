@@ -25,6 +25,7 @@
   vertical-align: top;
   letter-spacing: 1px;
   text-transform: uppercase;
+  margin-left: 5px;
 }
 
 .notes-index-header-bottom {
@@ -35,6 +36,7 @@
 
 .number-of-notes {
   font-size: 13px;
+  margin-left: 5px;
 }
 
 .options-dropdown-click {
