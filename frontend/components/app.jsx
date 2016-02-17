@@ -9,7 +9,7 @@ var Search = require('./search');
 
 var App = React.createClass({
   getInitialState: function () {
-    return { slideoutOpen: false, indexInfo: { header: "notes" } };
+    return { slideoutOpen: false, indexInfo: this.setNotesInfo(this.props) };
   },
 
   componentWillMount: function () {
@@ -17,8 +17,14 @@ var App = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    if (newProps.params.notebookId) {
-      this.setState({indexInfo: {header: "notebooks", id: parseInt(newProps.params.notebookId)} });
+    this.setState({indexInfo: this.setNotesInfo(newProps) });
+  },
+
+  setNotesInfo: function (props) {
+    if (props.params.notebookId) {
+      return {header: "notebooks", id: parseInt(props.params.notebookId)};
+    } else {
+      return {header: "notes"};
     }
   },
 
