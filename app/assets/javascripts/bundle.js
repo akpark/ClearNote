@@ -35077,7 +35077,8 @@
 	  componentWillReceiveProps: function (newProps) {
 	    var id = newProps.noteId;
 	    if (id === "new") {
-	      var note = { title: "", body: "", body_delta: "{\"ops\":[{\"insert\":\"New Note\\n\"}]}" };
+	      debugger;
+	      var note = { title: "", body: "", body_delta: '{"ops":[{"insert":""}]}' };
 	    } else {
 	      var note = NoteStore.find(parseInt(newProps.noteId));
 	    }

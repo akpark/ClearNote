@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160208035634) do
+ActiveRecord::Schema.define(version: 20160218192353) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,8 +27,6 @@ ActiveRecord::Schema.define(version: 20160208035634) do
   add_index "notebooks", ["author_id"], name: "index_notebooks_on_author_id", using: :btree
 
   create_table "notes", force: :cascade do |t|
-    t.string   "title",                       null: false
-    t.text     "body",                        null: false
     t.integer  "author_id",                   null: false
     t.integer  "notebook_id",                 null: false
     t.boolean  "shortcut",    default: false
@@ -36,6 +34,8 @@ ActiveRecord::Schema.define(version: 20160208035634) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text     "body_delta"
+    t.string   "title"
+    t.text     "body"
   end
 
   create_table "pg_search_documents", force: :cascade do |t|
@@ -54,6 +54,10 @@ ActiveRecord::Schema.define(version: 20160208035634) do
     t.string   "session_token",   null: false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "provider"
+    t.string   "uid"
   end
+
+  add_index "users", ["provider", "uid"], name: "index_users_on_provider_and_uid", unique: true, using: :btree
 
 end
