@@ -45,7 +45,6 @@ var TextEditor = React.createClass({
     if (this.props.noteId === "new") {
     } else {
       var note = NoteStore.find(parseInt(this.props.noteId));
-      //note is undefined after deletion
       fetched = true;
       this.setState({ title: note.title, note: note});
     }
@@ -115,7 +114,7 @@ var TextEditor = React.createClass({
   componentWillReceiveProps: function (newProps) {
     var id = newProps.noteId;
     if (id === "new") {
-      var note = { title: "New Note", body: "", body_delta: "{\"ops\":[{\"insert\":\"New Note\\n\"}]}" };
+      var note = { title: "", body: "", body_delta: "{\"ops\":[{\"insert\":\"New Note\\n\"}]}" };
     } else {
       var note = NoteStore.find(parseInt(newProps.noteId));
     }
