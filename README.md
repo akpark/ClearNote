@@ -23,18 +23,18 @@ A note taking website inspired by Evernote.
 
 # Frameworks
 
-* [React.js]: https://facebook.github.io/react/
-* [Rails]: https://github.com/rails/rails
+* [React.js](https://facebook.github.io/react/)
+* [Rails](https://github.com/rails/rails)
 
 # Libraries
 
-* [Quill.js]: https://github.com/quilljs/quill
-* [jQuery]: https://github.com/jquery/jquery
-* [Flux]: https://github.com/facebook/flux
-* [React Router]: https://github.com/rackt/react-router
-* [BCrypt]: https://github.com/codahale/bcrypt-ruby
-* [paperclip]: https://github.com/thoughtbot/paperclip
-* [kaminari]: https://github.com/amatsuda/kaminari
-* [pg search]: https://github.com/Casecommons/pg_search
-* [jbuilder]: https://github.com/rails/jbuilder
-* [font awesome rails]: https://fortawesome.github.io/Font-Awesome/
+* [Quill.js](https://github.com/quilljs/quill)
+* [jQuery](https://github.com/jquery/jquery)
+* [Flux](https://github.com/facebook/flux)
+* [React Router](https://github.com/rackt/react-router)
+* [BCrypt](https://github.com/codahale/bcrypt-ruby)
+* [paperclip](https://github.com/thoughtbot/paperclip)
+* [kaminari](https://github.com/amatsuda/kaminari)
+* [pg search](https://github.com/Casecommons/pg_search)
+* [jbuilder](https://github.com/rails/jbuilder)
+* [font awesome rails](https://fortawesome.github.io/Font-Awesome/)
