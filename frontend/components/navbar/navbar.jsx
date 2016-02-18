@@ -102,8 +102,9 @@ var NavBar = React.createClass({
             </div>
           </div>
 
-          <div className="navbar-link profile-button" onClick={this.handleProfileButtonClick}>
-            <i className="fa fa-user fa-2x"></i>
+          <div
+            className="navbar-link profile-button"
+            onClick={this.handleProfileButtonClick}>
           </div>
 
         </div>

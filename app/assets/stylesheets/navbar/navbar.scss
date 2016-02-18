@@ -2,11 +2,11 @@
   height: 100%;
   float: left;
   width: 60px;
-  background: #7C7062;
+  background: #738F9B;
   padding: 10px;
   z-index: 11;
   text-align: center;
-  border-right: 3px solid #643B0F;
+  border-right: 3px solid black;
 }
 
 .navbar-link {
@@ -41,6 +41,10 @@
   content: image-url('new_note.png');
 }
 
+.profile-button {
+  content: image-url('profile.png');
+}
+
 .bottom-bar {
   margin-top: 50px;
 }
@@ -50,18 +54,10 @@
   border-radius: 50%;
   background: #fff;
 
-  text-align: center;
-  padding: 10px 13px;
   position: absolute;
-  margin: 0 auto;
+  margin-left: 5px;
   margin-bottom: 8px;
 
   color: #2f32b6;
   bottom: 0;
-}
-
-.logo {
-  background: white;
-  height: 50px;
-  width: 60px;
 }

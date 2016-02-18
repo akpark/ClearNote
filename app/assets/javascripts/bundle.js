@@ -34037,11 +34037,9 @@
 	            React.createElement('i', { className: 'fa fa-book' })
 	          )
 	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'navbar-link profile-button', onClick: this.handleProfileButtonClick },
-	          React.createElement('i', { className: 'fa fa-user fa-2x' })
-	        )
+	        React.createElement('div', {
+	          className: 'navbar-link profile-button',
+	          onClick: this.handleProfileButtonClick })
 	      )
 	    );
 	  }
