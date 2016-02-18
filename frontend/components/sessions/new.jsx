@@ -39,6 +39,8 @@ var SessionForm = React.createClass({
         <button id="guest-login-button"
                 onClick={this.handleGuestLogin}>
                 Guest Login</button>
+
+              <a href="/auth/google_oauth_2"></a>
       </div>
     );
   }

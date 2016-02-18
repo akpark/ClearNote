@@ -12,4 +12,6 @@ Rails.application.routes.draw do
     get "search", to: "utils#search"
   end
 
+  get 'auth/google_oauth2/callback', to: 'api/sessions#omniauth_google'
+
 end
