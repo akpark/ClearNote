@@ -60,7 +60,7 @@ var Search = React.createClass({
           placeholder="search notes.."
           onKeyUp={this.search} />
         <div className="search-location">Searching in your notebooks...</div>
-        <ul className="search-results-list">
+        <ul className="search-results-list group">
           {searchResults}
         </ul>
       </div>

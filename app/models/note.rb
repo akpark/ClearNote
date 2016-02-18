@@ -5,6 +5,6 @@ class Note < ActiveRecord::Base
   belongs_to :notebook
 
   include PgSearch
-  multisearchable :against => [:title],
+  multisearchable :against => [:title, :body],
   using: {tsearch: {prefix: true, dictionary: "english"}}
 end

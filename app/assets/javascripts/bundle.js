@@ -34423,7 +34423,7 @@
 	      ),
 	      React.createElement(
 	        'ul',
-	        { className: 'search-results-list' },
+	        { className: 'search-results-list group' },
 	        searchResults
 	      )
 	    );
