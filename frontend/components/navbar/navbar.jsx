@@ -66,7 +66,7 @@ var NavBar = React.createClass({
       $('.account-options-menu').hide();
       this.setState({profileSettingsOpen: false});
     } else {
-      $('.account-options-menu').show();
+      $('.account-options-menu').show("slow");
       this.setState({profileSettingsOpen: true});
     }
   },
@@ -105,6 +105,8 @@ var NavBar = React.createClass({
           <div
             className="navbar-link profile-button"
             onClick={this.handleProfileButtonClick}>
+            <i className="fa fa-user fa-2x"></i>
+            <Account />
           </div>
 
         </div>

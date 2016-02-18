@@ -62,6 +62,7 @@
 
 .note-index-item:hover {
   background: #C9D2DB;
+  /*background: #B4A28F;*/
   cursor: pointer;
 }
 
@@ -79,4 +80,8 @@
   margin: 50px 5px;
   height: 25px;
   border: 1px solid #2A2C05;
+}
+
+.delete-modal button:hover {
+  cursor: pointer;
 }

@@ -1,46 +1,38 @@
 .account-options-menu {
-  position: absolute;
+  position: relative;
   display: block;
   border: 1px solid #ccc;
-  top: -250px;
-  left: 65px;
+  top: -150px;
+  left: 55px;
   z-index: 100;
   background: #fff;
-  width: 300px;
-  height: 350px;
+  width: 200px;
+  height: 180px;
   border-radius: 5px;
   background: #FBFAFA;
+  color: black;
 }
 
 .account-options-menu-header {
-  height: 75px;
   text-align: center;
-  border-bottom: 1px solid #aaa;
+  border-bottom: 2px solid #aaa;
   text-transform: uppercase;
+  padding-bottom: 5px;
 }
 
 .username {
   margin: auto auto;
+  margin-top: 20px;
+  font-size: 22px;
+  font-family: 'georgia';
 }
 
-.settings-link,
 .sign-out-link {
-  border-top: 1px solid #aaa;
+  display: block;
+  margin-top: 20px;
   padding: 10px;
 }
 
-.sign-out-button {
-  display: block;
-}
-
-.link {
-  border-top: 1px solid #ccc;
-}
-
-.settings-link:hover,
 .sign-out-link:hover {
   background: #2dbe60;
-}
-
-.sign-out-button:hover {
 }

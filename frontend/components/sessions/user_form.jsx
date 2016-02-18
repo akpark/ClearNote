@@ -36,7 +36,7 @@ var UserForm = React.createClass({
 
     UsersApiUtil.createUser(credentials, function(user) {
       this.setUpUser(user);
-      this.history.pushState(null, "home/notes");
+      this.history.pushState(null, "home");
     }.bind(this));
   },
 

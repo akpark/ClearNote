@@ -16,7 +16,7 @@ var SessionForm = React.createClass({
   handleGuestLogin: function () {
     var credentials = {username: "guest", password: "password"};
     SessionsApiUtil.login(credentials, function () {
-      this.history.pushState({}, "/home");
+      this.history.pushState({}, "home");
     }.bind(this));
   },
 

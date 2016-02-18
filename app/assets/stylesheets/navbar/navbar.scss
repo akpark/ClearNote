@@ -4,7 +4,7 @@
   width: 60px;
   background: #738F9B;
   padding: 10px;
-  z-index: 11;
+  z-index: 100;
   text-align: center;
   border-right: 3px solid black;
 }
@@ -41,9 +41,9 @@
   content: image-url('new_note.png');
 }
 
-.profile-button {
-  content: image-url('profile.png');
-}
+// .profile-button {
+//   content: image-url('profile.png');
+// }
 
 .bottom-bar {
   margin-top: 50px;
@@ -53,11 +53,11 @@
   border: 1px solid #2dbe60;
   border-radius: 50%;
   background: #fff;
+  // content: image-url('profile.png');
+  color: #738F9B;
 
   position: absolute;
   margin-left: 5px;
   margin-bottom: 8px;
-
-  color: #2f32b6;
   bottom: 0;
 }

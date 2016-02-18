@@ -33377,7 +33377,7 @@
 	  handleGuestLogin: function () {
 	    var credentials = { username: "guest", password: "password" };
 	    SessionsApiUtil.login(credentials, function () {
-	      this.history.pushState({}, "/home");
+	      this.history.pushState({}, "home");
 	    }.bind(this));
 	  },
 	
@@ -33548,7 +33548,7 @@
 	
 	    UsersApiUtil.createUser(credentials, function (user) {
 	      this.setUpUser(user);
-	      this.history.pushState(null, "home/notes");
+	      this.history.pushState(null, "home");
 	    }.bind(this));
 	  },
 	
@@ -33989,7 +33989,7 @@
 	      $('.account-options-menu').hide();
 	      this.setState({ profileSettingsOpen: false });
 	    } else {
-	      $('.account-options-menu').show();
+	      $('.account-options-menu').show("slow");
 	      this.setState({ profileSettingsOpen: true });
 	    }
 	  },
@@ -34037,9 +34037,14 @@
 	            React.createElement('i', { className: 'fa fa-book' })
 	          )
 	        ),
-	        React.createElement('div', {
-	          className: 'navbar-link profile-button',
-	          onClick: this.handleProfileButtonClick })
+	        React.createElement(
+	          'div',
+	          {
+	            className: 'navbar-link profile-button',
+	            onClick: this.handleProfileButtonClick },
+	          React.createElement('i', { className: 'fa fa-user fa-2x' }),
+	          React.createElement(Account, null)
+	        )
 	      )
 	    );
 	  }
@@ -34087,12 +34092,6 @@
 	      React.createElement(
 	        'div',
 	        { className: 'account-options-menu-links' },
-	        React.createElement(
-	          'div',
-	          { className: 'settings-link',
-	            onClick: this.handleSettingsClick },
-	          'Settings'
-	        ),
 	        React.createElement(
 	          'div',
 	          { className: 'sign-out-link',
