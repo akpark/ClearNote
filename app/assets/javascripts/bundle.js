@@ -33652,7 +33652,6 @@
 	      url: "/api/notebooks",
 	      dataType: "json",
 	      success: function (notebooks) {
-	        console.log("notebooks fetched!");
 	        NotebookActions.receiveAllNotebooks(notebooks);
 	      }
 	    });
@@ -35152,7 +35151,6 @@
 	  },
 	
 	  render: function () {
-	    console.log("render");
 	    var toolbar = this.setUpToolbar();
 	
 	    if (fetched) {

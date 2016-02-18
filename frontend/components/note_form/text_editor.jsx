@@ -188,7 +188,6 @@ var TextEditor = React.createClass({
   },
 
   render: function() {
-    console.log("render");
     var toolbar = this.setUpToolbar();
 
     if (fetched) {
