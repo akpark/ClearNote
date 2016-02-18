@@ -31,9 +31,6 @@ var UsersApiUtil = {
       dataType: 'json',
       success: function (data) {
         cb && cb(data);
-        // UserActions.receiveCurrentUser(user);
-        // cb();
-        console.log("user created!");
       }
     });
   }

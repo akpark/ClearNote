@@ -32,7 +32,7 @@ var NotesApiUtil = {
       dataType: "json",
       success: function (note) {
         NoteActions.createNote(note);
-        callback(note);
+        callback && callback(note);
       }
     });
   },

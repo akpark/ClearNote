@@ -24310,7 +24310,7 @@
 	      dataType: "json",
 	      success: function (note) {
 	        NoteActions.createNote(note);
-	        callback(note);
+	        callback && callback(note);
 	      }
 	    });
 	  },
@@ -33431,8 +33431,8 @@
 	      dataType: 'json',
 	      data: credentials,
 	      success: function (currentUser) {
+	        console.log("success");
 	        CurrentUserActions.receiveCurrentUser(currentUser);
-	        console.log("successfully logged in!");
 	        success && success();
 	      }
 	    });
@@ -33445,7 +33445,6 @@
 	      dataType: "json",
 	      success: function (message) {
 	        CurrentUserActions.deleteCurrentUser();
-	        console.log("Logged out!");
 	      }.bind(this),
 	      error: function () {
 	        alert("error!");
@@ -33511,8 +33510,11 @@
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	var UsersApiUtil = __webpack_require__(260);
+	var SessionsApiUtil = __webpack_require__(256);
 	var NotebooksApiUtil = __webpack_require__(261);
 	var NotesApiUtil = __webpack_require__(209);
+	
+	var credentials;
 	
 	var UserForm = React.createClass({
 	  displayName: 'UserForm',
@@ -33520,7 +33522,7 @@
 	  mixins: [History],
 	
 	  //set up the user with default
-	  setUpUser: function (user) {
+	  setUpUser: function (user, callback) {
 	    var newNotebook = {
 	      title: "Welcome",
 	      author_id: user.id
@@ -33530,25 +33532,31 @@
 	      var newNote = {
 	        title: "Welcome",
 	        body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.",
-	        body_delta: "{'ops':[{'retain':22},{'attributes':{'size':'32px'},'insert':'e'}]}",
+	        body_delta: '{"ops":[{"insert":"Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad."}]}',
 	        author_id: user.id,
 	        notebook_id: notebook.id
 	      };
-	      NotesApiUtil.createNote(newNote);
+	      NotesApiUtil.createNote(newNote, function () {
+	        callback && callback();
+	      });
 	    });
 	  },
 	
 	  submit: function (e) {
 	    e.preventDefault();
 	    var fields = $(e.currentTarget).serializeArray();
-	    var credentials = {};
+	    credentials = {};
 	    fields.forEach(function (field) {
 	      credentials[field.name] = field.value;
 	    });
 	
 	    UsersApiUtil.createUser(credentials, function (user) {
-	      this.setUpUser(user);
-	      this.history.pushState(null, "home");
+	      this.setUpUser(user, function () {
+	        var login_credentials = { username: credentials["user[username]"], password: credentials["user[password]"] };
+	        SessionsApiUtil.login(login_credentials, function () {
+	          this.history.pushState(null, 'home');
+	        }.bind(this));
+	      }.bind(this));
 	    }.bind(this));
 	  },
 	
@@ -33622,9 +33630,6 @@
 	      dataType: 'json',
 	      success: function (data) {
 	        cb && cb(data);
-	        // UserActions.receiveCurrentUser(user);
-	        // cb();
-	        console.log("user created!");
 	      }
 	    });
 	  }
