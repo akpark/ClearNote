@@ -8,7 +8,8 @@
 }
 
 .selected {
-  border: 3px solid #453823;
+  /*border: 3px solid #453823;*/
+  border: 3px solid #ccc;
 }
 
 .note-index-item-inner {

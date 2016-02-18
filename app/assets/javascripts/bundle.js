@@ -53,16 +53,16 @@
 	var root = document.getElementById('root');
 	var NotesIndex = __webpack_require__(208);
 	var NoteStore = __webpack_require__(210);
-	var SessionForm = __webpack_require__(260);
-	var UserForm = __webpack_require__(264);
-	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(261);
-	var App = __webpack_require__(267);
-	var Home = __webpack_require__(268);
-	var NotebooksIndex = __webpack_require__(286);
-	var WelcomeForm = __webpack_require__(271);
-	var NoteForm = __webpack_require__(285);
-	var Search = __webpack_require__(274);
+	var SessionForm = __webpack_require__(255);
+	var UserForm = __webpack_require__(259);
+	var CurrentUserStore = __webpack_require__(265);
+	var SessionsApiUtil = __webpack_require__(256);
+	var App = __webpack_require__(266);
+	var Home = __webpack_require__(280);
+	var NotebooksIndex = __webpack_require__(269);
+	var WelcomeForm = __webpack_require__(281);
+	var NoteForm = __webpack_require__(282);
+	var Search = __webpack_require__(271);
 	
 	var router = React.createElement(
 	  Router,
@@ -31254,7 +31254,7 @@
 	var NotesApiUtil = __webpack_require__(209);
 	var NoteStore = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
-	var Modal = __webpack_require__(236);
+	var Modal = __webpack_require__(235);
 	
 	var customStyles = {
 	  content: {
@@ -31429,24 +31429,23 @@
 	module.exports = NoteIndexItem;
 
 /***/ },
-/* 235 */,
-/* 236 */
+/* 235 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(237);
+	module.exports = __webpack_require__(236);
 	
 
 
 /***/ },
-/* 237 */
+/* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
-	var ExecutionEnvironment = __webpack_require__(238);
-	var ModalPortal = React.createFactory(__webpack_require__(239));
-	var ariaAppHider = __webpack_require__(254);
-	var elementClass = __webpack_require__(255);
+	var ExecutionEnvironment = __webpack_require__(237);
+	var ModalPortal = React.createFactory(__webpack_require__(238));
+	var ariaAppHider = __webpack_require__(253);
+	var elementClass = __webpack_require__(254);
 	var renderSubtreeIntoContainer = __webpack_require__(158).unstable_renderSubtreeIntoContainer;
 	
 	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
@@ -31525,7 +31524,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 238 */
+/* 237 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -31570,14 +31569,14 @@
 
 
 /***/ },
-/* 239 */
+/* 238 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var div = React.DOM.div;
-	var focusManager = __webpack_require__(240);
-	var scopeTab = __webpack_require__(242);
-	var Assign = __webpack_require__(243);
+	var focusManager = __webpack_require__(239);
+	var scopeTab = __webpack_require__(241);
+	var Assign = __webpack_require__(242);
 	
 	
 	// so that our CSS is statically analyzable
@@ -31774,10 +31773,10 @@
 
 
 /***/ },
-/* 240 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(241);
+	var findTabbable = __webpack_require__(240);
 	var modalElement = null;
 	var focusLaterElement = null;
 	var needToFocus = false;
@@ -31848,7 +31847,7 @@
 
 
 /***/ },
-/* 241 */
+/* 240 */
 /***/ function(module, exports) {
 
 	/*!
@@ -31904,10 +31903,10 @@
 
 
 /***/ },
-/* 242 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(241);
+	var findTabbable = __webpack_require__(240);
 	
 	module.exports = function(node, event) {
 	  var tabbable = findTabbable(node);
@@ -31925,7 +31924,7 @@
 
 
 /***/ },
-/* 243 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31936,9 +31935,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(244),
-	    createAssigner = __webpack_require__(250),
-	    keys = __webpack_require__(246);
+	var baseAssign = __webpack_require__(243),
+	    createAssigner = __webpack_require__(249),
+	    keys = __webpack_require__(245);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -32011,7 +32010,7 @@
 
 
 /***/ },
-/* 244 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32022,8 +32021,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(245),
-	    keys = __webpack_require__(246);
+	var baseCopy = __webpack_require__(244),
+	    keys = __webpack_require__(245);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -32044,7 +32043,7 @@
 
 
 /***/ },
-/* 245 */
+/* 244 */
 /***/ function(module, exports) {
 
 	/**
@@ -32082,7 +32081,7 @@
 
 
 /***/ },
-/* 246 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32093,9 +32092,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(247),
-	    isArguments = __webpack_require__(248),
-	    isArray = __webpack_require__(249);
+	var getNative = __webpack_require__(246),
+	    isArguments = __webpack_require__(247),
+	    isArray = __webpack_require__(248);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -32324,7 +32323,7 @@
 
 
 /***/ },
-/* 247 */
+/* 246 */
 /***/ function(module, exports) {
 
 	/**
@@ -32467,11 +32466,11 @@
 
 
 /***/ },
-/* 248 */
+/* 247 */
 /***/ function(module, exports) {
 
 	/**
-	 * lodash 3.0.6 (Custom Build) <https://lodash.com/>
+	 * lodash 3.0.7 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -32556,7 +32555,6 @@
 	 *
 	 * @static
 	 * @memberOf _
-	 * @type Function
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
@@ -32585,7 +32583,6 @@
 	 *
 	 * @static
 	 * @memberOf _
-	 * @type Function
 	 * @category Lang
 	 * @param {*} value The value to check.
 	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
@@ -32656,7 +32653,8 @@
 	 * // => false
 	 */
 	function isLength(value) {
-	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	  return typeof value == 'number' &&
+	    value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
 	}
 	
 	/**
@@ -32718,7 +32716,7 @@
 
 
 /***/ },
-/* 249 */
+/* 248 */
 /***/ function(module, exports) {
 
 	/**
@@ -32904,7 +32902,7 @@
 
 
 /***/ },
-/* 250 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32915,9 +32913,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(251),
-	    isIterateeCall = __webpack_require__(252),
-	    restParam = __webpack_require__(253);
+	var bindCallback = __webpack_require__(250),
+	    isIterateeCall = __webpack_require__(251),
+	    restParam = __webpack_require__(252);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -32962,7 +32960,7 @@
 
 
 /***/ },
-/* 251 */
+/* 250 */
 /***/ function(module, exports) {
 
 	/**
@@ -33033,7 +33031,7 @@
 
 
 /***/ },
-/* 252 */
+/* 251 */
 /***/ function(module, exports) {
 
 	/**
@@ -33171,7 +33169,7 @@
 
 
 /***/ },
-/* 253 */
+/* 252 */
 /***/ function(module, exports) {
 
 	/**
@@ -33244,7 +33242,7 @@
 
 
 /***/ },
-/* 254 */
+/* 253 */
 /***/ function(module, exports) {
 
 	var _element = typeof document !== 'undefined' ? document.body : null;
@@ -33291,7 +33289,7 @@
 
 
 /***/ },
-/* 255 */
+/* 254 */
 /***/ function(module, exports) {
 
 	module.exports = function(opts) {
@@ -33356,188 +33354,12 @@
 
 
 /***/ },
-/* 256 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var NotebookStore = __webpack_require__(257);
-	var NotebookActions = __webpack_require__(259);
-	
-	var NotebooksApiUtil = {
-	  fetchAllNotebooks: function () {
-	    $.ajax({
-	      method: "GET",
-	      url: "/api/notebooks",
-	      dataType: "json",
-	      success: function (notebooks) {
-	        NotebookActions.receiveAllNotebooks(notebooks);
-	      }
-	    });
-	  },
-	
-	  fetchSingleNotebook: function (id) {
-	    $.ajax({
-	      method: "GET",
-	      url: "api/notebooks/" + id,
-	      dataType: "json",
-	      success: function (notebook) {
-	        NotebookActions.receiveSingleNotebook(notebook);
-	      }
-	    });
-	  },
-	
-	  createNotebook: function (notebook, callback) {
-	    $.ajax({
-	      method: "POST",
-	      url: "api/notebooks",
-	      data: { notebook: notebook },
-	      dataType: "json",
-	      success: function (notebook) {
-	        NotebookActions.receiveSingleNotebook(notebook);
-	        callback && callback(notebook);
-	      }
-	    });
-	  },
-	
-	  deleteNotebook: function (notebookId) {
-	    $.ajax({
-	      method: "DELETE",
-	      url: "api/notebooks/" + notebookId,
-	      dataType: "json",
-	      success: function (notebook) {
-	        NotebookActions.deleteNotebook(notebook);
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = NotebooksApiUtil;
-
-/***/ },
-/* 257 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(211).Store;
-	var AppDispatcher = __webpack_require__(230);
-	var NotebookStore = new Store(AppDispatcher);
-	var NotebookConstants = __webpack_require__(258);
-	var _notebooks = {};
-	
-	NotebookStore.all = function () {
-	  var notebooks = [];
-	  for (var id in _notebooks) {
-	    notebooks.push(_notebooks[id]);
-	  }
-	  return notebooks;
-	};
-	
-	NotebookStore.find = function (id) {
-	  return _notebooks[id];
-	};
-	
-	function resetNotebooks(notebooks) {
-	  _notebooks = {};
-	  notebooks.forEach(function (notebook) {
-	    _notebooks[notebook.id] = notebook;
-	  });
-	};
-	
-	function resetNotebook(notebook) {
-	  _notebooks[notebook.id] = notebook;
-	};
-	
-	function deleteNotebook(notebook) {
-	  var notebookId = notebook.id;
-	  delete _notebooks[notebookId];
-	};
-	
-	NotebookStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case NotebookConstants.NOTEBOOKS_RECEIVED:
-	      resetNotebooks(payload.notebooks);
-	      this.__emitChange();
-	      break;
-	
-	    case NotebookConstants.NOTEBOOK_RECEIVED:
-	      resetNotebook(payload.notebook);
-	      this.__emitChange();
-	      break;
-	
-	    case NotebookConstants.CREATE_NOTEBOOK:
-	      addNotebook(payload.notebook);
-	      this.__emitChange();
-	      break;
-	
-	    case NotebookConstants.DELETE_NOTEBOOK:
-	      deleteNotebook(payload.notebook);
-	      this.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = NotebookStore;
-	window.NotebookStore = NotebookStore;
-	
-	//allow the index of notebooks receive the call first before changing the index item
-
-/***/ },
-/* 258 */
-/***/ function(module, exports) {
-
-	var NotebookConstants = {
-	  NOTEBOOKS_RECEIVED: "NOTEBOOKS_RECEIVED",
-	  NOTEBOOK_RECEIVED: "NOTEBOOK_RECEIVED",
-	  DELETE_NOTEBOOK: "DELETE_NOTEBOOK"
-	};
-	
-	module.exports = NotebookConstants;
-
-/***/ },
-/* 259 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var NotebookConstants = __webpack_require__(258);
-	var AppDispatcher = __webpack_require__(230);
-	
-	var NotebookActions = {
-	  receiveAllNotebooks: function (notebooks) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.NOTEBOOKS_RECEIVED,
-	      notebooks: notebooks
-	    });
-	  },
-	
-	  receiveSingleNotebook: function (notebook) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.NOTEBOOK_RECEIVED,
-	      notebook: notebook
-	    });
-	  },
-	
-	  editNotebook: function (notebook) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.EDIT_NOTEBOOK,
-	      notebook: notebook
-	    });
-	  },
-	
-	  deleteNotebook: function (notebook) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.DELETE_NOTEBOOK,
-	      notebook: notebook
-	    });
-	  }
-	};
-	
-	module.exports = NotebookActions;
-
-/***/ },
-/* 260 */
+/* 255 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var SessionsApiUtil = __webpack_require__(261);
+	var SessionsApiUtil = __webpack_require__(256);
 	
 	var SessionForm = React.createClass({
 	  displayName: 'SessionForm',
@@ -33595,10 +33417,10 @@
 	module.exports = SessionForm;
 
 /***/ },
-/* 261 */
+/* 256 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(262);
+	var CurrentUserActions = __webpack_require__(257);
 	
 	var SessionsApiUtil = {
 	
@@ -33648,11 +33470,11 @@
 	module.exports = SessionsApiUtil;
 
 /***/ },
-/* 262 */
+/* 257 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(230);
-	var CurrentUserConstants = __webpack_require__(263);
+	var CurrentUserConstants = __webpack_require__(258);
 	
 	var CurrentUserActions = {
 	  receiveCurrentUser: function (currentUser) {
@@ -33672,7 +33494,7 @@
 	module.exports = CurrentUserActions;
 
 /***/ },
-/* 263 */
+/* 258 */
 /***/ function(module, exports) {
 
 	var CurrentUserConstants = {
@@ -33683,13 +33505,13 @@
 	module.exports = CurrentUserConstants;
 
 /***/ },
-/* 264 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var UsersApiUtil = __webpack_require__(265);
-	var NotebooksApiUtil = __webpack_require__(256);
+	var UsersApiUtil = __webpack_require__(260);
+	var NotebooksApiUtil = __webpack_require__(261);
 	var NotesApiUtil = __webpack_require__(209);
 	
 	var UserForm = React.createClass({
@@ -33764,10 +33586,10 @@
 	module.exports = UserForm;
 
 /***/ },
-/* 265 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var UserActions = __webpack_require__(262);
+	var UserActions = __webpack_require__(257);
 	
 	var UsersApiUtil = {
 	  fetchUsers: function () {
@@ -33812,12 +33634,188 @@
 	module.exports = UsersApiUtil;
 
 /***/ },
-/* 266 */
+/* 261 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var NotebookStore = __webpack_require__(262);
+	var NotebookActions = __webpack_require__(264);
+	
+	var NotebooksApiUtil = {
+	  fetchAllNotebooks: function () {
+	    $.ajax({
+	      method: "GET",
+	      url: "/api/notebooks",
+	      dataType: "json",
+	      success: function (notebooks) {
+	        NotebookActions.receiveAllNotebooks(notebooks);
+	      }
+	    });
+	  },
+	
+	  fetchSingleNotebook: function (id) {
+	    $.ajax({
+	      method: "GET",
+	      url: "api/notebooks/" + id,
+	      dataType: "json",
+	      success: function (notebook) {
+	        NotebookActions.receiveSingleNotebook(notebook);
+	      }
+	    });
+	  },
+	
+	  createNotebook: function (notebook, callback) {
+	    $.ajax({
+	      method: "POST",
+	      url: "api/notebooks",
+	      data: { notebook: notebook },
+	      dataType: "json",
+	      success: function (notebook) {
+	        NotebookActions.receiveSingleNotebook(notebook);
+	        callback && callback(notebook);
+	      }
+	    });
+	  },
+	
+	  deleteNotebook: function (notebookId) {
+	    $.ajax({
+	      method: "DELETE",
+	      url: "api/notebooks/" + notebookId,
+	      dataType: "json",
+	      success: function (notebook) {
+	        NotebookActions.deleteNotebook(notebook);
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = NotebooksApiUtil;
+
+/***/ },
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(211).Store;
 	var AppDispatcher = __webpack_require__(230);
-	var CurrentUserConstants = __webpack_require__(263);
+	var NotebookStore = new Store(AppDispatcher);
+	var NotebookConstants = __webpack_require__(263);
+	var _notebooks = {};
+	
+	NotebookStore.all = function () {
+	  var notebooks = [];
+	  for (var id in _notebooks) {
+	    notebooks.push(_notebooks[id]);
+	  }
+	  return notebooks;
+	};
+	
+	NotebookStore.find = function (id) {
+	  return _notebooks[id];
+	};
+	
+	function resetNotebooks(notebooks) {
+	  _notebooks = {};
+	  notebooks.forEach(function (notebook) {
+	    _notebooks[notebook.id] = notebook;
+	  });
+	};
+	
+	function resetNotebook(notebook) {
+	  _notebooks[notebook.id] = notebook;
+	};
+	
+	function deleteNotebook(notebook) {
+	  var notebookId = notebook.id;
+	  delete _notebooks[notebookId];
+	};
+	
+	NotebookStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case NotebookConstants.NOTEBOOKS_RECEIVED:
+	      resetNotebooks(payload.notebooks);
+	      this.__emitChange();
+	      break;
+	
+	    case NotebookConstants.NOTEBOOK_RECEIVED:
+	      resetNotebook(payload.notebook);
+	      this.__emitChange();
+	      break;
+	
+	    case NotebookConstants.CREATE_NOTEBOOK:
+	      addNotebook(payload.notebook);
+	      this.__emitChange();
+	      break;
+	
+	    case NotebookConstants.DELETE_NOTEBOOK:
+	      deleteNotebook(payload.notebook);
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = NotebookStore;
+	window.NotebookStore = NotebookStore;
+	
+	//allow the index of notebooks receive the call first before changing the index item
+
+/***/ },
+/* 263 */
+/***/ function(module, exports) {
+
+	var NotebookConstants = {
+	  NOTEBOOKS_RECEIVED: "NOTEBOOKS_RECEIVED",
+	  NOTEBOOK_RECEIVED: "NOTEBOOK_RECEIVED",
+	  DELETE_NOTEBOOK: "DELETE_NOTEBOOK"
+	};
+	
+	module.exports = NotebookConstants;
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var NotebookConstants = __webpack_require__(263);
+	var AppDispatcher = __webpack_require__(230);
+	
+	var NotebookActions = {
+	  receiveAllNotebooks: function (notebooks) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.NOTEBOOKS_RECEIVED,
+	      notebooks: notebooks
+	    });
+	  },
+	
+	  receiveSingleNotebook: function (notebook) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.NOTEBOOK_RECEIVED,
+	      notebook: notebook
+	    });
+	  },
+	
+	  editNotebook: function (notebook) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.EDIT_NOTEBOOK,
+	      notebook: notebook
+	    });
+	  },
+	
+	  deleteNotebook: function (notebook) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.DELETE_NOTEBOOK,
+	      notebook: notebook
+	    });
+	  }
+	};
+	
+	module.exports = NotebookActions;
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(211).Store;
+	var AppDispatcher = __webpack_require__(230);
+	var CurrentUserConstants = __webpack_require__(258);
 	
 	var _currentUser = {};
 	var _currentUserHasBeenFetched = false;
@@ -33855,17 +33853,17 @@
 	window.CurrentUserStore = CurrentUserStore;
 
 /***/ },
-/* 267 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(261);
-	var CurrentUserStore = __webpack_require__(266);
+	var SessionsApiUtil = __webpack_require__(256);
+	var CurrentUserStore = __webpack_require__(265);
 	var NotesApiUtil = __webpack_require__(209);
 	var NoteStore = __webpack_require__(210);
-	var Navbar = __webpack_require__(283);
+	var Navbar = __webpack_require__(267);
 	var NotesIndex = __webpack_require__(208);
-	var Search = __webpack_require__(274);
+	var Search = __webpack_require__(271);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -33916,12 +33914,847 @@
 	module.exports = App;
 
 /***/ },
+/* 267 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var History = __webpack_require__(159).History;
+	var Account = __webpack_require__(268);
+	var NotebookIndex = __webpack_require__(269);
+	
+	var searchOpen = false;
+	var slideoutOpen = false;
+	
+	var NavBar = React.createClass({
+	  displayName: 'NavBar',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { profileSettingsOpen: false, slideoutOpen: false };
+	  },
+	
+	  componentDidMount: function () {
+	    $('.account-options-menu').hide();
+	    $('.slideout-notebooks').hide();
+	  },
+	
+	  handleNewNoteClick: function () {
+	    this.reset();
+	    $('.notes-index').hide("slow");
+	    $('.navbar').hide("slow");
+	    $('.note-form-outer').show();
+	    $('.note-form-outer').addClass("expanded");
+	    this.history.pushState(null, "home/note/new");
+	  },
+	
+	  handleNotesClick: function () {
+	    this.reset();
+	    this.history.pushState(null, '/home', { index: "notes" });
+	  },
+	
+	  handleSearchClick: function () {
+	    this.reset();
+	    $('.notes-index').hide();
+	    this.history.pushState(null, 'home/search');
+	  },
+	
+	  toggleSlideout: function () {
+	    if (slideoutOpen) {
+	      $('.slideout-notebooks').hide("slow");
+	      $('.home-right').fadeTo("fast", 1);
+	      slideoutOpen = false;
+	    } else {
+	      $('.slideout-notebooks').show("slow");
+	      $('.home-right').fadeTo("fast", 0.2);
+	      slideoutOpen = true;
+	
+	      $('.home-right').on('click', function () {
+	        $('.slideout-notebooks').hide("slow");
+	        $('.home-right').fadeTo("fast", 1);
+	        slideoutOpen = false;
+	      });
+	    }
+	  },
+	
+	  reset: function () {
+	    if (slideoutOpen) {
+	      this.toggleSlideout();
+	    }
+	    $('.notes-index').show();
+	  },
+	
+	  handleProfileButtonClick: function (e) {
+	    if (this.state.profileSettingsOpen) {
+	      $('.account-options-menu').hide();
+	      this.setState({ profileSettingsOpen: false });
+	    } else {
+	      $('.account-options-menu').show();
+	      this.setState({ profileSettingsOpen: true });
+	    }
+	  },
+	
+	  render: function () {
+	    var slideout = React.createElement(
+	      'div',
+	      { className: 'slideout-notebooks' },
+	      React.createElement(NotebookIndex, { toggleSlideout: this.toggleSlideout })
+	    );
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'navbar-outer' },
+	      slideout,
+	      React.createElement(
+	        'div',
+	        { className: 'navbar group' },
+	        React.createElement('img', { className: 'app-logo' }),
+	        React.createElement(
+	          'div',
+	          { className: 'navbar-top' },
+	          React.createElement(
+	            'div',
+	            { className: 'navbar-link new-note-link',
+	              onClick: this.handleNewNoteClick },
+	            React.createElement('i', { className: 'fa fa-plus' })
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'navbar-link search-link',
+	              onClick: this.handleSearchClick },
+	            React.createElement('i', { className: 'fa fa-search' })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'navbar-bottom' },
+	          React.createElement('div', { className: 'navbar-link notes-link',
+	            onClick: this.handleNotesClick }),
+	          React.createElement(
+	            'div',
+	            { className: 'navbar-link notebooks-link',
+	              onClick: this.toggleSlideout },
+	            React.createElement('i', { className: 'fa fa-book' })
+	          )
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'navbar-link profile-button', onClick: this.handleProfileButtonClick },
+	          React.createElement('i', { className: 'fa fa-user fa-2x' })
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NavBar;
+
+/***/ },
 /* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(261);
+	var SessionsApiUtil = __webpack_require__(256);
+	var CurrentUserStore = __webpack_require__(265);
+	var SessionsApiUtil = __webpack_require__(256);
+	var History = __webpack_require__(159).History;
+	
+	var Account = React.createClass({
+	  displayName: 'Account',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { user: CurrentUserStore.currentUser() };
+	  },
+	
+	  handleSignOutClick: function () {
+	    SessionsApiUtil.logout();
+	    this.history.pushState(null, '/');
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'account-options-menu' },
+	      React.createElement(
+	        'div',
+	        { className: 'account-options-menu-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'username' },
+	          this.state.user.username
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'account-options-menu-links' },
+	        React.createElement(
+	          'div',
+	          { className: 'settings-link',
+	            onClick: this.handleSettingsClick },
+	          'Settings'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'sign-out-link',
+	            onClick: this.handleSignOutClick },
+	          React.createElement('i', { className: 'fa fa-sign-out fa-lg' }),
+	          ' Log Out'
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Account;
+
+/***/ },
+/* 269 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NotebooksApiUtil = __webpack_require__(261);
+	var NotebookStore = __webpack_require__(262);
+	var NotebookIndexItem = __webpack_require__(270);
+	var Modal = __webpack_require__(235);
+	
+	var customStyles = {
+	  content: {
+	    top: '27%',
+	    left: '35%',
+	    right: 'auto',
+	    bottom: 'auto'
+	  }
+	};
+	
+	var NotebooksIndex = React.createClass({
+	  displayName: 'NotebooksIndex',
+	
+	  getInitialState: function () {
+	    return { notebooks: NotebookStore.all(), modalIsOpen: false };
+	  },
+	
+	  componentDidMount: function () {
+	    this.notebookListener = NotebookStore.addListener(this._onChange);
+	    NotebooksApiUtil.fetchAllNotebooks();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.notebookListener.remove();
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ notebooks: NotebookStore.all() });
+	  },
+	
+	  getNotebooks: function () {
+	    var notebooks = this.state.notebooks.map(function (notebook, key) {
+	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook, toggleSlideout: this.props.toggleSlideout });
+	    }.bind(this));
+	    return notebooks;
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  handleNewNotebookClick: function (e) {
+	    var title = $('.new-notebook-title-input').val();
+	    var notebook = { title: title };
+	    NotebooksApiUtil.createNotebook(notebook);
+	    this.closeModal();
+	  },
+	
+	  render: function () {
+	    var notebooks = this.getNotebooks();
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'notebook-index' },
+	      React.createElement(
+	        'div',
+	        { className: 'notebook-index-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-header-top group' },
+	          React.createElement(
+	            'div',
+	            { className: 'notebook-index-title' },
+	            'Notebooks'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'add-notebook-button' },
+	            React.createElement(
+	              'div',
+	              { onClick: this.openModal },
+	              React.createElement('i', { className: 'fa fa-plus' }),
+	              React.createElement('i', { className: 'fa fa-book fa-2x' })
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'notebook-index-items' },
+	        notebooks
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'new-notebook-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'h2',
+	          { className: 'new-notebook-modal-title' },
+	          'Create Notebook'
+	        ),
+	        React.createElement('input', { className: 'new-notebook-title-input',
+	          type: 'text',
+	          placeholder: 'Title your notebook' }),
+	        React.createElement(
+	          'div',
+	          { className: 'new-notebook-modal-bottom group' },
+	          React.createElement(
+	            'button',
+	            { onClick: this.closeModal },
+	            'Cancel'
+	          ),
+	          React.createElement(
+	            'button',
+	            { onClick: this.handleNewNotebookClick },
+	            'Create'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NotebooksIndex;
+
+/***/ },
+/* 270 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NotebookStore = __webpack_require__(262);
+	var NotebooksApiUtil = __webpack_require__(261);
+	var Modal = __webpack_require__(235);
+	var History = __webpack_require__(159).History;
+	
+	var customStyles = {
+	  content: {
+	    top: '30%',
+	    left: '35%',
+	    right: 'auto',
+	    bottom: 'auto'
+	  }
+	};
+	
+	var NotebookIndexItem = React.createClass({
+	  displayName: 'NotebookIndexItem',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { notebook: this.props.notebook, modalIsOpen: false };
+	  },
+	
+	  handleNotebookItemClick: function (e) {
+	    if (e.target.className === "fa fa-trash") {
+	      return;
+	    }
+	    this.props.toggleSlideout();
+	    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  handleNotebookDelete: function () {
+	    NotebooksApiUtil.deleteNotebook(this.props.notebook.id);
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'notebook-index-item', onClick: this.handleNotebookItemClick },
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'delete-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Are you sure you want to delete this notebook?'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.closeModal },
+	          'Cancel'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.handleNotebookDelete },
+	          'Delete'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'notebook-index-item-top group' },
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-item-title' },
+	          this.props.notebook.title
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-item-trash', onClick: this.openModal },
+	          React.createElement('i', { className: 'fa fa-trash' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'number-of-notes-in-notebook' },
+	        this.props.notebook.notes.length
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NotebookIndexItem;
+
+/***/ },
+/* 271 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var SearchApiUtil = __webpack_require__(272);
+	var SearchResultsStore = __webpack_require__(275);
+	var NoteIndexItem = __webpack_require__(234);
+	var NotebookIndexItem = __webpack_require__(270);
+	var LinkedStateMixin = __webpack_require__(276);
+	var History = __webpack_require__(159).History;
+	
+	var Search = React.createClass({
+	  displayName: 'Search',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { page: 1, query: "" };
+	  },
+	
+	  componentDidMount: function () {
+	    this.listener = SearchResultsStore.addListener(this._onChange);
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.listener.remove();
+	  },
+	
+	  _onChange: function () {
+	    this.forceUpdate();
+	  },
+	
+	  search: function (e) {
+	    var query = e.target.value;
+	    SearchApiUtil.search(query, 1);
+	
+	    this.setState({ page: 1, query: query });
+	  },
+	
+	  handleNoteClick: function (e) {
+	    var id = e.target.id;
+	    this.history.pushState(null, '/home/note/' + id);
+	
+	    $('.notes-index').show();
+	    $('.search').hide();
+	  },
+	
+	  render: function () {
+	    var searchResults = SearchResultsStore.all().map(function (searchResult, key) {
+	      if (searchResult._type === "Note") {
+	        return React.createElement(
+	          'div',
+	          { className: 'search-result-note', id: searchResult.id, key: key, onClick: this.handleNoteClick },
+	          React.createElement(
+	            'div',
+	            { className: 'search-result-title' },
+	            searchResult.title
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'search-result-body' },
+	            searchResult.body
+	          )
+	        );
+	      }
+	    }.bind(this));
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'search' },
+	      React.createElement('input', {
+	        className: 'search-input',
+	        type: 'text',
+	        placeholder: 'search notes..',
+	        onKeyUp: this.search }),
+	      React.createElement(
+	        'div',
+	        { className: 'search-location' },
+	        'Searching in your notebooks...'
+	      ),
+	      React.createElement(
+	        'ul',
+	        { className: 'search-results-list' },
+	        searchResults
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = Search;
+
+/***/ },
+/* 272 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchActions = __webpack_require__(273);
+	
+	var SearchApiUtil = {
+	
+	  search: function (query, page) {
+	    $.ajax({
+	      url: '/api/search',
+	      type: 'GET',
+	      dataType: 'json',
+	      data: { query: query, page: page },
+	      success: function (data) {
+	        console.log("successful search!");
+	        SearchActions.receiveResults(data);
+	      }
+	    });
+	  }
+	};
+	
+	module.exports = SearchApiUtil;
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var SearchConstants = __webpack_require__(274);
+	var AppDispatcher = __webpack_require__(230);
+	
+	var SearchActions = {
+	  receiveResults: function (data) {
+	    AppDispatcher.dispatch({
+	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
+	      searchResults: data.results,
+	      meta: { totalCount: data.total_count }
+	    });
+	  }
+	};
+	
+	module.exports = SearchActions;
+
+/***/ },
+/* 274 */
+/***/ function(module, exports) {
+
+	var SearchConstants = {
+	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS"
+	};
+	
+	module.exports = SearchConstants;
+
+/***/ },
+/* 275 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(211).Store;
+	var AppDispatcher = __webpack_require__(230);
+	var SearchConstants = __webpack_require__(274);
+	
+	var _searchResults = [];
+	var _meta = {};
+	
+	var SearchResultsStore = new Store(AppDispatcher);
+	
+	SearchResultsStore.all = function () {
+	  return _searchResults.slice();
+	};
+	
+	SearchResultsStore.meta = function () {
+	  return _meta;
+	};
+	
+	SearchResultsStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case SearchConstants.RECEIVE_SEARCH_RESULTS:
+	      _searchResults = payload.searchResults;
+	      _meta = payload.meta;
+	      SearchResultsStore.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = SearchResultsStore;
+
+/***/ },
+/* 276 */
+/***/ function(module, exports, __webpack_require__) {
+
+	module.exports = __webpack_require__(277);
+
+/***/ },
+/* 277 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule LinkedStateMixin
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	var ReactLink = __webpack_require__(278);
+	var ReactStateSetters = __webpack_require__(279);
+	
+	/**
+	 * A simple mixin around ReactLink.forState().
+	 */
+	var LinkedStateMixin = {
+	  /**
+	   * Create a ReactLink that's linked to part of this component's state. The
+	   * ReactLink will have the current value of this.state[key] and will call
+	   * setState() when a change is requested.
+	   *
+	   * @param {string} key state key to update. Note: you may want to use keyOf()
+	   * if you're using Google Closure Compiler advanced mode.
+	   * @return {ReactLink} ReactLink instance linking to the state.
+	   */
+	  linkState: function (key) {
+	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
+	  }
+	};
+	
+	module.exports = LinkedStateMixin;
+
+/***/ },
+/* 278 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactLink
+	 * @typechecks static-only
+	 */
+	
+	'use strict';
+	
+	/**
+	 * ReactLink encapsulates a common pattern in which a component wants to modify
+	 * a prop received from its parent. ReactLink allows the parent to pass down a
+	 * value coupled with a callback that, when invoked, expresses an intent to
+	 * modify that value. For example:
+	 *
+	 * React.createClass({
+	 *   getInitialState: function() {
+	 *     return {value: ''};
+	 *   },
+	 *   render: function() {
+	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
+	 *     return <input valueLink={valueLink} />;
+	 *   },
+	 *   _handleValueChange: function(newValue) {
+	 *     this.setState({value: newValue});
+	 *   }
+	 * });
+	 *
+	 * We have provided some sugary mixins to make the creation and
+	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
+	 */
+	
+	var React = __webpack_require__(2);
+	
+	/**
+	 * @param {*} value current value of the link
+	 * @param {function} requestChange callback to request a change
+	 */
+	function ReactLink(value, requestChange) {
+	  this.value = value;
+	  this.requestChange = requestChange;
+	}
+	
+	/**
+	 * Creates a PropType that enforces the ReactLink API and optionally checks the
+	 * type of the value being passed inside the link. Example:
+	 *
+	 * MyComponent.propTypes = {
+	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
+	 * }
+	 */
+	function createLinkTypeChecker(linkType) {
+	  var shapes = {
+	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
+	    requestChange: React.PropTypes.func.isRequired
+	  };
+	  return React.PropTypes.shape(shapes);
+	}
+	
+	ReactLink.PropTypes = {
+	  link: createLinkTypeChecker
+	};
+	
+	module.exports = ReactLink;
+
+/***/ },
+/* 279 */
+/***/ function(module, exports) {
+
+	/**
+	 * Copyright 2013-2015, Facebook, Inc.
+	 * All rights reserved.
+	 *
+	 * This source code is licensed under the BSD-style license found in the
+	 * LICENSE file in the root directory of this source tree. An additional grant
+	 * of patent rights can be found in the PATENTS file in the same directory.
+	 *
+	 * @providesModule ReactStateSetters
+	 */
+	
+	'use strict';
+	
+	var ReactStateSetters = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (component, funcReturningState) {
+	    return function (a, b, c, d, e, f) {
+	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
+	      if (partialState) {
+	        component.setState(partialState);
+	      }
+	    };
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {ReactCompositeComponent} component
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (component, key) {
+	    // Memoize the setters.
+	    var cache = component.__keySetters || (component.__keySetters = {});
+	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
+	  }
+	};
+	
+	function createStateKeySetter(component, key) {
+	  // Partial state is allocated outside of the function closure so it can be
+	  // reused with every call, avoiding memory allocation when this function
+	  // is called.
+	  var partialState = {};
+	  return function stateKeySetter(value) {
+	    partialState[key] = value;
+	    component.setState(partialState);
+	  };
+	}
+	
+	ReactStateSetters.Mixin = {
+	  /**
+	   * Returns a function that calls the provided function, and uses the result
+	   * of that to set the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateSetter(function(xValue) {
+	   *     return {x: xValue};
+	   *   })(1);
+	   *
+	   * @param {function} funcReturningState Returned callback uses this to
+	   *                                      determine how to update state.
+	   * @return {function} callback that when invoked uses funcReturningState to
+	   *                    determined the object literal to setState.
+	   */
+	  createStateSetter: function (funcReturningState) {
+	    return ReactStateSetters.createStateSetter(this, funcReturningState);
+	  },
+	
+	  /**
+	   * Returns a single-argument callback that can be used to update a single
+	   * key in the component's state.
+	   *
+	   * For example, these statements are equivalent:
+	   *
+	   *   this.setState({x: 1});
+	   *   this.createStateKeySetter('x')(1);
+	   *
+	   * Note: this is memoized function, which makes it inexpensive to call.
+	   *
+	   * @param {string} key The key in the state that you should update.
+	   * @return {function} callback of 1 argument which calls setState() with
+	   *                    the provided keyName and callback argument.
+	   */
+	  createStateKeySetter: function (key) {
+	    return ReactStateSetters.createStateKeySetter(this, key);
+	  }
+	};
+	
+	module.exports = ReactStateSetters;
+
+/***/ },
+/* 280 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var CurrentUserStore = __webpack_require__(265);
+	var SessionsApiUtil = __webpack_require__(256);
 	var NotesIndex = __webpack_require__(208);
 	var History = __webpack_require__(159).History;
 	
@@ -33970,16 +34803,14 @@
 	module.exports = Home;
 
 /***/ },
-/* 269 */,
-/* 270 */,
-/* 271 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionForm = __webpack_require__(264);
-	var UserForm = __webpack_require__(260);
-	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(261);
+	var SessionForm = __webpack_require__(259);
+	var UserForm = __webpack_require__(255);
+	var CurrentUserStore = __webpack_require__(265);
+	var SessionsApiUtil = __webpack_require__(256);
 	var History = __webpack_require__(159).History;
 	
 	var Session = React.createClass({
@@ -34029,13 +34860,82 @@
 	module.exports = Session;
 
 /***/ },
-/* 272 */,
-/* 273 */
+/* 282 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var TextEditor = __webpack_require__(283);
+	var History = __webpack_require__(159).History;
+	var NoteStore = __webpack_require__(210);
+	var NotesApiUtil = __webpack_require__(209);
+	
+	var _expanded = false;
+	
+	var NoteForm = React.createClass({
+	  displayName: 'NoteForm',
+	
+	  getInitialState: function () {
+	    return { noteId: this.props.params.noteId };
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    this.setState({ noteId: newProps.params.noteId });
+	  },
+	
+	  handleExpand: function () {
+	    if (!_expanded) {
+	      $('.notes-index').hide("slow");
+	      $('.navbar').hide("slow");
+	      $('.note-form-outer').addClass("expanded");
+	      _expanded = true;
+	    } else {
+	      $('.notes-index').show("slow");
+	      $('.navbar').show("slow");
+	      $('.note-form-outer').removeClass("expanded");
+	      _expanded = false;
+	    }
+	  },
+	
+	  handleCancelClick: function () {
+	    $('.notes-index').show("slow");
+	    $('.navbar').show("slow");
+	    $('.note-form-outer').removeClass("expanded");
+	  },
+	
+	  setUpHeader: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'note-form-header' },
+	      React.createElement(
+	        'div',
+	        { className: 'expand-button', onClick: this.handleExpand },
+	        React.createElement('i', { className: 'fa fa-expand' })
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var header = this.setUpHeader();
+	    var textEditor = React.createElement(TextEditor, { noteId: this.state.noteId });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'note-form-outer' },
+	      header,
+	      textEditor
+	    );
+	  }
+	});
+	
+	module.exports = NoteForm;
+
+/***/ },
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var NoteStore = __webpack_require__(210);
-	var NotebookStore = __webpack_require__(257);
+	var NotebookStore = __webpack_require__(262);
 	var NotesApiUtil = __webpack_require__(209);
 	var History = __webpack_require__(159).History;
 	
@@ -34240,906 +35140,6 @@
 	});
 	
 	module.exports = TextEditor;
-
-/***/ },
-/* 274 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SearchApiUtil = __webpack_require__(275);
-	var SearchResultsStore = __webpack_require__(278);
-	var NoteIndexItem = __webpack_require__(234);
-	var NotebookIndexItem = __webpack_require__(287);
-	var LinkedStateMixin = __webpack_require__(279);
-	var History = __webpack_require__(159).History;
-	
-	var Search = React.createClass({
-	  displayName: 'Search',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { page: 1, query: "" };
-	  },
-	
-	  componentDidMount: function () {
-	    this.listener = SearchResultsStore.addListener(this._onChange);
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.listener.remove();
-	  },
-	
-	  _onChange: function () {
-	    this.forceUpdate();
-	  },
-	
-	  search: function (e) {
-	    var query = e.target.value;
-	    SearchApiUtil.search(query, 1);
-	
-	    this.setState({ page: 1, query: query });
-	  },
-	
-	  handleNoteClick: function (e) {
-	    var note = e.target.value;
-	    this.history.pushState(null, '/home/notes/' + note.id);
-	  },
-	
-	  handleNotebookClick: function (e) {
-	    var notebook = e.target.value;
-	    this.history.pushState(null, '/home/notes', { header: "notebooks", title: notebook.title, id: notebook.id });
-	  },
-	
-	  render: function () {
-	
-	    var searchResults = SearchResultsStore.all().map(function (searchResult) {
-	      if (searchResult._type === "Note") {
-	        return React.createElement(NoteIndexItem, { note: searchResult });
-	        // return <div className="search-result" value={searchResult} onClick={this.handleNoteClick}><div>Note: {searchResult.title}</div></div>;
-	      } else if (searchResult._type === "Notebook") {
-	          return React.createElement(
-	            'div',
-	            { className: 'search-result', value: searchResult, onClick: this.handleNotebookClick },
-	            React.createElement(
-	              'div',
-	              null,
-	              'Notebook: ',
-	              searchResult.title
-	            )
-	          );
-	        }
-	    });
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'search' },
-	      React.createElement('input', {
-	        className: 'search-input',
-	        type: 'text',
-	        placeholder: 'search notes..',
-	        onKeyUp: this.search }),
-	      React.createElement(
-	        'div',
-	        { className: 'search-location' },
-	        'Searching in your notebooks...'
-	      ),
-	      React.createElement(
-	        'ul',
-	        { className: 'search-results-list' },
-	        searchResults
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Search;
-
-/***/ },
-/* 275 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var SearchActions = __webpack_require__(276);
-	
-	var SearchApiUtil = {
-	
-	  search: function (query, page) {
-	    $.ajax({
-	      url: '/api/search',
-	      type: 'GET',
-	      dataType: 'json',
-	      data: { query: query, page: page },
-	      success: function (data) {
-	        console.log("successful search!");
-	        SearchActions.receiveResults(data);
-	      }
-	    });
-	  }
-	};
-	
-	module.exports = SearchApiUtil;
-
-/***/ },
-/* 276 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var SearchConstants = __webpack_require__(277);
-	var AppDispatcher = __webpack_require__(230);
-	
-	var SearchActions = {
-	  receiveResults: function (data) {
-	    AppDispatcher.dispatch({
-	      actionType: SearchConstants.RECEIVE_SEARCH_RESULTS,
-	      searchResults: data.results,
-	      meta: { totalCount: data.total_count }
-	    });
-	  }
-	};
-	
-	module.exports = SearchActions;
-
-/***/ },
-/* 277 */
-/***/ function(module, exports) {
-
-	var SearchConstants = {
-	  RECEIVE_SEARCH_RESULTS: "RECEIVE_SEARCH_RESULTS"
-	};
-	
-	module.exports = SearchConstants;
-
-/***/ },
-/* 278 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(211).Store;
-	var AppDispatcher = __webpack_require__(230);
-	var SearchConstants = __webpack_require__(277);
-	
-	var _searchResults = [];
-	var _meta = {};
-	
-	var SearchResultsStore = new Store(AppDispatcher);
-	
-	SearchResultsStore.all = function () {
-	  return _searchResults.slice();
-	};
-	
-	SearchResultsStore.meta = function () {
-	  return _meta;
-	};
-	
-	SearchResultsStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case SearchConstants.RECEIVE_SEARCH_RESULTS:
-	      _searchResults = payload.searchResults;
-	      _meta = payload.meta;
-	      SearchResultsStore.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = SearchResultsStore;
-
-/***/ },
-/* 279 */
-/***/ function(module, exports, __webpack_require__) {
-
-	module.exports = __webpack_require__(280);
-
-/***/ },
-/* 280 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule LinkedStateMixin
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	var ReactLink = __webpack_require__(281);
-	var ReactStateSetters = __webpack_require__(282);
-	
-	/**
-	 * A simple mixin around ReactLink.forState().
-	 */
-	var LinkedStateMixin = {
-	  /**
-	   * Create a ReactLink that's linked to part of this component's state. The
-	   * ReactLink will have the current value of this.state[key] and will call
-	   * setState() when a change is requested.
-	   *
-	   * @param {string} key state key to update. Note: you may want to use keyOf()
-	   * if you're using Google Closure Compiler advanced mode.
-	   * @return {ReactLink} ReactLink instance linking to the state.
-	   */
-	  linkState: function (key) {
-	    return new ReactLink(this.state[key], ReactStateSetters.createStateKeySetter(this, key));
-	  }
-	};
-	
-	module.exports = LinkedStateMixin;
-
-/***/ },
-/* 281 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactLink
-	 * @typechecks static-only
-	 */
-	
-	'use strict';
-	
-	/**
-	 * ReactLink encapsulates a common pattern in which a component wants to modify
-	 * a prop received from its parent. ReactLink allows the parent to pass down a
-	 * value coupled with a callback that, when invoked, expresses an intent to
-	 * modify that value. For example:
-	 *
-	 * React.createClass({
-	 *   getInitialState: function() {
-	 *     return {value: ''};
-	 *   },
-	 *   render: function() {
-	 *     var valueLink = new ReactLink(this.state.value, this._handleValueChange);
-	 *     return <input valueLink={valueLink} />;
-	 *   },
-	 *   _handleValueChange: function(newValue) {
-	 *     this.setState({value: newValue});
-	 *   }
-	 * });
-	 *
-	 * We have provided some sugary mixins to make the creation and
-	 * consumption of ReactLink easier; see LinkedValueUtils and LinkedStateMixin.
-	 */
-	
-	var React = __webpack_require__(2);
-	
-	/**
-	 * @param {*} value current value of the link
-	 * @param {function} requestChange callback to request a change
-	 */
-	function ReactLink(value, requestChange) {
-	  this.value = value;
-	  this.requestChange = requestChange;
-	}
-	
-	/**
-	 * Creates a PropType that enforces the ReactLink API and optionally checks the
-	 * type of the value being passed inside the link. Example:
-	 *
-	 * MyComponent.propTypes = {
-	 *   tabIndexLink: ReactLink.PropTypes.link(React.PropTypes.number)
-	 * }
-	 */
-	function createLinkTypeChecker(linkType) {
-	  var shapes = {
-	    value: typeof linkType === 'undefined' ? React.PropTypes.any.isRequired : linkType.isRequired,
-	    requestChange: React.PropTypes.func.isRequired
-	  };
-	  return React.PropTypes.shape(shapes);
-	}
-	
-	ReactLink.PropTypes = {
-	  link: createLinkTypeChecker
-	};
-	
-	module.exports = ReactLink;
-
-/***/ },
-/* 282 */
-/***/ function(module, exports) {
-
-	/**
-	 * Copyright 2013-2015, Facebook, Inc.
-	 * All rights reserved.
-	 *
-	 * This source code is licensed under the BSD-style license found in the
-	 * LICENSE file in the root directory of this source tree. An additional grant
-	 * of patent rights can be found in the PATENTS file in the same directory.
-	 *
-	 * @providesModule ReactStateSetters
-	 */
-	
-	'use strict';
-	
-	var ReactStateSetters = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (component, funcReturningState) {
-	    return function (a, b, c, d, e, f) {
-	      var partialState = funcReturningState.call(component, a, b, c, d, e, f);
-	      if (partialState) {
-	        component.setState(partialState);
-	      }
-	    };
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {ReactCompositeComponent} component
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (component, key) {
-	    // Memoize the setters.
-	    var cache = component.__keySetters || (component.__keySetters = {});
-	    return cache[key] || (cache[key] = createStateKeySetter(component, key));
-	  }
-	};
-	
-	function createStateKeySetter(component, key) {
-	  // Partial state is allocated outside of the function closure so it can be
-	  // reused with every call, avoiding memory allocation when this function
-	  // is called.
-	  var partialState = {};
-	  return function stateKeySetter(value) {
-	    partialState[key] = value;
-	    component.setState(partialState);
-	  };
-	}
-	
-	ReactStateSetters.Mixin = {
-	  /**
-	   * Returns a function that calls the provided function, and uses the result
-	   * of that to set the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateSetter(function(xValue) {
-	   *     return {x: xValue};
-	   *   })(1);
-	   *
-	   * @param {function} funcReturningState Returned callback uses this to
-	   *                                      determine how to update state.
-	   * @return {function} callback that when invoked uses funcReturningState to
-	   *                    determined the object literal to setState.
-	   */
-	  createStateSetter: function (funcReturningState) {
-	    return ReactStateSetters.createStateSetter(this, funcReturningState);
-	  },
-	
-	  /**
-	   * Returns a single-argument callback that can be used to update a single
-	   * key in the component's state.
-	   *
-	   * For example, these statements are equivalent:
-	   *
-	   *   this.setState({x: 1});
-	   *   this.createStateKeySetter('x')(1);
-	   *
-	   * Note: this is memoized function, which makes it inexpensive to call.
-	   *
-	   * @param {string} key The key in the state that you should update.
-	   * @return {function} callback of 1 argument which calls setState() with
-	   *                    the provided keyName and callback argument.
-	   */
-	  createStateKeySetter: function (key) {
-	    return ReactStateSetters.createStateKeySetter(this, key);
-	  }
-	};
-	
-	module.exports = ReactStateSetters;
-
-/***/ },
-/* 283 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var History = __webpack_require__(159).History;
-	var Account = __webpack_require__(284);
-	var NotebookIndex = __webpack_require__(286);
-	
-	var searchOpen = false;
-	var slideoutOpen = false;
-	
-	var NavBar = React.createClass({
-	  displayName: 'NavBar',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { profileSettingsOpen: false, slideoutOpen: false };
-	  },
-	
-	  componentDidMount: function () {
-	    $('.account-options-menu').hide();
-	    $('.slideout-notebooks').hide();
-	  },
-	
-	  handleNewNoteClick: function () {
-	    this.reset();
-	    $('.notes-index').hide("slow");
-	    $('.navbar').hide("slow");
-	    $('.note-form-outer').show();
-	    $('.note-form-outer').addClass("expanded");
-	    this.history.pushState(null, "home/note/new");
-	  },
-	
-	  handleNotesClick: function () {
-	    this.reset();
-	    this.history.pushState(null, '/home', { index: "notes" });
-	  },
-	
-	  toggleSlideout: function () {
-	    if (slideoutOpen) {
-	      $('.slideout-notebooks').hide("slow");
-	      $('.home-right').fadeTo("fast", 1);
-	      slideoutOpen = false;
-	    } else {
-	      $('.slideout-notebooks').show("slow");
-	      $('.home-right').fadeTo("fast", 0.2);
-	      slideoutOpen = true;
-	
-	      $('.home-right').on('click', function () {
-	        $('.slideout-notebooks').hide("slow");
-	        $('.home-right').fadeTo("fast", 1);
-	        slideoutOpen = false;
-	      });
-	    }
-	  },
-	
-	  reset: function () {
-	    if (slideoutOpen) {
-	      this.toggleSlideout();
-	    }
-	  },
-	
-	  handleProfileButtonClick: function (e) {
-	    if (this.state.profileSettingsOpen) {
-	      $('.account-options-menu').hide();
-	      this.setState({ profileSettingsOpen: false });
-	    } else {
-	      $('.account-options-menu').show();
-	      this.setState({ profileSettingsOpen: true });
-	    }
-	  },
-	
-	  render: function () {
-	    var slideout = React.createElement(
-	      'div',
-	      { className: 'slideout-notebooks' },
-	      React.createElement(NotebookIndex, { toggleSlideout: this.toggleSlideout })
-	    );
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'navbar-outer' },
-	      slideout,
-	      React.createElement(
-	        'div',
-	        { className: 'navbar group' },
-	        React.createElement('img', { className: 'app-logo' }),
-	        React.createElement(
-	          'div',
-	          { className: 'navbar-top' },
-	          React.createElement(
-	            'div',
-	            { className: 'navbar-link new-note-link',
-	              onClick: this.handleNewNoteClick },
-	            React.createElement('i', { className: 'fa fa-plus' })
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'navbar-link search-link',
-	              onClick: this.handleSearchClick },
-	            React.createElement('i', { className: 'fa fa-search' })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'navbar-bottom' },
-	          React.createElement('div', { className: 'navbar-link notes-link',
-	            onClick: this.handleNotesClick }),
-	          React.createElement(
-	            'div',
-	            { className: 'navbar-link notebooks-link',
-	              onClick: this.toggleSlideout },
-	            React.createElement('i', { className: 'fa fa-book' })
-	          )
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'navbar-link profile-button', onClick: this.handleProfileButtonClick },
-	          React.createElement('i', { className: 'fa fa-user fa-2x' })
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NavBar;
-
-/***/ },
-/* 284 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(261);
-	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(261);
-	var History = __webpack_require__(159).History;
-	
-	var Account = React.createClass({
-	  displayName: 'Account',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { user: CurrentUserStore.currentUser() };
-	  },
-	
-	  handleSignOutClick: function () {
-	    SessionsApiUtil.logout();
-	    this.history.pushState(null, '/');
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'account-options-menu' },
-	      React.createElement(
-	        'div',
-	        { className: 'account-options-menu-header' },
-	        React.createElement(
-	          'div',
-	          { className: 'username' },
-	          this.state.user.username
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'account-options-menu-links' },
-	        React.createElement(
-	          'div',
-	          { className: 'settings-link',
-	            onClick: this.handleSettingsClick },
-	          'Settings'
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'sign-out-link',
-	            onClick: this.handleSignOutClick },
-	          React.createElement('i', { className: 'fa fa-sign-out fa-lg' }),
-	          ' Log Out'
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = Account;
-
-/***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var TextEditor = __webpack_require__(273);
-	var History = __webpack_require__(159).History;
-	var NoteStore = __webpack_require__(210);
-	var NotesApiUtil = __webpack_require__(209);
-	
-	var _expanded = false;
-	
-	var NoteForm = React.createClass({
-	  displayName: 'NoteForm',
-	
-	  getInitialState: function () {
-	    return { noteId: this.props.params.noteId };
-	  },
-	
-	  componentWillReceiveProps: function (newProps) {
-	    this.setState({ noteId: newProps.params.noteId });
-	  },
-	
-	  handleExpand: function () {
-	    if (!_expanded) {
-	      $('.notes-index').hide("slow");
-	      $('.navbar').hide("slow");
-	      $('.note-form-outer').addClass("expanded");
-	      _expanded = true;
-	    } else {
-	      $('.notes-index').show("slow");
-	      $('.navbar').show("slow");
-	      $('.note-form-outer').removeClass("expanded");
-	      _expanded = false;
-	    }
-	  },
-	
-	  handleCancelClick: function () {
-	    $('.notes-index').show("slow");
-	    $('.navbar').show("slow");
-	    $('.note-form-outer').removeClass("expanded");
-	  },
-	
-	  setUpHeader: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'note-form-header' },
-	      React.createElement(
-	        'div',
-	        { className: 'expand-button', onClick: this.handleExpand },
-	        React.createElement('i', { className: 'fa fa-expand' })
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var header = this.setUpHeader();
-	    var textEditor = React.createElement(TextEditor, { noteId: this.state.noteId });
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'note-form-outer' },
-	      header,
-	      textEditor
-	    );
-	  }
-	});
-	
-	module.exports = NoteForm;
-
-/***/ },
-/* 286 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NotebooksApiUtil = __webpack_require__(256);
-	var NotebookStore = __webpack_require__(257);
-	var NotebookIndexItem = __webpack_require__(287);
-	var Modal = __webpack_require__(236);
-	
-	var customStyles = {
-	  content: {
-	    top: '27%',
-	    left: '35%',
-	    right: 'auto',
-	    bottom: 'auto'
-	  }
-	};
-	
-	var NotebooksIndex = React.createClass({
-	  displayName: 'NotebooksIndex',
-	
-	  getInitialState: function () {
-	    return { notebooks: NotebookStore.all(), modalIsOpen: false };
-	  },
-	
-	  componentDidMount: function () {
-	    this.notebookListener = NotebookStore.addListener(this._onChange);
-	    NotebooksApiUtil.fetchAllNotebooks();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.notebookListener.remove();
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ notebooks: NotebookStore.all() });
-	  },
-	
-	  getNotebooks: function () {
-	    var notebooks = this.state.notebooks.map(function (notebook, key) {
-	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook, toggleSlideout: this.props.toggleSlideout });
-	    }.bind(this));
-	    return notebooks;
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalIsOpen: true });
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
-	
-	  handleNewNotebookClick: function (e) {
-	    var title = $('.new-notebook-title-input').val();
-	    var notebook = { title: title };
-	    NotebooksApiUtil.createNotebook(notebook);
-	    this.closeModal();
-	  },
-	
-	  render: function () {
-	    var notebooks = this.getNotebooks();
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'notebook-index' },
-	      React.createElement(
-	        'div',
-	        { className: 'notebook-index-header' },
-	        React.createElement(
-	          'div',
-	          { className: 'notebook-index-header-top group' },
-	          React.createElement(
-	            'div',
-	            { className: 'notebook-index-title' },
-	            'Notebooks'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'add-notebook-button' },
-	            React.createElement(
-	              'div',
-	              { onClick: this.openModal },
-	              React.createElement('i', { className: 'fa fa-plus' }),
-	              React.createElement('i', { className: 'fa fa-book fa-2x' })
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'notebook-index-items' },
-	        notebooks
-	      ),
-	      React.createElement(
-	        Modal,
-	        {
-	          className: 'new-notebook-modal',
-	          isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: customStyles },
-	        React.createElement(
-	          'h2',
-	          { className: 'new-notebook-modal-title' },
-	          'Create Notebook'
-	        ),
-	        React.createElement('input', { className: 'new-notebook-title-input',
-	          type: 'text',
-	          placeholder: 'Title your notebook' }),
-	        React.createElement(
-	          'div',
-	          { className: 'new-notebook-modal-bottom group' },
-	          React.createElement(
-	            'button',
-	            { onClick: this.closeModal },
-	            'Cancel'
-	          ),
-	          React.createElement(
-	            'button',
-	            { onClick: this.handleNewNotebookClick },
-	            'Create'
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NotebooksIndex;
-
-/***/ },
-/* 287 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NotebookStore = __webpack_require__(257);
-	var NotebooksApiUtil = __webpack_require__(256);
-	var Modal = __webpack_require__(236);
-	var History = __webpack_require__(159).History;
-	
-	var customStyles = {
-	  content: {
-	    top: '30%',
-	    left: '35%',
-	    right: 'auto',
-	    bottom: 'auto'
-	  }
-	};
-	
-	var NotebookIndexItem = React.createClass({
-	  displayName: 'NotebookIndexItem',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { notebook: this.props.notebook, modalIsOpen: false };
-	  },
-	
-	  handleNotebookItemClick: function (e) {
-	    if (e.target.className === "fa fa-trash") {
-	      return;
-	    }
-	    this.props.toggleSlideout();
-	    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalIsOpen: true });
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
-	
-	  handleNotebookDelete: function () {
-	    NotebooksApiUtil.deleteNotebook(this.props.notebook.id);
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'notebook-index-item', onClick: this.handleNotebookItemClick },
-	      React.createElement(
-	        Modal,
-	        {
-	          className: 'delete-modal',
-	          isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: customStyles },
-	        React.createElement(
-	          'h1',
-	          null,
-	          'Are you sure you want to delete this notebook?'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.closeModal },
-	          'Cancel'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.handleNotebookDelete },
-	          'Delete'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'notebook-index-item-top group' },
-	        React.createElement(
-	          'div',
-	          { className: 'notebook-index-item-title' },
-	          this.props.notebook.title
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'notebook-index-item-trash', onClick: this.openModal },
-	          React.createElement('i', { className: 'fa fa-trash' })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'number-of-notes-in-notebook' },
-	        this.props.notebook.notes.length
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NotebookIndexItem;
 
 /***/ }
 /******/ ]);

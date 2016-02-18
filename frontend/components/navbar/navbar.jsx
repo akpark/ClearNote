@@ -32,6 +32,12 @@ var NavBar = React.createClass({
     this.history.pushState(null, '/home', {index: "notes"});
   },
 
+  handleSearchClick: function () {
+    this.reset();
+    $('.notes-index').hide();
+    this.history.pushState(null, 'home/search');
+  },
+
   toggleSlideout: function () {
     if (slideoutOpen) {
       $('.slideout-notebooks').hide("slow");
@@ -52,6 +58,7 @@ var NavBar = React.createClass({
 
   reset: function () {
     if (slideoutOpen) { this.toggleSlideout(); }
+    $('.notes-index').show();
   },
 
   handleProfileButtonClick: function (e) {
