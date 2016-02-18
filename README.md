@@ -4,7 +4,7 @@
 
 [heroku]: http://www.p4d.heroku.com
 
-A note taking website inspired by Evernote.
+A note taking web application inspired by Evernote.
 
 # Features
 
