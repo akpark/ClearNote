@@ -1,6 +1,6 @@
 var React = require('react');
-var NotebookStore = require('../../../stores/notebook_store');
-var NotebooksApiUtil = require('../../../util/notebooks_api_util');
+var NotebookStore = require('../../stores/notebook_store');
+var NotebooksApiUtil = require('../../util/notebooks_api_util');
 var Modal = require('react-modal');
 var History = require('react-router').History;
 

@@ -59,9 +59,9 @@
 	var SessionsApiUtil = __webpack_require__(261);
 	var App = __webpack_require__(267);
 	var Home = __webpack_require__(268);
-	var NotebooksIndex = __webpack_require__(269);
+	var NotebooksIndex = __webpack_require__(286);
 	var WelcomeForm = __webpack_require__(271);
-	var NoteForm = __webpack_require__(272);
+	var NoteForm = __webpack_require__(285);
 	var Search = __webpack_require__(274);
 	
 	var router = React.createElement(
@@ -24297,7 +24297,6 @@
 	      url: "api/notes/" + id,
 	      dataType: "json",
 	      success: function (note) {
-	        console.log("Successfuly retrieved note!");
 	        NoteActions.receiveSingleNote(note);
 	      }
 	    });
@@ -24310,7 +24309,6 @@
 	      data: { note: note },
 	      dataType: "json",
 	      success: function (note) {
-	        console.log("note created!");
 	        NoteActions.createNote(note);
 	        callback(note);
 	      }
@@ -31256,7 +31254,6 @@
 	var NotesApiUtil = __webpack_require__(209);
 	var NoteStore = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
-	var MiniMenu = __webpack_require__(235);
 	var Modal = __webpack_require__(236);
 	
 	var customStyles = {
@@ -31432,128 +31429,7 @@
 	module.exports = NoteIndexItem;
 
 /***/ },
-/* 235 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var Modal = __webpack_require__(236);
-	var NotesApiUtil = __webpack_require__(209);
-	var NotebooksApiUtil = __webpack_require__(256);
-	var History = __webpack_require__(159).History;
-	
-	const customStyles = {
-	  content: {
-	    top: '0',
-	    left: '0',
-	    right: '0',
-	    bottom: '0',
-	    border: '1px solid #fff'
-	  }
-	};
-	
-	var MiniMenu = React.createClass({
-	  displayName: 'MiniMenu',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { modalIsOpen: false };
-	  },
-	
-	  setUpModal: function () {
-	    return React.createElement(
-	      Modal,
-	      {
-	        isOpen: this.state.modalIsOpen,
-	        onRequestClose: this.closeModal,
-	        style: customStyles },
-	      React.createElement(
-	        'div',
-	        { className: 'delete-modal-middle' },
-	        React.createElement(
-	          'div',
-	          { className: 'delete-modal-inner' },
-	          React.createElement('i', { className: 'fa fa-trash-o fa-2x' }),
-	          React.createElement(
-	            'div',
-	            { className: 'delete-modal-title' },
-	            'Delete ',
-	            this.props.itemInfo.type
-	          ),
-	          React.createElement(
-	            'h2',
-	            { className: 'delete-modal-question' },
-	            'Are you sure you want to delete ',
-	            this.props.itemInfo.title
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'delete-modal-bottom group' },
-	            React.createElement(
-	              'button',
-	              { className: 'delete-modal-cancel-button',
-	                onClick: this.closeModal },
-	              'Cancel'
-	            ),
-	            React.createElement(
-	              'button',
-	              { className: 'delete-modal-delete-button',
-	                onClick: this.handleDeleteClick },
-	              'Delete'
-	            )
-	          )
-	        )
-	      )
-	    );
-	  },
-	
-	  openModal: function () {
-	    console.log("open modal");
-	    this.setState({ modalIsOpen: true });
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
-	
-	  handleDeleteClick: function (e) {
-	    debugger;
-	    switch (this.props.itemInfo.type) {
-	      case "note":
-	        NotesApiUtil.deleteNote(this.props.itemInfo.id);
-	        break;
-	      case "notebook":
-	        NotebooksApiUtil.deleteNotebook(this.props.itemInfo.id);
-	        break;
-	    }
-	    this.closeModal();
-	  },
-	
-	  render: function () {
-	    var modal = this.setUpModal();
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'mini-menu-container' },
-	      React.createElement(
-	        'div',
-	        { className: 'mini-menu group' },
-	        React.createElement(
-	          'div',
-	          { className: 'mini-menu-link trash',
-	            onClick: this.openModal },
-	          React.createElement('i', { className: 'fa fa-trash fa-lg' })
-	        )
-	      ),
-	      modal
-	    );
-	  }
-	
-	});
-	
-	module.exports = MiniMenu;
-
-/***/ },
+/* 235 */,
 /* 236 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -33516,7 +33392,6 @@
 	      data: { notebook: notebook },
 	      dataType: "json",
 	      success: function (notebook) {
-	        console.log("notebook created!");
 	        NotebookActions.receiveSingleNotebook(notebook);
 	        callback && callback(notebook);
 	      }
@@ -33529,7 +33404,6 @@
 	      url: "api/notebooks/" + notebookId,
 	      dataType: "json",
 	      success: function (notebook) {
-	        console.log("notebook deleted!");
 	        NotebookActions.deleteNotebook(notebook);
 	      }
 	    });
@@ -34096,237 +33970,8 @@
 	module.exports = Home;
 
 /***/ },
-/* 269 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NotebooksApiUtil = __webpack_require__(256);
-	var NotebookStore = __webpack_require__(257);
-	var NotebookIndexItem = __webpack_require__(270);
-	var Modal = __webpack_require__(236);
-	
-	var customStyles = {
-	  content: {
-	    top: '27%',
-	    left: '35%',
-	    right: 'auto',
-	    bottom: 'auto'
-	  }
-	};
-	
-	var NotebooksIndex = React.createClass({
-	  displayName: 'NotebooksIndex',
-	
-	  getInitialState: function () {
-	    return { notebooks: NotebookStore.all(), modalIsOpen: false };
-	  },
-	
-	  componentDidMount: function () {
-	    this.notebookListener = NotebookStore.addListener(this._onChange);
-	    NotebooksApiUtil.fetchAllNotebooks();
-	  },
-	
-	  componentWillUnmount: function () {
-	    this.notebookListener.remove();
-	  },
-	
-	  _onChange: function () {
-	    this.setState({ notebooks: NotebookStore.all() });
-	  },
-	
-	  getNotebooks: function () {
-	    var notebooks = this.state.notebooks.map(function (notebook, key) {
-	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook, toggleSlideout: this.props.toggleSlideout });
-	    }.bind(this));
-	    return notebooks;
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalIsOpen: true });
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
-	
-	  handleNewNotebookClick: function (e) {
-	    var title = $('.new-notebook-title-input').val();
-	    var notebook = { title: title };
-	    NotebooksApiUtil.createNotebook(notebook);
-	    this.closeModal();
-	  },
-	
-	  render: function () {
-	    var notebooks = this.getNotebooks();
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'notebook-index' },
-	      React.createElement(
-	        'div',
-	        { className: 'notebook-index-header' },
-	        React.createElement(
-	          'div',
-	          { className: 'notebook-index-header-top group' },
-	          React.createElement(
-	            'div',
-	            { className: 'notebook-index-title' },
-	            'Notebooks'
-	          ),
-	          React.createElement(
-	            'div',
-	            { className: 'add-notebook-button' },
-	            React.createElement(
-	              'div',
-	              { onClick: this.openModal },
-	              React.createElement('i', { className: 'fa fa-plus' }),
-	              React.createElement('i', { className: 'fa fa-book fa-2x' })
-	            )
-	          )
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'notebook-index-items' },
-	        notebooks
-	      ),
-	      React.createElement(
-	        Modal,
-	        {
-	          className: 'new-notebook-modal',
-	          isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: customStyles },
-	        React.createElement(
-	          'h2',
-	          { className: 'new-notebook-modal-title' },
-	          'Create Notebook'
-	        ),
-	        React.createElement('input', { className: 'new-notebook-title-input',
-	          type: 'text',
-	          placeholder: 'Title your notebook' }),
-	        React.createElement(
-	          'div',
-	          { className: 'new-notebook-modal-bottom group' },
-	          React.createElement(
-	            'button',
-	            { onClick: this.closeModal },
-	            'Cancel'
-	          ),
-	          React.createElement(
-	            'button',
-	            { onClick: this.handleNewNotebookClick },
-	            'Create'
-	          )
-	        )
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NotebooksIndex;
-
-/***/ },
-/* 270 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var NotebookStore = __webpack_require__(257);
-	var NotebooksApiUtil = __webpack_require__(256);
-	var Modal = __webpack_require__(236);
-	var History = __webpack_require__(159).History;
-	
-	var customStyles = {
-	  content: {
-	    top: '30%',
-	    left: '35%',
-	    right: 'auto',
-	    bottom: 'auto'
-	  }
-	};
-	
-	var NotebookIndexItem = React.createClass({
-	  displayName: 'NotebookIndexItem',
-	
-	  mixins: [History],
-	
-	  getInitialState: function () {
-	    return { notebook: this.props.notebook, modalIsOpen: false };
-	  },
-	
-	  handleNotebookItemClick: function (e) {
-	    if (e.target.className === "fa fa-trash") {
-	      return;
-	    }
-	    this.props.toggleSlideout();
-	    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
-	  },
-	
-	  openModal: function () {
-	    this.setState({ modalIsOpen: true });
-	  },
-	
-	  closeModal: function () {
-	    this.setState({ modalIsOpen: false });
-	  },
-	
-	  handleNotebookDelete: function () {
-	    NotebooksApiUtil.deleteNotebook(this.props.notebook.id);
-	  },
-	
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'notebook-index-item', onClick: this.handleNotebookItemClick },
-	      React.createElement(
-	        Modal,
-	        {
-	          className: 'delete-modal',
-	          isOpen: this.state.modalIsOpen,
-	          onRequestClose: this.closeModal,
-	          style: customStyles },
-	        React.createElement(
-	          'h1',
-	          null,
-	          'Are you sure you want to delete this notebook?'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.closeModal },
-	          'Cancel'
-	        ),
-	        React.createElement(
-	          'button',
-	          { onClick: this.handleNotebookDelete },
-	          'Delete'
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'notebook-index-item-top group' },
-	        React.createElement(
-	          'div',
-	          { className: 'notebook-index-item-title' },
-	          this.props.notebook.title
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'notebook-index-item-trash', onClick: this.openModal },
-	          React.createElement('i', { className: 'fa fa-trash' })
-	        )
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'number-of-notes-in-notebook' },
-	        this.props.notebook.notes.length
-	      )
-	    );
-	  }
-	});
-	
-	module.exports = NotebookIndexItem;
-
-/***/ },
+/* 269 */,
+/* 270 */,
 /* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -34384,76 +34029,7 @@
 	module.exports = Session;
 
 /***/ },
-/* 272 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var React = __webpack_require__(1);
-	var TextEditor = __webpack_require__(273);
-	var History = __webpack_require__(159).History;
-	var NoteStore = __webpack_require__(210);
-	var NotesApiUtil = __webpack_require__(209);
-	
-	var _expanded = false;
-	
-	var NoteForm = React.createClass({
-	  displayName: 'NoteForm',
-	
-	  getInitialState: function () {
-	    return { noteId: this.props.params.noteId };
-	  },
-	
-	  componentWillReceiveProps: function (newProps) {
-	    this.setState({ noteId: newProps.params.noteId });
-	  },
-	
-	  handleExpand: function () {
-	    if (!_expanded) {
-	      $('.notes-index').hide("slow");
-	      $('.navbar').hide("slow");
-	      $('.note-form-outer').addClass("expanded");
-	      _expanded = true;
-	    } else {
-	      $('.notes-index').show("slow");
-	      $('.navbar').show("slow");
-	      $('.note-form-outer').removeClass("expanded");
-	      _expanded = false;
-	    }
-	  },
-	
-	  handleCancelClick: function () {
-	    $('.notes-index').show("slow");
-	    $('.navbar').show("slow");
-	    $('.note-form-outer').removeClass("expanded");
-	  },
-	
-	  setUpHeader: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'note-form-header' },
-	      React.createElement(
-	        'div',
-	        { className: 'expand-button', onClick: this.handleExpand },
-	        React.createElement('i', { className: 'fa fa-expand' })
-	      )
-	    );
-	  },
-	
-	  render: function () {
-	    var header = this.setUpHeader();
-	    var textEditor = React.createElement(TextEditor, { noteId: this.state.noteId });
-	
-	    return React.createElement(
-	      'div',
-	      { className: 'note-form-outer' },
-	      header,
-	      textEditor
-	    );
-	  }
-	});
-	
-	module.exports = NoteForm;
-
-/***/ },
+/* 272 */,
 /* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -34475,31 +34051,22 @@
 	  mixins: [History],
 	
 	  getInitialState: function () {
-	    console.log("get initial state");
-	
 	    return { noteId: parseInt(this.props.noteId) };
 	  },
 	
 	  componentWillMount: function () {
-	    console.log("component will mount");
-	
 	    if (this.props.noteId !== "new") {
 	      NotesApiUtil.fetchSingleNote(parseInt(this.props.noteId));
 	    }
 	  },
 	
 	  componentDidMount: function () {
-	    console.log("component did mount");
-	
 	    this.setUpQuillEditor();
 	    this.noteListener = NoteStore.addListener(this._onChange);
 	  },
 	
 	  _onChange: function () {
-	    console.log("on change");
-	
 	    if (this.props.noteId === "new") {} else {
-	      debugger;
 	      var note = NoteStore.find(parseInt(this.props.noteId));
 	      //note is undefined after deletion
 	      fetched = true;
@@ -34508,7 +34075,6 @@
 	  },
 	
 	  componentWillUnmount: function () {
-	    console.log("component will unmount");
 	    fetched = false;
 	    this.noteListener.remove();
 	  },
@@ -34603,14 +34169,11 @@
 	    });
 	
 	    _quillEditor.on('text-change', function () {
-	      console.log("i be changin the txt");
 	      this.handleBodyChange();
 	    }.bind(this));
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    console.log("component will receive props");
-	
 	    var id = newProps.noteId;
 	    if (id === "new") {
 	      var note = { title: "New Note", body: "", body_delta: "{\"ops\":[{\"insert\":\"New Note\\n\"}]}" };
@@ -34630,7 +34193,6 @@
 	    if (id === "new") {
 	      if (!created) {
 	        created = true;
-	        console.log("inside creation");
 	        var note = { title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()), notebook_id: 244 };
 	        NotesApiUtil.createNote(note, function (note) {
 	          this.history.pushState(null, "home/note/" + note.id);
@@ -34650,12 +34212,10 @@
 	    this.timer = setTimeout(function () {
 	      var note = { id: this.state.note.id, title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()) };
 	      NotesApiUtil.editNote(note);
-	      console.log("EDITED");
 	    }.bind(this), 3000);
 	  },
 	
 	  render: function () {
-	    console.log("render");
 	    var toolbar = this.setUpToolbar();
 	
 	    if (fetched) {
@@ -34689,7 +34249,7 @@
 	var SearchApiUtil = __webpack_require__(275);
 	var SearchResultsStore = __webpack_require__(278);
 	var NoteIndexItem = __webpack_require__(234);
-	var NotebookIndexItem = __webpack_require__(270);
+	var NotebookIndexItem = __webpack_require__(287);
 	var LinkedStateMixin = __webpack_require__(279);
 	var History = __webpack_require__(159).History;
 	
@@ -35098,7 +34658,7 @@
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
 	var Account = __webpack_require__(284);
-	var NotebookIndex = __webpack_require__(269);
+	var NotebookIndex = __webpack_require__(286);
 	
 	var searchOpen = false;
 	var slideoutOpen = false;
@@ -35279,6 +34839,307 @@
 	});
 	
 	module.exports = Account;
+
+/***/ },
+/* 285 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var TextEditor = __webpack_require__(273);
+	var History = __webpack_require__(159).History;
+	var NoteStore = __webpack_require__(210);
+	var NotesApiUtil = __webpack_require__(209);
+	
+	var _expanded = false;
+	
+	var NoteForm = React.createClass({
+	  displayName: 'NoteForm',
+	
+	  getInitialState: function () {
+	    return { noteId: this.props.params.noteId };
+	  },
+	
+	  componentWillReceiveProps: function (newProps) {
+	    this.setState({ noteId: newProps.params.noteId });
+	  },
+	
+	  handleExpand: function () {
+	    if (!_expanded) {
+	      $('.notes-index').hide("slow");
+	      $('.navbar').hide("slow");
+	      $('.note-form-outer').addClass("expanded");
+	      _expanded = true;
+	    } else {
+	      $('.notes-index').show("slow");
+	      $('.navbar').show("slow");
+	      $('.note-form-outer').removeClass("expanded");
+	      _expanded = false;
+	    }
+	  },
+	
+	  handleCancelClick: function () {
+	    $('.notes-index').show("slow");
+	    $('.navbar').show("slow");
+	    $('.note-form-outer').removeClass("expanded");
+	  },
+	
+	  setUpHeader: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'note-form-header' },
+	      React.createElement(
+	        'div',
+	        { className: 'expand-button', onClick: this.handleExpand },
+	        React.createElement('i', { className: 'fa fa-expand' })
+	      )
+	    );
+	  },
+	
+	  render: function () {
+	    var header = this.setUpHeader();
+	    var textEditor = React.createElement(TextEditor, { noteId: this.state.noteId });
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'note-form-outer' },
+	      header,
+	      textEditor
+	    );
+	  }
+	});
+	
+	module.exports = NoteForm;
+
+/***/ },
+/* 286 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NotebooksApiUtil = __webpack_require__(256);
+	var NotebookStore = __webpack_require__(257);
+	var NotebookIndexItem = __webpack_require__(287);
+	var Modal = __webpack_require__(236);
+	
+	var customStyles = {
+	  content: {
+	    top: '27%',
+	    left: '35%',
+	    right: 'auto',
+	    bottom: 'auto'
+	  }
+	};
+	
+	var NotebooksIndex = React.createClass({
+	  displayName: 'NotebooksIndex',
+	
+	  getInitialState: function () {
+	    return { notebooks: NotebookStore.all(), modalIsOpen: false };
+	  },
+	
+	  componentDidMount: function () {
+	    this.notebookListener = NotebookStore.addListener(this._onChange);
+	    NotebooksApiUtil.fetchAllNotebooks();
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.notebookListener.remove();
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ notebooks: NotebookStore.all() });
+	  },
+	
+	  getNotebooks: function () {
+	    var notebooks = this.state.notebooks.map(function (notebook, key) {
+	      return React.createElement(NotebookIndexItem, { key: key, notebook: notebook, toggleSlideout: this.props.toggleSlideout });
+	    }.bind(this));
+	    return notebooks;
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  handleNewNotebookClick: function (e) {
+	    var title = $('.new-notebook-title-input').val();
+	    var notebook = { title: title };
+	    NotebooksApiUtil.createNotebook(notebook);
+	    this.closeModal();
+	  },
+	
+	  render: function () {
+	    var notebooks = this.getNotebooks();
+	
+	    return React.createElement(
+	      'div',
+	      { className: 'notebook-index' },
+	      React.createElement(
+	        'div',
+	        { className: 'notebook-index-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-header-top group' },
+	          React.createElement(
+	            'div',
+	            { className: 'notebook-index-title' },
+	            'Notebooks'
+	          ),
+	          React.createElement(
+	            'div',
+	            { className: 'add-notebook-button' },
+	            React.createElement(
+	              'div',
+	              { onClick: this.openModal },
+	              React.createElement('i', { className: 'fa fa-plus' }),
+	              React.createElement('i', { className: 'fa fa-book fa-2x' })
+	            )
+	          )
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'notebook-index-items' },
+	        notebooks
+	      ),
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'new-notebook-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'h2',
+	          { className: 'new-notebook-modal-title' },
+	          'Create Notebook'
+	        ),
+	        React.createElement('input', { className: 'new-notebook-title-input',
+	          type: 'text',
+	          placeholder: 'Title your notebook' }),
+	        React.createElement(
+	          'div',
+	          { className: 'new-notebook-modal-bottom group' },
+	          React.createElement(
+	            'button',
+	            { onClick: this.closeModal },
+	            'Cancel'
+	          ),
+	          React.createElement(
+	            'button',
+	            { onClick: this.handleNewNotebookClick },
+	            'Create'
+	          )
+	        )
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NotebooksIndex;
+
+/***/ },
+/* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var React = __webpack_require__(1);
+	var NotebookStore = __webpack_require__(257);
+	var NotebooksApiUtil = __webpack_require__(256);
+	var Modal = __webpack_require__(236);
+	var History = __webpack_require__(159).History;
+	
+	var customStyles = {
+	  content: {
+	    top: '30%',
+	    left: '35%',
+	    right: 'auto',
+	    bottom: 'auto'
+	  }
+	};
+	
+	var NotebookIndexItem = React.createClass({
+	  displayName: 'NotebookIndexItem',
+	
+	  mixins: [History],
+	
+	  getInitialState: function () {
+	    return { notebook: this.props.notebook, modalIsOpen: false };
+	  },
+	
+	  handleNotebookItemClick: function (e) {
+	    if (e.target.className === "fa fa-trash") {
+	      return;
+	    }
+	    this.props.toggleSlideout();
+	    this.history.pushState(null, 'home/notebook/' + this.state.notebook.id);
+	  },
+	
+	  openModal: function () {
+	    this.setState({ modalIsOpen: true });
+	  },
+	
+	  closeModal: function () {
+	    this.setState({ modalIsOpen: false });
+	  },
+	
+	  handleNotebookDelete: function () {
+	    NotebooksApiUtil.deleteNotebook(this.props.notebook.id);
+	  },
+	
+	  render: function () {
+	    return React.createElement(
+	      'div',
+	      { className: 'notebook-index-item', onClick: this.handleNotebookItemClick },
+	      React.createElement(
+	        Modal,
+	        {
+	          className: 'delete-modal',
+	          isOpen: this.state.modalIsOpen,
+	          onRequestClose: this.closeModal,
+	          style: customStyles },
+	        React.createElement(
+	          'h1',
+	          null,
+	          'Are you sure you want to delete this notebook?'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.closeModal },
+	          'Cancel'
+	        ),
+	        React.createElement(
+	          'button',
+	          { onClick: this.handleNotebookDelete },
+	          'Delete'
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'notebook-index-item-top group' },
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-item-title' },
+	          this.props.notebook.title
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'notebook-index-item-trash', onClick: this.openModal },
+	          React.createElement('i', { className: 'fa fa-trash' })
+	        )
+	      ),
+	      React.createElement(
+	        'div',
+	        { className: 'number-of-notes-in-notebook' },
+	        this.props.notebook.notes.length
+	      )
+	    );
+	  }
+	});
+	
+	module.exports = NotebookIndexItem;
 
 /***/ }
 /******/ ]);

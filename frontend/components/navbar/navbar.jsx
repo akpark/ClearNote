@@ -1,7 +1,7 @@
 var React = require('react');
 var History = require('react-router').History;
 var Account = require('./account');
-var NotebookIndex = require('../slideout/notebooks/index');
+var NotebookIndex = require('../notebooks/index');
 
 var searchOpen = false;
 var slideoutOpen = false;

@@ -2,7 +2,6 @@ var React = require('react');
 var NotesApiUtil = require('../../util/notes_api_util');
 var NoteStore = require('../../stores/note_store');
 var History = require('react-router').History;
-var MiniMenu = require('../mini_menu');
 var Modal = require('react-modal');
 
 var customStyles={

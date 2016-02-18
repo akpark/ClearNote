@@ -27,32 +27,23 @@ var TextEditor = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    console.log("get initial state");
-
     return { noteId: parseInt(this.props.noteId) };
   },
 
   componentWillMount: function () {
-    console.log("component will mount");
-
     if (this.props.noteId !== "new") {
       NotesApiUtil.fetchSingleNote(parseInt(this.props.noteId));
     }
   },
 
   componentDidMount: function () {
-    console.log("component did mount");
-
     this.setUpQuillEditor();
     this.noteListener = NoteStore.addListener(this._onChange);
   },
 
   _onChange: function () {
-    console.log("on change");
-
     if (this.props.noteId === "new") {
     } else {
-      debugger
       var note = NoteStore.find(parseInt(this.props.noteId));
       //note is undefined after deletion
       fetched = true;
@@ -61,7 +52,6 @@ var TextEditor = React.createClass({
   },
 
   componentWillUnmount: function () {
-    console.log("component will unmount");
     fetched = false;
     this.noteListener.remove();
   },
@@ -118,14 +108,11 @@ var TextEditor = React.createClass({
     });
 
     _quillEditor.on('text-change', function() {
-      console.log("i be changin the txt");
       this.handleBodyChange();
     }.bind(this));
   },
 
   componentWillReceiveProps: function (newProps) {
-    console.log("component will receive props");
-
     var id = newProps.noteId;
     if (id === "new") {
       var note = { title: "New Note", body: "", body_delta: "{\"ops\":[{\"insert\":\"New Note\\n\"}]}" };
@@ -145,7 +132,6 @@ var TextEditor = React.createClass({
     if (id === "new") {
       if (!created) {
         created = true;
-        console.log("inside creation");
         var note = { title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()), notebook_id: 244 };
         NotesApiUtil.createNote(note, function(note) {
           this.history.pushState(null, "home/note/" + note.id);
@@ -165,12 +151,10 @@ var TextEditor = React.createClass({
     this.timer = setTimeout(function() {
       var note = { id: this.state.note.id, title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()) };
       NotesApiUtil.editNote(note);
-      console.log("EDITED");
     }.bind(this), 3000);
   },
 
   render: function() {
-    console.log("render");
     var toolbar = this.setUpToolbar();
 
     if (fetched) {

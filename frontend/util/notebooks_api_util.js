@@ -31,7 +31,6 @@ var NotebooksApiUtil = {
       data: {notebook: notebook},
       dataType: "json",
       success: function (notebook) {
-        console.log("notebook created!");
         NotebookActions.receiveSingleNotebook(notebook);
         callback && callback(notebook);
       }
@@ -44,7 +43,6 @@ var NotebooksApiUtil = {
       url: "api/notebooks/" + notebookId,
       dataType: "json",
       success: function (notebook) {
-        console.log("notebook deleted!");
         NotebookActions.deleteNotebook(notebook);
       }
     });

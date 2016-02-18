@@ -1,6 +1,6 @@
 var React = require('react');
-var NotebooksApiUtil = require('../../../util/notebooks_api_util');
-var NotebookStore = require('../../../stores/notebook_store');
+var NotebooksApiUtil = require('../../util/notebooks_api_util');
+var NotebookStore = require('../../stores/notebook_store');
 var NotebookIndexItem = require('./index_item');
 var Modal = require('react-modal');
 

@@ -2,7 +2,7 @@ var React = require('react');
 var SearchApiUtil = require('../util/search_api_util');
 var SearchResultsStore = require('../stores/search_results_store');
 var NoteIndexItem = require('./notes/index_item');
-var NotebookIndexItem = require('./slideout/notebooks/index_item');
+var NotebookIndexItem = require('./notebooks/index_item');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var History = require('react-router').History;
 

@@ -13,9 +13,9 @@ var CurrentUserStore = require('./stores/current_user_store');
 var SessionsApiUtil = require('./util/sessions_api_util');
 var App = require('./components/app');
 var Home = require('./components/home');
-var NotebooksIndex = require('./components/slideout/notebooks/index');
+var NotebooksIndex = require('./components/notebooks/index');
 var WelcomeForm = require('./components/sessions/session');
-var NoteForm = require('./components/note_form/note_form2');
+var NoteForm = require('./components/note_form/note_form');
 var Search = require('./components/search');
 
 var router = (

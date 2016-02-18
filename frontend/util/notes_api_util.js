@@ -19,7 +19,6 @@ var NotesApiUtil = {
       url: "api/notes/" + id,
       dataType: "json",
       success: function(note) {
-        console.log("Successfuly retrieved note!");
         NoteActions.receiveSingleNote(note);
       }
     });
@@ -32,7 +31,6 @@ var NotesApiUtil = {
       data: {note: note},
       dataType: "json",
       success: function (note) {
-        console.log("note created!");
         NoteActions.createNote(note);
         callback(note);
       }
