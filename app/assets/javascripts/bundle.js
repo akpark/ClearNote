@@ -33652,6 +33652,7 @@
 	      url: "/api/notebooks",
 	      dataType: "json",
 	      success: function (notebooks) {
+	        console.log("notebooks fetched!");
 	        NotebookActions.receiveAllNotebooks(notebooks);
 	      }
 	    });
@@ -33759,9 +33760,6 @@
 	};
 	
 	module.exports = NotebookStore;
-	window.NotebookStore = NotebookStore;
-	
-	//allow the index of notebooks receive the call first before changing the index item
 
 /***/ },
 /* 263 */
@@ -33991,7 +33989,7 @@
 	
 	  handleProfileButtonClick: function (e) {
 	    if (this.state.profileSettingsOpen) {
-	      $('.account-options-menu').hide();
+	      $('.account-options-menu').hide("slow");
 	      this.setState({ profileSettingsOpen: false });
 	    } else {
 	      $('.account-options-menu').show("slow");
@@ -34937,6 +34935,7 @@
 
 	var React = __webpack_require__(1);
 	var NoteStore = __webpack_require__(210);
+	var NotebooksApiUtil = __webpack_require__(261);
 	var NotebookStore = __webpack_require__(262);
 	var NotesApiUtil = __webpack_require__(209);
 	var History = __webpack_require__(159).History;
@@ -34946,6 +34945,7 @@
 	var _quillEditor;
 	var fetched = false;
 	var created = false;
+	var notebooksFetched = false;
 	
 	var TextEditor = React.createClass({
 	  displayName: 'TextEditor',
@@ -34960,6 +34960,7 @@
 	    if (this.props.noteId !== "new") {
 	      NotesApiUtil.fetchSingleNote(parseInt(this.props.noteId));
 	    }
+	    NotebooksApiUtil.fetchAllNotebooks();
 	  },
 	
 	  componentDidMount: function () {
@@ -34980,13 +34981,40 @@
 	    this.noteListener.remove();
 	  },
 	
+	  getNotebooks: function () {
+	    var value = "";
+	    if (fetched) {
+	      return NotebookStore.all().map(function (notebook, key) {
+	        var selected = false;
+	        debugger;
+	        if (notebook.id === this.state.note.notebook_id) {
+	          selected = true;
+	        }
+	        return React.createElement(
+	          'option',
+	          { key: key, selected: selected, value: notebook.id },
+	          notebook.title
+	        );
+	      }.bind(this));
+	    }
+	  },
+	
 	  setUpToolbar: function () {
+	    var notebooks = this.getNotebooks();
+	
 	    return React.createElement(
 	      'div',
 	      { id: 'toolbar', className: 'ql-toolbar-container toolbar' },
 	      React.createElement(
 	        'div',
 	        { className: 'ql-format-group' },
+	        React.createElement(
+	          'select',
+	          {
+	            onChange: this.handleNotebookChange,
+	            className: 'notebook-select' },
+	          notebooks
+	        ),
 	        React.createElement(
 	          'select',
 	          { className: 'ql-font' },
@@ -35076,8 +35104,8 @@
 	
 	  componentWillReceiveProps: function (newProps) {
 	    var id = newProps.noteId;
+	    debugger;
 	    if (id === "new") {
-	      debugger;
 	      var note = { title: "", body: "", body_delta: '{"ops":[{"insert":""}]}' };
 	    } else {
 	      var note = NoteStore.find(parseInt(newProps.noteId));
@@ -35095,7 +35123,12 @@
 	    if (id === "new") {
 	      if (!created) {
 	        created = true;
-	        var note = { title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()), notebook_id: 244 };
+	        var note = {
+	          title: this.state.title,
+	          body: _quillEditor.getText(),
+	          body_delta: JSON.stringify(_quillEditor.getContents()),
+	          notebook_id: $('.notebook-select').val()
+	        };
 	        NotesApiUtil.createNote(note, function (note) {
 	          this.history.pushState(null, "home/note/" + note.id);
 	          created = false;
@@ -35112,7 +35145,14 @@
 	    }
 	
 	    this.timer = setTimeout(function () {
-	      var note = { id: this.state.note.id, title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()) };
+	      debugger;
+	      var note = {
+	        id: this.state.note.id,
+	        title: this.state.title,
+	        body: _quillEditor.getText(),
+	        body_delta: JSON.stringify(_quillEditor.getContents()),
+	        notebook_id: $('.notebook-select').val()
+	      };
 	      NotesApiUtil.editNote(note);
 	    }.bind(this), 3000);
 	  },
@@ -35120,6 +35160,7 @@
 	  render: function () {
 	    var toolbar = this.setUpToolbar();
 	
+	    debugger;
 	    if (fetched) {
 	      _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
 	    }

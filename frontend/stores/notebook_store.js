@@ -57,6 +57,3 @@ NotebookStore.__onDispatch = function (payload) {
 }
 
 module.exports = NotebookStore;
-window.NotebookStore = NotebookStore;
-
-//allow the index of notebooks receive the call first before changing the index item

@@ -8,6 +8,7 @@ var NotebooksApiUtil = {
       url: "/api/notebooks",
       dataType: "json",
       success: function(notebooks) {
+        console.log("notebooks fetched!");
         NotebookActions.receiveAllNotebooks(notebooks);
       }
     });

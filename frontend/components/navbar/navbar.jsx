@@ -63,7 +63,7 @@ var NavBar = React.createClass({
 
   handleProfileButtonClick: function (e) {
     if (this.state.profileSettingsOpen) {
-      $('.account-options-menu').hide();
+      $('.account-options-menu').hide("slow");
       this.setState({profileSettingsOpen: false});
     } else {
       $('.account-options-menu').show("slow");

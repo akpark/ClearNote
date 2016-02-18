@@ -1,5 +1,6 @@
 var React = require('react');
 var NoteStore = require('../../stores/note_store');
+var NotebooksApiUtil = require('../../util/notebooks_api_util');
 var NotebookStore = require('../../stores/notebook_store');
 var NotesApiUtil = require('../../util/notes_api_util');
 var History = require('react-router').History;
@@ -22,6 +23,7 @@ const defaultColors = [
 var _quillEditor;
 var fetched = false;
 var created = false;
+var notebooksFetched = false;
 
 var TextEditor = React.createClass({
   mixins: [History],
@@ -34,6 +36,7 @@ var TextEditor = React.createClass({
     if (this.props.noteId !== "new") {
       NotesApiUtil.fetchSingleNote(parseInt(this.props.noteId));
     }
+    NotebooksApiUtil.fetchAllNotebooks();
   },
 
   componentDidMount: function () {
@@ -55,10 +58,32 @@ var TextEditor = React.createClass({
     this.noteListener.remove();
   },
 
+  getNotebooks: function () {
+    var value = "";
+    if (fetched) {
+      return(
+        NotebookStore.all().map(function (notebook, key) {
+          var selected = false;
+          debugger
+          if (notebook.id === this.state.note.notebook_id) {
+            selected = true;
+          }
+          return <option key={key} selected={selected} value={notebook.id}>{notebook.title}</option>
+        }.bind(this)));
+      }
+  },
+
   setUpToolbar: function () {
+    var notebooks = this.getNotebooks();
+
     return (
       <div id="toolbar" className="ql-toolbar-container toolbar">
         <div className="ql-format-group">
+          <select
+            onChange={this.handleNotebookChange}
+            className="notebook-select">
+            {notebooks}
+          </select>
           <select className="ql-font">
             <option value="sans-serif">Sans Serif</option>
             <option value="serif">Serif</option>
@@ -113,8 +138,8 @@ var TextEditor = React.createClass({
 
   componentWillReceiveProps: function (newProps) {
     var id = newProps.noteId;
+    debugger
     if (id === "new") {
-      debugger
       var note = { title: "", body: "", body_delta: '{"ops":[{"insert":""}]}' };
     } else {
       var note = NoteStore.find(parseInt(newProps.noteId));
@@ -132,7 +157,12 @@ var TextEditor = React.createClass({
     if (id === "new") {
       if (!created) {
         created = true;
-        var note = { title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()), notebook_id: 244 };
+        var note = {
+          title: this.state.title,
+          body: _quillEditor.getText(),
+          body_delta: JSON.stringify(_quillEditor.getContents()),
+          notebook_id: $('.notebook-select').val()
+        };
         NotesApiUtil.createNote(note, function(note) {
           this.history.pushState(null, "home/note/" + note.id);
           created = false;
@@ -149,7 +179,14 @@ var TextEditor = React.createClass({
     }
 
     this.timer = setTimeout(function() {
-      var note = { id: this.state.note.id, title: this.state.title, body: _quillEditor.getText(), body_delta: JSON.stringify(_quillEditor.getContents()) };
+      debugger
+      var note = {
+        id: this.state.note.id,
+        title: this.state.title,
+        body: _quillEditor.getText(),
+        body_delta: JSON.stringify(_quillEditor.getContents()),
+        notebook_id: $('.notebook-select').val()
+      };
       NotesApiUtil.editNote(note);
     }.bind(this), 3000);
   },
@@ -157,6 +194,7 @@ var TextEditor = React.createClass({
   render: function() {
     var toolbar = this.setUpToolbar();
 
+    debugger
     if (fetched) {
       _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
     }
