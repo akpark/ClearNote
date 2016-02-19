@@ -21,16 +21,16 @@ function resetNotebooks(notebooks) {
   notebooks.forEach(function (notebook) {
     _notebooks[notebook.id] = notebook;
   });
-};
+}
 
 function resetNotebook(notebook) {
   _notebooks[notebook.id] = notebook;
-};
+}
 
 function deleteNotebook(notebook) {
   var notebookId = notebook.id;
   delete _notebooks[notebookId];
-};
+}
 
 NotebookStore.__onDispatch = function (payload) {
   switch (payload.actionType) {
@@ -54,6 +54,6 @@ NotebookStore.__onDispatch = function (payload) {
       this.__emitChange();
       break;
   }
-}
+};
 
 module.exports = NotebookStore;
