@@ -1,14 +1,14 @@
 .account-options-menu {
   position: relative;
   display: block;
-  border: 1px solid #ccc;
+  border: 2px solid #453823;
   top: -150px;
   left: 55px;
   z-index: 100;
   background: #fff;
   width: 200px;
   height: 180px;
-  border-radius: 5px;
+  border-radius: 3px;
   background: #FBFAFA;
   color: black;
 }
