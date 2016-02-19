@@ -1,25 +1,27 @@
-.navbar {
+.navbar-outer {
   height: 100%;
   float: left;
   width: 60px;
-  background: #877B6A;
+  background: #738F9B;
   padding: 10px;
   z-index: 100;
   text-align: center;
-  border-right: 3px solid #000;
+  border-right: 3px solid #453823;
 }
 
 .navbar-link {
   margin: 15px auto;
   background: #fff;
-  border-radius: 5px;
-  border: 1px solid #2dbe60;
+  border: 2px solid #738F9B;
+  border-radius: 50%;
   padding: 5px;
+  width: 40px;
+  height: 40px;
 }
 
 .navbar-link:hover {
   cursor: pointer;
-  background: #6b4a18;
+  background: #43BF40;
 }
 
 .notebooks-link {
@@ -39,6 +41,10 @@
   content: image-url('new_note.png');
 }
 
+// .profile-button {
+//   content: image-url('profile.png');
+// }
+
 .bottom-bar {
   margin-top: 50px;
 }
@@ -47,19 +53,11 @@
   border: 1px solid #2dbe60;
   border-radius: 50%;
   background: #fff;
+  // content: image-url('profile.png');
+  color: #738F9B;
 
-  text-align: center;
-  padding: 10px 13px;
   position: absolute;
-  margin: 0 auto;
+  margin-left: 5px;
   margin-bottom: 8px;
-
-  color: #2f32b6;
   bottom: 0;
-}
-
-.logo {
-  background: white;
-  height: 50px;
-  width: 60px;
 }

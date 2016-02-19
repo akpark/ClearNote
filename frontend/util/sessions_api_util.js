@@ -9,8 +9,8 @@ var SessionsApiUtil = {
       dataType: 'json',
       data: credentials,
       success: function (currentUser) {
+        console.log("success");
         CurrentUserActions.receiveCurrentUser(currentUser);
-        console.log("successfully logged in!");
         success && success();
       }
     });
@@ -23,7 +23,6 @@ var SessionsApiUtil = {
       dataType: "json",
       success: function (message) {
         CurrentUserActions.deleteCurrentUser();
-        console.log("Logged out!");
       }.bind(this),
       error: function () {
         alert("error!");

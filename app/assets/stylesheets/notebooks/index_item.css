@@ -14,16 +14,25 @@
   height: 100px;
 }
 
+.notebook-index-item:hover {
+  background: #2dbe60;
+  cursor: pointer;
+}
+
 .notebook-index-item-title {
   padding: 5px 0 2px 0;
   font-family: futura;
   font-size: 16px;
   font-weight: 400;
+  float: left;
 }
 
-.notebook-index-item:hover {
-  background: #2dbe60;
-  cursor: pointer;
+.notebook-index-item-trash {
+  float: right;
+}
+
+.notebook-index-item-trash:hover {
+  color: white;
 }
 
 .search-notebook-input {
@@ -41,39 +50,26 @@
 
 .new-notebook-modal {
   text-align: center;
-  z-index: 200;
-  position: relative;
+  z-index: 400;
+  width: 400px;
+  height: 200px;
 }
 
 .new-notebook-modal-title {
-  font-size: 16px;
+  font-size: 28px;
 }
 
 .new-notebook-title-input {
-  width: 100%;
-  margin-top: 20px;
-  padding: 5px 0;
-  text-align: center;
-  font-size: 24px;
+  width: 375px;
+  margin-top: 15px;
+  padding: 5px 5px;
+  font-size: 14px;
 }
 
-.new-notebook-cancel-button {
-  float: left;
-}
-
-.new-notebook-create-button {
-  float: right;
-}
-
-.new-notebook-cancel-button,
-.new-notebook-create-button {
-  width: 50%;
-}
-
-.notebook-index-item-title {
-  float: left;
-}
-
-.mini-menu-delete {
-
+.new-notebook-modal button {
+  width: 150px;
+  margin-top: 35px;
+  border: 1px solid #2A2C05;
+  margin-right: 5px;
+  margin-left: 5px;
 }

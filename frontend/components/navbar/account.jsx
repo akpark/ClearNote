@@ -25,8 +25,6 @@ var Account = React.createClass({
           </div>
         </div>
           <div className="account-options-menu-links">
-            <div className="settings-link"
-                 onClick={this.handleSettingsClick}>Settings</div>
             <div className="sign-out-link"
                  onClick={this.handleSignOutClick}>
                  <i className="fa fa-sign-out fa-lg"></i> Log Out</div>

@@ -5,77 +5,40 @@ var NotesApiUtil = require('../util/notes_api_util');
 var NoteStore = require('../stores/note_store');
 var Navbar = require('./navbar/navbar');
 var NotesIndex = require('./notes/index');
-var Slideout = require('./slideout/slideout');
 var Search = require('./search');
 
 var App = React.createClass({
   getInitialState: function () {
-    return { slideoutOpen: false, slideoutIndex: "", indexInfo: { header: "notes", title: "notes" } };
+    return { slideoutOpen: false, indexInfo: this.setNotesInfo(this.props) };
   },
 
   componentWillMount: function () {
     SessionsApiUtil.fetchCurrentUser();
   },
 
-  componentDidMount: function () {
-    $('.search').hide();
-  },
-
   componentWillReceiveProps: function (newProps) {
-    if (newProps.location.query.index === "notes") {
-      this.setState({slideoutOpen: false, indexInfo: {header: "notes", title: "notes"}});
-      return;
-    }
-    switch (newProps.location.query.header) {
-      case "notebooks":
-        var params = newProps.location.query;
-        this.setState({slideoutOpen: false, indexInfo: {header: params.header, title: params.title, id: params.id} });
-        break;
-      case "notes":
-        var params = newProps.location.query;
-        this.setState({slideoutOpen: false, indexInfo: {header: "notes", title: "notes"}});
-      default:
-        break;
-    }
+    this.setState({indexInfo: this.setNotesInfo(newProps) });
   },
 
-  slideoutClickHandler: function (clickedIndex) {
-    this.setState({slideoutIndex: clickedIndex});
-    if (this.state.slideoutOpen) {
-      this.closeSlideout();
+  setNotesInfo: function (props) {
+    if (props.params.notebookId) {
+      return {header: "notebooks", id: parseInt(props.params.notebookId)};
     } else {
-      this.openSlideout();
+      return {header: "notes"};
     }
-  },
-
-  closeSlideout: function () {
-    this.setState({slideoutOpen: false});
-    $('.note-form-outer').fadeTo("slow", 1);
-    console.log("entered");
-  },
-
-  openSlideout: function () {
-    this.setState({slideoutOpen: true});
-    $('.note-form-outer').fadeTo("slow", 0.2);
-    $('.note-form-outer').on('click', function () {
-      this.closeSlideout();
-    }.bind(this));
   },
 
   render: function () {
     if (!CurrentUserStore.userHasBeenFetched()) {
       return <p>Please Wait</p>;
     }
-    // debugger
+
     return (
       <div className="home group">
-        <Navbar slideoutClickHandler={this.slideoutClickHandler}/>
+        <Navbar />
         <div className="home-right group">
-          <NotesIndex indexInfo={this.state.indexInfo}/>
-          <Slideout index={this.state.slideoutIndex}
-                    isOpen={this.state.slideoutOpen} />
+          <NotesIndex indexInfo={this.state.indexInfo} />
           {this.props.children}
-          <Search />
         </div>
 
       </div>

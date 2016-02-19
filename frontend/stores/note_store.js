@@ -79,5 +79,4 @@ NoteStore.__onDispatch = function(payload) {
   }
 };
 
-window.NoteStore = NoteStore;
 module.exports = NoteStore;

@@ -2,7 +2,7 @@ var React = require('react');
 var SearchApiUtil = require('../util/search_api_util');
 var SearchResultsStore = require('../stores/search_results_store');
 var NoteIndexItem = require('./notes/index_item');
-var NotebookIndexItem = require('./slideout/notebooks/index_item');
+var NotebookIndexItem = require('./notebooks/index_item');
 var LinkedStateMixin = require('react-addons-linked-state-mixin');
 var History = require('react-router').History;
 
@@ -33,25 +33,24 @@ var Search = React.createClass({
   },
 
   handleNoteClick: function (e) {
-    var note = e.target.value;
-    this.history.pushState(null, '/home/notes/' + note.id);
-  },
+    var id = e.target.id;
+    this.history.pushState(null, '/home/note/' + id);
 
-  handleNotebookClick: function (e) {
-    var notebook = e.target.value;
-    this.history.pushState(null, '/home/notes', { header: "notebooks", title: notebook.title, id: notebook.id })
+    $('.notes-index').show();
+    $('.search').hide();
   },
 
   render: function () {
-
-    var searchResults = SearchResultsStore.all().map(function (searchResult) {
+    var searchResults = SearchResultsStore.all().map(function (searchResult, key) {
       if (searchResult._type === "Note") {
-        return <NoteIndexItem note={searchResult} />
-        // return <div className="search-result" value={searchResult} onClick={this.handleNoteClick}><div>Note: {searchResult.title}</div></div>;
-      } else if (searchResult._type === "Notebook") {
-        return <div className="search-result" value={searchResult} onClick={this.handleNotebookClick}><div>Notebook: {searchResult.title}</div></div>;
+        return (
+          <div className="search-result-note" id={searchResult.id} key={key} onClick={this.handleNoteClick}>
+            <div className="search-result-title">{searchResult.title}</div>
+            <div className="search-result-body">{searchResult.body}</div>
+          </div>
+        );
       }
-    });
+    }.bind(this));
 
     return (
       <div className="search">
@@ -61,7 +60,7 @@ var Search = React.createClass({
           placeholder="search notes.."
           onKeyUp={this.search} />
         <div className="search-location">Searching in your notebooks...</div>
-        <ul className="search-results-list">
+        <ul className="search-results-list group">
           {searchResults}
         </ul>
       </div>

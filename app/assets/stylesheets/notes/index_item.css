@@ -21,13 +21,24 @@
 .note-index-item-title {
   display: block;
   padding: 5px 0 2px 0;
-  font-family: futura;
-  font-size: 16px;
+  font-family: garamond;
+  font-size: 20px;
+  font-weight: 700;
+  padding-bottom: 3px;
   font-weight: 400;
   float: left;
   overflow: hidden;
   height: 20px;
   width: 280px;
+}
+
+.note-index-item-delete {
+  float: right;
+  z-index: 100;
+}
+
+.note-index-item-delete:hover {
+  color: white;
 }
 
 .note-index-item-date {
@@ -37,11 +48,10 @@
   letter-spacing: .5px;
   font-weight: lighter;
   overflow: hidden;
-  /*height: 10px;*/
 }
 
 .note-index-item-body {
-  padding-top: 10px;
+  padding-top: 8px;
   font-family: 'Gill Sans';
   font-weight: 100;
   font-size: 14px;
@@ -50,6 +60,27 @@
 }
 
 .note-index-item:hover {
-  background: #2dbe60;
+  background: #C9D2DB;
+  /*background: #B4A28F;*/
+  cursor: pointer;
+}
+
+.delete-modal {
+  width: 400px;
+  height: 150px;
+  text-align: center;
+  font-size: 24px;
+  font-family: baskerville;
+  border: 1px solid brown;
+}
+
+.delete-modal button {
+  width: 150px;
+  margin: 50px 5px;
+  height: 25px;
+  border: 1px solid #2A2C05;
+}
+
+.delete-modal button:hover {
   cursor: pointer;
 }

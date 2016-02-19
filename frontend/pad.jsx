@@ -6,7 +6,6 @@ var Route = ReactRouter.Route;
 var IndexRoute = ReactRouter.IndexRoute;
 var root = document.getElementById('root');
 var NotesIndex = require('./components/notes/index');
-var NoteForm = require('./components/note_form/note_form');
 var NoteStore = require('./stores/note_store');
 var SessionForm = require('./components/sessions/new');
 var UserForm = require('./components/sessions/user_form');
@@ -14,17 +13,20 @@ var CurrentUserStore = require('./stores/current_user_store');
 var SessionsApiUtil = require('./util/sessions_api_util');
 var App = require('./components/app');
 var Home = require('./components/home');
-var Slideout = require('./components/slideout/slideout');
-var NotebooksIndex = require('./components/slideout/notebooks/index');
+var NotebooksIndex = require('./components/notebooks/index');
 var WelcomeForm = require('./components/sessions/session');
+var NoteForm = require('./components/note_form/note_form');
+var Search = require('./components/search');
 
 var router = (
   <Router>
     <Route path="/" component={ WelcomeForm } onEnter={_redirectIfLoggedIn}/>
-    <Route path="/home" component={ App } onEnter={_ensureLoggedIn}>
-      <Route path="notes">
-        <Route path=":noteId" component={ NoteForm }/>
+    <Route path="home" component={ App } onEnter={_ensureLoggedIn}>
+      <Route path="notebook/:notebookId" >
+        <Route path="note/:noteId" component={ NoteForm }/>
       </Route>
+      <Route path="note/:noteId" component={ NoteForm } />
+      <Route path="search" component={ Search } />
     </Route>
   </Router>
 );

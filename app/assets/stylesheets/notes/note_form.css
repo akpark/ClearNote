@@ -1,7 +1,6 @@
 .note-form-outer {
   margin-right: auto;
   padding: 0 15px;
-  background: #FBFBF9;
   overflow: hidden;
   height: 100%;
 }
@@ -76,8 +75,7 @@
   border: none;
   outline: none;
   font-size: 32px;
-  font-family: verdana;
-  background: #FBFBF9;
+  font-family: 'didot';
 }
 
 .ql-editor {
@@ -85,5 +83,5 @@
   padding: 20px;
   box-shadow: 2px 2px 8px;
   color: #513207;
-  background: #FCFCFB;
+  background: #fefefe;
 }
