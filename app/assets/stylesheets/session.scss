@@ -78,11 +78,15 @@
   margin-top: 20px;
   margin-bottom: 10px;
   border: 0;
-  border-radius: 2px;
+  border-radius: 4px;
   font-size: 16px;
   background-color: #435E6E;
   color: white;
   font-family: optima;
+}
+
+.sign-up button {
+  margin-top: 50px;
 }
 
 #guest-login-button {
@@ -101,13 +105,16 @@
   position: absolute;
   width: 405px;
   height: 20px;
+  left: 34px;
+  bottom: 127px;
+}
+
+.error {
+  color: #b92219;
+  font-size: 14px;
+  padding: 3px;
   background: #e5bcbc;
   border-right: 1px solid #c16976;
   border-left: 1px solid #c16976;
   border-bottom: 1px solid #c16976;
-  padding: 3px;
-  left: 28px;
-  bottom: 123px;
-  color: #b92219;
-  font-size: 14px;
 }

@@ -33,7 +33,6 @@ var UsersApiUtil = {
         cb && cb(data);
       },
       error: function (errors) {
-        debugger
         CurrentUserActions.receiveErrors(errors);
       }
     });

@@ -42,14 +42,11 @@ var Session = React.createClass({
   },
 
   render: function () {
-    // var errors = this.getErrors();
     var errors = this.state.errors.map(function (error, key) {
       return <div className="error" key={key}>{error}</div>;
     });
     if (this.state.errors.length > 0) {
-      $('.errors').show();
-    } else {
-      $('.errors').hide();
+      $('.errors').fadeIn('slow').delay(2000).fadeOut('fast');
     }
 
     return (
