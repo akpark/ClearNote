@@ -35,4 +35,3 @@ CurrentUserStore.__onDispatch = function (payload) {
 };
 
 module.exports = CurrentUserStore;
-window.CurrentUserStore = CurrentUserStore;

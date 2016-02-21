@@ -44,10 +44,10 @@ NotebookStore.__onDispatch = function (payload) {
       this.__emitChange();
       break;
 
-    case NotebookConstants.CREATE_NOTEBOOK:
-      addNotebook(payload.notebook);
-      this.__emitChange();
-      break;
+    // case NotebookConstants.CREATE_NOTEBOOK:
+    //   addNotebook(payload.notebook);
+    //   this.__emitChange();
+    //   break;
 
     case NotebookConstants.DELETE_NOTEBOOK:
       deleteNotebook(payload.notebook);

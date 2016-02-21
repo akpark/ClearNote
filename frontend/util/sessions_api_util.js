@@ -12,6 +12,9 @@ var SessionsApiUtil = {
         console.log("success");
         CurrentUserActions.receiveCurrentUser(currentUser);
         success && success();
+      },
+      error: function (errors) {
+        CurrentUserActions.receiveErrors(errors);
       }
     });
   },
@@ -27,7 +30,7 @@ var SessionsApiUtil = {
       error: function () {
         alert("error!");
       }
-    })
+    });
   },
 
   fetchCurrentUser: function (cb) {

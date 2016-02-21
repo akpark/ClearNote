@@ -15,7 +15,7 @@ class Api::SessionsController < ApplicationController
       params[:password]
     )
     if @user.nil?
-      render json: ["Wrong email/password!"], status: 401
+      render json: ["Incorrect email/password!"], status: 401
     else
       sign_in(@user)
       render 'api/users/show'

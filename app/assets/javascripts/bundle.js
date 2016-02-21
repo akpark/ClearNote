@@ -54,15 +54,15 @@
 	var NotesIndex = __webpack_require__(208);
 	var NoteStore = __webpack_require__(210);
 	var SessionForm = __webpack_require__(255);
-	var UserForm = __webpack_require__(259);
-	var CurrentUserStore = __webpack_require__(265);
+	var UserForm = __webpack_require__(260);
+	var CurrentUserStore = __webpack_require__(266);
 	var SessionsApiUtil = __webpack_require__(256);
-	var App = __webpack_require__(266);
-	var Home = __webpack_require__(280);
-	var NotebooksIndex = __webpack_require__(269);
-	var WelcomeForm = __webpack_require__(281);
-	var NoteForm = __webpack_require__(282);
-	var Search = __webpack_require__(271);
+	var App = __webpack_require__(267);
+	var Home = __webpack_require__(281);
+	var NotebooksIndex = __webpack_require__(270);
+	var WelcomeForm = __webpack_require__(282);
+	var NoteForm = __webpack_require__(284);
+	var Search = __webpack_require__(272);
 	
 	var router = React.createElement(
 	  Router,
@@ -33435,6 +33435,9 @@
 	        console.log("success");
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
+	      },
+	      error: function (errors) {
+	        CurrentUserActions.receiveErrors(errors);
 	      }
 	    });
 	  },
@@ -33475,6 +33478,7 @@
 
 	var AppDispatcher = __webpack_require__(230);
 	var CurrentUserConstants = __webpack_require__(258);
+	var ErrorConstants = __webpack_require__(259);
 	
 	var CurrentUserActions = {
 	  receiveCurrentUser: function (currentUser) {
@@ -33487,6 +33491,13 @@
 	  deleteCurrentUser: function () {
 	    AppDispatcher.dispatch({
 	      actionType: CurrentUserConstants.DELETE_USER
+	    });
+	  },
+	
+	  receiveErrors: function (errors) {
+	    AppDispatcher.dispatch({
+	      actionType: ErrorConstants.ERRORS_RECEIVED,
+	      errors: errors
 	    });
 	  }
 	};
@@ -33506,13 +33517,23 @@
 
 /***/ },
 /* 259 */
+/***/ function(module, exports) {
+
+	var ErrorConstants = {
+	  ERRORS_RECEIVED: "ERRORS_RECEIVED"
+	};
+	
+	module.exports = ErrorConstants;
+
+/***/ },
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var UsersApiUtil = __webpack_require__(260);
+	var UsersApiUtil = __webpack_require__(261);
 	var SessionsApiUtil = __webpack_require__(256);
-	var NotebooksApiUtil = __webpack_require__(261);
+	var NotebooksApiUtil = __webpack_require__(262);
 	var NotesApiUtil = __webpack_require__(209);
 	
 	var credentials;
@@ -33595,10 +33616,10 @@
 	module.exports = UserForm;
 
 /***/ },
-/* 260 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var UserActions = __webpack_require__(257);
+	var CurrentUserActions = __webpack_require__(257);
 	
 	var UsersApiUtil = {
 	  fetchUsers: function () {
@@ -33607,7 +33628,7 @@
 	      type: 'GET',
 	      dataType: 'json',
 	      success: function (users) {
-	        UserActions.receiveUsers(users);
+	        CurrentUserActions.receiveUsers(users);
 	      }
 	    });
 	  },
@@ -33618,7 +33639,7 @@
 	      type: 'GET',
 	      dataType: 'json',
 	      success: function (user) {
-	        UserActions.receiveUser(user);
+	        CurrentUserActions.receiveUser(user);
 	      }
 	    });
 	  },
@@ -33631,6 +33652,10 @@
 	      dataType: 'json',
 	      success: function (data) {
 	        cb && cb(data);
+	      },
+	      error: function (errors) {
+	        debugger;
+	        CurrentUserActions.receiveErrors(errors);
 	      }
 	    });
 	  }
@@ -33640,11 +33665,11 @@
 	module.exports = UsersApiUtil;
 
 /***/ },
-/* 261 */
+/* 262 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var NotebookStore = __webpack_require__(262);
-	var NotebookActions = __webpack_require__(264);
+	var NotebookStore = __webpack_require__(263);
+	var NotebookActions = __webpack_require__(265);
 	
 	var NotebooksApiUtil = {
 	  fetchAllNotebooks: function () {
@@ -33698,13 +33723,13 @@
 	module.exports = NotebooksApiUtil;
 
 /***/ },
-/* 262 */
+/* 263 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(211).Store;
 	var AppDispatcher = __webpack_require__(230);
 	var NotebookStore = new Store(AppDispatcher);
-	var NotebookConstants = __webpack_require__(263);
+	var NotebookConstants = __webpack_require__(264);
 	var _notebooks = {};
 	
 	NotebookStore.all = function () {
@@ -33747,10 +33772,10 @@
 	      this.__emitChange();
 	      break;
 	
-	    case NotebookConstants.CREATE_NOTEBOOK:
-	      addNotebook(payload.notebook);
-	      this.__emitChange();
-	      break;
+	    // case NotebookConstants.CREATE_NOTEBOOK:
+	    //   addNotebook(payload.notebook);
+	    //   this.__emitChange();
+	    //   break;
 	
 	    case NotebookConstants.DELETE_NOTEBOOK:
 	      deleteNotebook(payload.notebook);
@@ -33762,7 +33787,7 @@
 	module.exports = NotebookStore;
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports) {
 
 	var NotebookConstants = {
@@ -33774,10 +33799,10 @@
 	module.exports = NotebookConstants;
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var NotebookConstants = __webpack_require__(263);
+	var NotebookConstants = __webpack_require__(264);
 	var AppDispatcher = __webpack_require__(230);
 	
 	var NotebookActions = {
@@ -33813,7 +33838,7 @@
 	module.exports = NotebookActions;
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(211).Store;
@@ -33853,20 +33878,19 @@
 	};
 	
 	module.exports = CurrentUserStore;
-	window.CurrentUserStore = CurrentUserStore;
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionsApiUtil = __webpack_require__(256);
-	var CurrentUserStore = __webpack_require__(265);
+	var CurrentUserStore = __webpack_require__(266);
 	var NotesApiUtil = __webpack_require__(209);
 	var NoteStore = __webpack_require__(210);
-	var Navbar = __webpack_require__(267);
+	var Navbar = __webpack_require__(268);
 	var NotesIndex = __webpack_require__(208);
-	var Search = __webpack_require__(271);
+	var Search = __webpack_require__(272);
 	
 	var App = React.createClass({
 	  displayName: 'App',
@@ -33917,13 +33941,13 @@
 	module.exports = App;
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var Account = __webpack_require__(268);
-	var NotebookIndex = __webpack_require__(269);
+	var Account = __webpack_require__(269);
+	var NotebookIndex = __webpack_require__(270);
 	
 	var searchOpen = false;
 	var slideoutOpen = false;
@@ -34055,12 +34079,12 @@
 	module.exports = NavBar;
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var SessionsApiUtil = __webpack_require__(256);
-	var CurrentUserStore = __webpack_require__(265);
+	var CurrentUserStore = __webpack_require__(266);
 	var SessionsApiUtil = __webpack_require__(256);
 	var History = __webpack_require__(159).History;
 	
@@ -34109,13 +34133,13 @@
 	module.exports = Account;
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var NotebooksApiUtil = __webpack_require__(261);
-	var NotebookStore = __webpack_require__(262);
-	var NotebookIndexItem = __webpack_require__(270);
+	var NotebooksApiUtil = __webpack_require__(262);
+	var NotebookStore = __webpack_require__(263);
+	var NotebookIndexItem = __webpack_require__(271);
 	var Modal = __webpack_require__(235);
 	
 	var customStyles = {
@@ -34240,12 +34264,12 @@
 	module.exports = NotebooksIndex;
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var NotebookStore = __webpack_require__(262);
-	var NotebooksApiUtil = __webpack_require__(261);
+	var NotebookStore = __webpack_require__(263);
+	var NotebooksApiUtil = __webpack_require__(262);
 	var Modal = __webpack_require__(235);
 	var History = __webpack_require__(159).History;
 	
@@ -34340,15 +34364,15 @@
 	module.exports = NotebookIndexItem;
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SearchApiUtil = __webpack_require__(272);
-	var SearchResultsStore = __webpack_require__(275);
+	var SearchApiUtil = __webpack_require__(273);
+	var SearchResultsStore = __webpack_require__(276);
 	var NoteIndexItem = __webpack_require__(234);
-	var NotebookIndexItem = __webpack_require__(270);
-	var LinkedStateMixin = __webpack_require__(276);
+	var NotebookIndexItem = __webpack_require__(271);
+	var LinkedStateMixin = __webpack_require__(277);
 	var History = __webpack_require__(159).History;
 	
 	var Search = React.createClass({
@@ -34432,10 +34456,10 @@
 	module.exports = Search;
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SearchActions = __webpack_require__(273);
+	var SearchActions = __webpack_require__(274);
 	
 	var SearchApiUtil = {
 	
@@ -34456,10 +34480,10 @@
 	module.exports = SearchApiUtil;
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var SearchConstants = __webpack_require__(274);
+	var SearchConstants = __webpack_require__(275);
 	var AppDispatcher = __webpack_require__(230);
 	
 	var SearchActions = {
@@ -34475,7 +34499,7 @@
 	module.exports = SearchActions;
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports) {
 
 	var SearchConstants = {
@@ -34485,12 +34509,12 @@
 	module.exports = SearchConstants;
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(211).Store;
 	var AppDispatcher = __webpack_require__(230);
-	var SearchConstants = __webpack_require__(274);
+	var SearchConstants = __webpack_require__(275);
 	
 	var _searchResults = [];
 	var _meta = {};
@@ -34518,13 +34542,13 @@
 	module.exports = SearchResultsStore;
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(277);
+	module.exports = __webpack_require__(278);
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34541,8 +34565,8 @@
 	
 	'use strict';
 	
-	var ReactLink = __webpack_require__(278);
-	var ReactStateSetters = __webpack_require__(279);
+	var ReactLink = __webpack_require__(279);
+	var ReactStateSetters = __webpack_require__(280);
 	
 	/**
 	 * A simple mixin around ReactLink.forState().
@@ -34565,7 +34589,7 @@
 	module.exports = LinkedStateMixin;
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -34639,7 +34663,7 @@
 	module.exports = ReactLink;
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports) {
 
 	/**
@@ -34748,11 +34772,11 @@
 	module.exports = ReactStateSetters;
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var CurrentUserStore = __webpack_require__(265);
+	var CurrentUserStore = __webpack_require__(266);
 	var SessionsApiUtil = __webpack_require__(256);
 	var NotesIndex = __webpack_require__(208);
 	var History = __webpack_require__(159).History;
@@ -34802,20 +34826,39 @@
 	module.exports = Home;
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionForm = __webpack_require__(259);
+	var SessionForm = __webpack_require__(260);
 	var UserForm = __webpack_require__(255);
-	var CurrentUserStore = __webpack_require__(265);
+	var CurrentUserStore = __webpack_require__(266);
 	var SessionsApiUtil = __webpack_require__(256);
+	var ErrorStore = __webpack_require__(283);
+	
 	var History = __webpack_require__(159).History;
 	
 	var Session = React.createClass({
 	  displayName: 'Session',
 	
 	  mixins: [History],
+	
+	  getInitialState: function () {
+	    debugger;
+	    return { errors: ErrorStore.all() };
+	  },
+	
+	  componentWillMount: function () {
+	    this.errorListener = ErrorStore.addListener(this._onChange);
+	  },
+	
+	  _onChange: function () {
+	    this.setState({ errors: ErrorStore.all() });
+	  },
+	
+	  componentWillUnmount: function () {
+	    this.errorListener.remove();
+	  },
 	
 	  componentDidMount: function () {
 	    $('.sign-up').hide();
@@ -34832,6 +34875,15 @@
 	  },
 	
 	  render: function () {
+	    // var errors = this.getErrors();
+	    var errors = this.state.errors.map(function (error, key) {
+	      return React.createElement(
+	        'div',
+	        { className: 'error', key: key },
+	        error
+	      );
+	    });
+	
 	    return React.createElement(
 	      'div',
 	      { className: 'welcome-page' },
@@ -34849,7 +34901,12 @@
 	          'Login'
 	        ),
 	        React.createElement(SessionForm, null),
-	        React.createElement(UserForm, null)
+	        React.createElement(UserForm, null),
+	        React.createElement(
+	          'div',
+	          { className: 'errors' },
+	          errors
+	        )
 	      )
 	    );
 	  }
@@ -34859,16 +34916,45 @@
 	module.exports = Session;
 
 /***/ },
-/* 282 */
+/* 283 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(211).Store;
+	var AppDispatcher = __webpack_require__(230);
+	var ErrorStore = new Store(AppDispatcher);
+	var ErrorConstants = __webpack_require__(259);
+	
+	var errors = [];
+	
+	ErrorStore.all = function () {
+	  return errors.slice(0);
+	};
+	
+	var resetErrors = function (newErrors) {
+	  errors = newErrors.responseJSON;
+	};
+	
+	ErrorStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case ErrorConstants.ERRORS_RECEIVED:
+	      resetErrors(payload.errors);
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = ErrorStore;
+	window.ErrorStore = ErrorStore;
+
+/***/ },
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var TextEditor = __webpack_require__(283);
+	var TextEditor = __webpack_require__(285);
 	var History = __webpack_require__(159).History;
 	var NoteStore = __webpack_require__(210);
 	var NotesApiUtil = __webpack_require__(209);
-	
-	var _expanded = false;
 	
 	var NoteForm = React.createClass({
 	  displayName: 'NoteForm',
@@ -34886,12 +34972,10 @@
 	      $('.notes-index').hide("slow");
 	      $('.navbar').hide("slow");
 	      $('.note-form-outer').addClass("expanded");
-	      _expanded = true;
 	    } else {
 	      $('.notes-index').show("slow");
 	      $('.navbar').show("slow");
 	      $('.note-form-outer').removeClass("expanded");
-	      _expanded = false;
 	    }
 	  },
 	
@@ -34929,13 +35013,13 @@
 	module.exports = NoteForm;
 
 /***/ },
-/* 283 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var NoteStore = __webpack_require__(210);
-	var NotebooksApiUtil = __webpack_require__(261);
-	var NotebookStore = __webpack_require__(262);
+	var NotebooksApiUtil = __webpack_require__(262);
+	var NotebookStore = __webpack_require__(263);
 	var NotesApiUtil = __webpack_require__(209);
 	var History = __webpack_require__(159).History;
 	

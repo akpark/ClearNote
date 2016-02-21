@@ -1,4 +1,4 @@
-var UserActions = require('../actions/current_user_actions');
+var CurrentUserActions = require('../actions/current_user_actions');
 
 var UsersApiUtil = {
   fetchUsers: function () {
@@ -7,7 +7,7 @@ var UsersApiUtil = {
       type: 'GET',
       dataType: 'json',
       success: function (users) {
-        UserActions.receiveUsers(users);
+        CurrentUserActions.receiveUsers(users);
       }
     });
   },
@@ -18,7 +18,7 @@ var UsersApiUtil = {
       type: 'GET',
       dataType: 'json',
       success: function (user) {
-        UserActions.receiveUser(user);
+        CurrentUserActions.receiveUser(user);
       }
     });
   },
@@ -31,6 +31,10 @@ var UsersApiUtil = {
       dataType: 'json',
       success: function (data) {
         cb && cb(data);
+      },
+      error: function (errors) {
+        debugger
+        CurrentUserActions.receiveErrors(errors);
       }
     });
   }

@@ -4,8 +4,6 @@ var History = require('react-router').History;
 var NoteStore = require('../../stores/note_store');
 var NotesApiUtil = require('../../util/notes_api_util');
 
-var _expanded = false;
-
 var NoteForm = React.createClass({
   getInitialState: function () {
     return { noteId: this.props.params.noteId };
@@ -20,12 +18,10 @@ var NoteForm = React.createClass({
       $('.notes-index').hide("slow");
       $('.navbar').hide("slow");
       $('.note-form-outer').addClass("expanded");
-      _expanded = true;
 		} else {
       $('.notes-index').show("slow");
       $('.navbar').show("slow");
       $('.note-form-outer').removeClass("expanded");
-      _expanded = false;
 		}
 	},
 
