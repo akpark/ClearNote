@@ -34883,6 +34883,11 @@
 	        error
 	      );
 	    });
+	    if (this.state.errors.length > 0) {
+	      $('.errors').show();
+	    } else {
+	      $('.errors').hide();
+	    }
 	
 	    return React.createElement(
 	      'div',

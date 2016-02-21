@@ -46,6 +46,11 @@ var Session = React.createClass({
     var errors = this.state.errors.map(function (error, key) {
       return <div className="error" key={key}>{error}</div>;
     });
+    if (this.state.errors.length > 0) {
+      $('.errors').show();
+    } else {
+      $('.errors').hide();
+    }
 
     return (
       <div className="welcome-page">
