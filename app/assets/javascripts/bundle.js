@@ -33409,7 +33409,8 @@
 	        { id: 'guest-login-button',
 	          onClick: this.handleGuestLogin },
 	        'Guest Login'
-	      )
+	      ),
+	      React.createElement('a', { href: '/auth/google_oauth_2' })
 	    );
 	  }
 	});
@@ -33706,44 +33707,10 @@
 	var NotebookConstants = __webpack_require__(263);
 	var _notebooks = {};
 	
-<<<<<<< HEAD
-	  render: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'sign-in' },
-	      React.createElement(
-	        'form',
-	        { onSubmit: this.submit },
-	        React.createElement(
-	          'div',
-	          { className: 'input' },
-	          React.createElement('input', { type: 'text', name: 'username', placeholder: 'username or email' })
-	        ),
-	        React.createElement(
-	          'div',
-	          { className: 'input' },
-	          React.createElement('input', { type: 'password', name: 'password', placeholder: 'password' })
-	        ),
-	        React.createElement(
-	          'button',
-	          null,
-	          'Log In'
-	        )
-	      ),
-	      React.createElement(
-	        'button',
-	        { id: 'guest-login-button',
-	          onClick: this.handleGuestLogin },
-	        'Guest Login'
-	      ),
-	      React.createElement('a', { href: '/auth/google_oauth_2' })
-	    );
-=======
 	NotebookStore.all = function () {
 	  var notebooks = [];
 	  for (var id in _notebooks) {
 	    notebooks.push(_notebooks[id]);
->>>>>>> refactor
 	  }
 	  return notebooks;
 	};
@@ -33757,16 +33724,16 @@
 	  notebooks.forEach(function (notebook) {
 	    _notebooks[notebook.id] = notebook;
 	  });
-	};
+	}
 	
 	function resetNotebook(notebook) {
 	  _notebooks[notebook.id] = notebook;
-	};
+	}
 	
 	function deleteNotebook(notebook) {
 	  var notebookId = notebook.id;
 	  delete _notebooks[notebookId];
-	};
+	}
 	
 	NotebookStore.__onDispatch = function (payload) {
 	  switch (payload.actionType) {
@@ -35181,7 +35148,7 @@
 	        notebook_id: $('.notebook-select').val()
 	      };
 	      NotesApiUtil.editNote(note);
-	    }.bind(this), 2000);
+	    }.bind(this), 3000);
 	  },
 	
 	  render: function () {
