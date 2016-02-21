@@ -16,16 +16,16 @@ var NoteForm = React.createClass({
   },
 
   handleExpand: function () {
-		if (!_expanded) {
-			$('.notes-index').hide("slow");
-	    $('.navbar').hide("slow");
-			$('.note-form-outer').addClass("expanded");
-			_expanded = true;
+		if ($(".expanded").length === 0) {
+      $('.notes-index').hide("slow");
+      $('.navbar').hide("slow");
+      $('.note-form-outer').addClass("expanded");
+      _expanded = true;
 		} else {
-			$('.notes-index').show("slow");
-			$('.navbar').show("slow");
-			$('.note-form-outer').removeClass("expanded");
-			_expanded = false;
+      $('.notes-index').show("slow");
+      $('.navbar').show("slow");
+      $('.note-form-outer').removeClass("expanded");
+      _expanded = false;
 		}
 	},
 

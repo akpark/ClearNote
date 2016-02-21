@@ -34882,7 +34882,7 @@
 	  },
 	
 	  handleExpand: function () {
-	    if (!_expanded) {
+	    if ($(".expanded").length === 0) {
 	      $('.notes-index').hide("slow");
 	      $('.navbar').hide("slow");
 	      $('.note-form-outer').addClass("expanded");
