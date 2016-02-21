@@ -6,11 +6,12 @@ class Api::UsersController < ApplicationController
 
   def create
     @user = User.create(user_params)
-    if @user
+    if @user.save
       sign_in(@user)
       render 'api/users/show'
     else
       flash[:errors] = @user.errors.full_messages
+      render json: flash[:errors], status: 401
     end
 
   end
