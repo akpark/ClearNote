@@ -29,6 +29,7 @@ class Api::SessionsController < ApplicationController
   end
 
   def omniauth_google
+    byebug
     @user = User.find_or_create_by_auth_hash(auth_hash)
     sign_in!(@user)
     redirect_to root_url

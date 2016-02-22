@@ -33410,7 +33410,11 @@
 	          onClick: this.handleGuestLogin },
 	        'Guest Login'
 	      ),
-	      React.createElement('a', { href: '/auth/google_oauth_2' })
+	      React.createElement(
+	        'div',
+	        { className: 'oauth-overlay' },
+	        React.createElement('a', { className: 'oauth-button', href: '/auth/google_oauth2' })
+	      )
 	    );
 	  }
 	});
