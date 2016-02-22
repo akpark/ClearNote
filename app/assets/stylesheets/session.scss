@@ -34,6 +34,7 @@
   background-color: #4D3B07;
   color: #fff;
   border-bottom: 1px solid #80898E;
+  outline: 0;
 }
 
 .sign-in-button:hover,
@@ -49,6 +50,10 @@
 .register-button {
   border-right: 2px solid #ccc;
   border-radius: 4px 5px 0 0;
+}
+
+.welcome-form-button-selected {
+  opacity: 0.1;
 }
 
 .sign-in, .sign-up {
@@ -86,7 +91,7 @@
 }
 
 .sign-up button {
-  margin-top: 50px;
+  margin-top: 30px;
 }
 
 #guest-login-button {

@@ -11,7 +11,6 @@ var Session = React.createClass({
   mixins: [History],
 
   getInitialState: function () {
-    debugger
     return { errors: ErrorStore.all() }
   },
 
@@ -29,14 +28,22 @@ var Session = React.createClass({
 
   componentDidMount: function () {
     $('.sign-up').hide();
+    $('.sign-in-button').css("opacity", 0.7);
   },
 
   handleSignInClick: function () {
+    //keep signin highlighted
+    debugger
+    $('.register-button').css("opacity", 1);
+    $('.sign-in-button').css("opacity", 0.7);
     $('.sign-up').hide();
     $('.sign-in').show();
   },
 
   handleRegisterClick: function () {
+    //keep register highlighted
+    $('.sign-in-button').css("opacity", 1);
+    $('.register-button').css("opacity", 0.7);
     $('.sign-in').hide();
     $('.sign-up').show();
   },
