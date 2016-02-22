@@ -4,7 +4,7 @@
 
 [heroku]: http://www.p4d.site
 
-A note taking web application inspired by Evernote. Pad is built using Ruby on Rails and React.js. Using QuillJS as its text
+A note taking web application inspired by Evernote. Pad is built using Ruby on Rails and React.js. Using QuillJS as its main text
 editor, users can create, edit, and delete notes and notebooks.
 
 ## Features
