@@ -61,7 +61,6 @@
 
 .note-index-item:hover {
   background: #C9D2DB;
-  /*background: #B4A28F;*/
   cursor: pointer;
 }
 
@@ -71,14 +70,19 @@
   text-align: center;
   font-size: 24px;
   font-family: baskerville;
-  border: 1px solid brown;
+  background-color: black;
 }
 
 .delete-modal button {
   width: 150px;
   margin: 50px 5px;
-  height: 25px;
+  height: 30px;
+  font-size: 18px;
+  font-family: cambria;
   border: 1px solid #2A2C05;
+  background: #738F9B;
+  color: white;
+  border-radius: 5px;
 }
 
 .delete-modal button:hover {

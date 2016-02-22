@@ -31261,7 +31261,9 @@
 	    top: '30%',
 	    left: '35%',
 	    right: 'auto',
-	    bottom: 'auto'
+	    bottom: 'auto',
+	    border: '2px solid black',
+	    background: '#efefef'
 	  }
 	};
 	
@@ -34281,7 +34283,9 @@
 	    top: '30%',
 	    left: '35%',
 	    right: 'auto',
-	    bottom: 'auto'
+	    bottom: 'auto',
+	    border: '2px solid black',
+	    background: '#efefef'
 	  }
 	};
 	
