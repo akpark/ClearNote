@@ -6,14 +6,18 @@
 
 A note taking web application inspired by Evernote.
 
-# Features
+## Features
 
 * Authentication
 * Create Notes under notebooks
 * Create Notebooks
 * Search through notes
 
-# Languages
+##ScreenShots
+
+![Screenshot](/assets/images/pad-screenshot.png)
+
+## Languages
 
 * Javascript
 * HTML
@@ -21,12 +25,12 @@ A note taking web application inspired by Evernote.
 * Ruby
 * SQL
 
-# Frameworks
+## Frameworks
 
 * [React.js](https://facebook.github.io/react/)
 * [Rails](https://github.com/rails/rails)
 
-# Libraries
+## Libraries
 
 * [Quill.js](https://github.com/quilljs/quill)
 * [jQuery](https://github.com/jquery/jquery)
