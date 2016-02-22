@@ -15,7 +15,7 @@ A note taking web application inspired by Evernote.
 
 ##ScreenShots
 
-![Screenshot](/assets/images/pad-screenshot.png)
+![Screenshot](/docs/pad-screenshot.png)
 
 ## Languages
 
