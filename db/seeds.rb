@@ -17,7 +17,7 @@ n1 = Note.create!({
   title: "Welcome",
   body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.",
   body_delta: '{"ops":[{"insert":"Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.\n"}]}',
-  author_id: u1.id,
+  author_id: u2.id,
   notebook_id: 1
 })
 
