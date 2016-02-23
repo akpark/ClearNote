@@ -21,15 +21,15 @@ n1 = Note.create!({
   notebook_id: 1
 })
 
-charles = Note.create({
-  author_id: u1.id,
-  notebook_id: nb3.id,
-  body_delta:
-  '{"ops":[{"insert":"Long walks at night--\nthats whats good for the soul:\npeeking into windows\nwatching tired housewives\ntrying to fight off\ntheir beer-maddened husbands\n\nby Charles Bukowski\n"}]}',
-  title: "And The Moon And The Stars And The World",
-  body:
-  "Long walks at night--\nthat's what's good for the soul:\npeeking into windows\nwatching tired housewives\ntrying to fight off\ntheir beer-maddened husbands\n\nby Charles Bukowski\n">,
-})
+# charles = Note.create({
+#   author_id: u1.id,
+#   notebook_id: nb3.id,
+#   body_delta:
+#   '{"ops":[{"insert":"Long walks at night--\nthats whats good for the soul:\npeeking into windows\nwatching tired housewives\ntrying to fight off\ntheir beer-maddened husbands\n\nby Charles Bukowski\n"}]}',
+#   title: "And The Moon And The Stars And The World",
+#   body:
+#   "Long walks at night--\nthat's what's good for the soul:\npeeking into windows\nwatching tired housewives\ntrying to fight off\ntheir beer-maddened husbands\n\nby Charles Bukowski\n">,
+# })
 #
 # poe = Note.create({
 #   author_id: u1.id,
