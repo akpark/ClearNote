@@ -19,11 +19,13 @@ var NavBar = React.createClass({
   },
 
   handleNewNoteClick: function () {
-    this.reset();
-    $('.notes-index').hide("slow");
-    $('.note-form-outer').show();
-    $('.note-form-outer').addClass("expanded");
     this.history.pushState(null, "home/note/new");
+    setTimeout(function () {
+      debugger
+      this.reset();
+      $('.notes-index').hide("slow");
+      $('.note-form-outer').addClass("expanded");
+    }.bind(this), 100);
   },
 
   handleNotesClick: function () {

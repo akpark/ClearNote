@@ -33972,11 +33972,13 @@
 	  },
 	
 	  handleNewNoteClick: function () {
-	    this.reset();
-	    $('.notes-index').hide("slow");
-	    $('.note-form-outer').show();
-	    $('.note-form-outer').addClass("expanded");
 	    this.history.pushState(null, "home/note/new");
+	    setTimeout(function () {
+	      debugger;
+	      this.reset();
+	      $('.notes-index').hide("slow");
+	      $('.note-form-outer').addClass("expanded");
+	    }.bind(this), 100);
 	  },
 	
 	  handleNotesClick: function () {
@@ -34976,10 +34978,14 @@
 	  displayName: 'NoteForm',
 	
 	  getInitialState: function () {
+	    console.log("get initial state");
+	
 	    return { noteId: this.props.params.noteId };
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
+	    console.log("component will receive props");
+	
 	    this.setState({ noteId: newProps.params.noteId });
 	  },
 	
@@ -35002,15 +35008,27 @@
 	  },
 	
 	  setUpHeader: function () {
-	    return React.createElement(
-	      'div',
-	      { className: 'note-form-header' },
-	      React.createElement(
+	    if (this.props.params.noteId === "new") {
+	      return React.createElement(
 	        'div',
-	        { className: 'expand-button', onClick: this.handleExpand },
-	        React.createElement('i', { className: 'fa fa-expand' })
-	      )
-	    );
+	        { className: 'note-form-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'done-button', onClick: this.handleExpand },
+	          'DONE'
+	        )
+	      );
+	    } else {
+	      return React.createElement(
+	        'div',
+	        { className: 'note-form-header' },
+	        React.createElement(
+	          'div',
+	          { className: 'expand-button', onClick: this.handleExpand },
+	          React.createElement('i', { className: 'fa fa-expand' })
+	        )
+	      );
+	    }
 	  },
 	
 	  render: function () {
@@ -35086,6 +35104,7 @@
 	
 	  componentWillUnmount: function () {
 	    fetched = false;
+	    created = false;
 	    this.noteListener.remove();
 	  },
 	
@@ -35098,7 +35117,10 @@
 	        }
 	        return React.createElement(
 	          'option',
-	          { key: key, selected: selected, value: notebook.id },
+	          {
+	            key: key,
+	            selected: selected,
+	            value: notebook.id },
 	          notebook.title
 	        );
 	      }.bind(this));
@@ -35218,15 +35240,17 @@
 	    if (id === "new") {
 	      if (!created) {
 	        created = true;
-	        var note = {
-	          title: this.state.title,
-	          body: _quillEditor.getText(),
-	          body_delta: JSON.stringify(_quillEditor.getContents()),
-	          notebook_id: $('.notebook-select').val()
-	        };
-	        NotesApiUtil.createNote(note, function (note) {
-	          this.history.pushState(null, "home/note/" + note.id);
-	          created = false;
+	        $('.done-button').on('click', function () {
+	          var note = {
+	            title: this.state.title,
+	            body: _quillEditor.getText(),
+	            body_delta: JSON.stringify(_quillEditor.getContents()),
+	            notebook_id: $('.notebook-select').val()
+	          };
+	          NotesApiUtil.createNote(note, function (note) {
+	            this.history.pushState(null, "home/note/" + note.id);
+	            created = false;
+	          }.bind(this));
 	        }.bind(this));
 	      }
 	    } else {

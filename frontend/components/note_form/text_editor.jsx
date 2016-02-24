@@ -64,6 +64,7 @@ var TextEditor = React.createClass({
 
   componentWillUnmount: function () {
     fetched = false;
+    created = false;
     this.noteListener.remove();
   },
 
@@ -75,7 +76,13 @@ var TextEditor = React.createClass({
           if (notebook.id === this.state.note.notebook_id) {
             selected = true;
           }
-          return <option key={key} selected={selected} value={notebook.id}>{notebook.title}</option>
+          return (
+            <option
+              key={key}
+              selected={selected}
+              value={notebook.id}>
+            {notebook.title}
+          </option>)
         }.bind(this))
       );
     }
@@ -154,15 +161,17 @@ var TextEditor = React.createClass({
     if (id === "new") {
       if (!created) {
         created = true;
-        var note = {
-          title: this.state.title,
-          body: _quillEditor.getText(),
-          body_delta: JSON.stringify(_quillEditor.getContents()),
-          notebook_id: $('.notebook-select').val()
-        };
-        NotesApiUtil.createNote(note, function(note) {
-          this.history.pushState(null, "home/note/" + note.id);
-          created = false;
+        $('.done-button').on('click', function () {
+          var note = {
+            title: this.state.title,
+            body: _quillEditor.getText(),
+            body_delta: JSON.stringify(_quillEditor.getContents()),
+            notebook_id: $('.notebook-select').val()
+          };
+          NotesApiUtil.createNote(note, function(note) {
+            this.history.pushState(null, "home/note/" + note.id);
+            created = false;
+          }.bind(this));
         }.bind(this));
       }
     } else {

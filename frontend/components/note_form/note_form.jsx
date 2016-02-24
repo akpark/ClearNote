@@ -6,10 +6,14 @@ var NotesApiUtil = require('../../util/notes_api_util');
 
 var NoteForm = React.createClass({
   getInitialState: function () {
+    console.log("get initial state");
+
     return { noteId: this.props.params.noteId };
   },
 
   componentWillReceiveProps: function (newProps) {
+    console.log("component will receive props");
+    
     this.setState( {noteId: newProps.params.noteId });
   },
 
@@ -32,9 +36,17 @@ var NoteForm = React.createClass({
   },
 
   setUpHeader: function () {
-    return (<div className="note-form-header">
-             <div className="expand-button" onClick={this.handleExpand}><i className="fa fa-expand"></i></div>
-           </div>);
+    if (this.props.params.noteId === "new") {
+      return (
+        <div className="note-form-header">
+          <div className="done-button" onClick={this.handleExpand}>DONE</div>
+        </div>
+      )
+    } else {
+      return (<div className="note-form-header">
+               <div className="expand-button" onClick={this.handleExpand}><i className="fa fa-expand"></i></div>
+             </div>);
+   }
   },
 
   render: function () {
