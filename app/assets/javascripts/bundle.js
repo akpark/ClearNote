@@ -34153,7 +34153,9 @@
 	    top: '27%',
 	    left: '35%',
 	    right: 'auto',
-	    bottom: 'auto'
+	    bottom: 'auto',
+	    border: '2px solid black',
+	    background: '#efefef'
 	  }
 	};
 	
@@ -34241,7 +34243,7 @@
 	          onRequestClose: this.closeModal,
 	          style: customStyles },
 	        React.createElement(
-	          'h2',
+	          'h3',
 	          { className: 'new-notebook-modal-title' },
 	          'Create Notebook'
 	        ),

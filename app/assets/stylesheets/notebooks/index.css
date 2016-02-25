@@ -41,3 +41,28 @@
 .example-enter.example-enter-active {
   opacity: 1;
 }
+
+.new-notebook-modal {
+  width: 400px;
+  height: 150px;
+  text-align: center;
+  font-size: 24px;
+  font-family: 'baskerville';
+  background-color: black;
+}
+
+.new-notebook-modal button {
+  width: 150px;
+  margin: 50px 5px;
+  height: 30px;
+  font-size: 18px;
+  font-family: cambria;
+  border: 1px solid #2A2C05;
+  background: #738F9B;
+  color: white;
+  border-radius: 5px;
+}
+
+.new-notebook-modal button:hover {
+  cursor: pointer;
+}

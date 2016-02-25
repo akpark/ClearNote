@@ -10,6 +10,8 @@ var customStyles = {
     left: '35%',
     right: 'auto',
     bottom: 'auto',
+    border: '2px solid black',
+    background: '#efefef'
   }
 };
 
@@ -80,7 +82,7 @@ var NotebooksIndex = React.createClass({
           onRequestClose={this.closeModal}
           style={customStyles}>
 
-          <h2 className="new-notebook-modal-title">Create Notebook</h2>
+          <h3 className="new-notebook-modal-title">Create Notebook</h3>
           <input className="new-notebook-title-input"
                  type="text"
                  placeholder="Title your notebook" />

@@ -59,6 +59,10 @@
   font-size: 28px;
 }
 
+.new-notebook-modal-title {
+  font-weight: 300;
+}
+
 .new-notebook-title-input {
   width: 375px;
   margin-top: 15px;
