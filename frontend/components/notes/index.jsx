@@ -1,10 +1,13 @@
 var React = require('react');
 var NotesApiUtil = require('../../util/notes_api_util');
+var NotebooksApiUtil = require('../../util/notebooks_api_util');
 var NoteStore = require('../../stores/note_store');
+var NotebookStore = require('../../stores/notebook_store');
 var NoteIndexItem = require('./index_item');
 var History = require('react-router').History;
 
 var type = "notes";
+var title = "notes";
 
 var NotesIndex = React.createClass({
   mixins: [History],
@@ -16,6 +19,10 @@ var NotesIndex = React.createClass({
   componentWillMount: function () {
     this.notesListener = NoteStore.addListener(this._onChange);
     NotesApiUtil.fetchAllNotes();
+    NotebooksApiUtil.fetchAllNotebooks();
+    // if (this.props.indexInfo.header === "notebooks") {
+    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
+    // }
   },
 
   _onChange: function () {
@@ -27,6 +34,10 @@ var NotesIndex = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
+    // debugger
+    // if (newProps.indexInfo.header === "notebooks") {
+    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
+    // }
     this.setState({ notes: this.getNotes(newProps) });
   },
 
@@ -34,9 +45,11 @@ var NotesIndex = React.createClass({
     switch (props.indexInfo.header) {
       case "notes":
         type = "notes";
+        title = "notes";
         return NoteStore.all();
       case "notebooks":
         type = "notebooks";
+        title = NotebookStore.find(props.indexInfo.id).title;
         return NoteStore.findByNotebookId(props.indexInfo.id);
     }
   },
@@ -69,7 +82,7 @@ var NotesIndex = React.createClass({
     return(
       <div className="notes-index">
         <div className="notes-index-header">
-          <div className="notes-index-title">notes</div>
+          <div className="notes-index-title">{title}</div>
           <div className="notes-index-header-bottom group">
             <div className="number-of-notes">{notesLength} Note(s)</div>
           </div>

@@ -24174,11 +24174,14 @@
 
 	var React = __webpack_require__(1);
 	var NotesApiUtil = __webpack_require__(209);
+	var NotebooksApiUtil = __webpack_require__(262);
 	var NoteStore = __webpack_require__(210);
+	var NotebookStore = __webpack_require__(263);
 	var NoteIndexItem = __webpack_require__(234);
 	var History = __webpack_require__(159).History;
 	
 	var type = "notes";
+	var title = "notes";
 	
 	var NotesIndex = React.createClass({
 	  displayName: 'NotesIndex',
@@ -24192,6 +24195,10 @@
 	  componentWillMount: function () {
 	    this.notesListener = NoteStore.addListener(this._onChange);
 	    NotesApiUtil.fetchAllNotes();
+	    NotebooksApiUtil.fetchAllNotebooks();
+	    // if (this.props.indexInfo.header === "notebooks") {
+	    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
+	    // }
 	  },
 	
 	  _onChange: function () {
@@ -24203,6 +24210,10 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
+	    // debugger
+	    // if (newProps.indexInfo.header === "notebooks") {
+	    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
+	    // }
 	    this.setState({ notes: this.getNotes(newProps) });
 	  },
 	
@@ -24210,9 +24221,11 @@
 	    switch (props.indexInfo.header) {
 	      case "notes":
 	        type = "notes";
+	        title = "notes";
 	        return NoteStore.all();
 	      case "notebooks":
 	        type = "notebooks";
+	        title = NotebookStore.find(props.indexInfo.id).title;
 	        return NoteStore.findByNotebookId(props.indexInfo.id);
 	    }
 	  },
@@ -24248,7 +24261,7 @@
 	        React.createElement(
 	          'div',
 	          { className: 'notes-index-title' },
-	          'notes'
+	          title
 	        ),
 	        React.createElement(
 	          'div',
