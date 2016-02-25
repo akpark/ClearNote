@@ -45,11 +45,6 @@ var NoteIndexItem = React.createClass({
 
   _onChange: function () {
     this.setState({note: NoteStore.find(this.props.note.id)});
-    // debugger
-    // // if $('.note-index-item selected')
-    // if (this.state.selected) {
-    //   this.indexItemClick();
-    // }
   },
 
   componentWillUnmount: function () {
@@ -94,7 +89,7 @@ var NoteIndexItem = React.createClass({
         }
       }
     }
-    return time + " ago";
+    return (time) + " ago";
   },
 
   handleNoteDelete: function () {

@@ -20,9 +20,6 @@ var NotesIndex = React.createClass({
     this.notesListener = NoteStore.addListener(this._onChange);
     NotesApiUtil.fetchAllNotes();
     NotebooksApiUtil.fetchAllNotebooks();
-    // if (this.props.indexInfo.header === "notebooks") {
-    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
-    // }
   },
 
   _onChange: function () {
@@ -34,10 +31,6 @@ var NotesIndex = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    // debugger
-    // if (newProps.indexInfo.header === "notebooks") {
-    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
-    // }
     this.setState({ notes: this.getNotes(newProps) });
   },
 

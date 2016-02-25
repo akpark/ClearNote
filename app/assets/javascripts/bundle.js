@@ -24196,9 +24196,6 @@
 	    this.notesListener = NoteStore.addListener(this._onChange);
 	    NotesApiUtil.fetchAllNotes();
 	    NotebooksApiUtil.fetchAllNotebooks();
-	    // if (this.props.indexInfo.header === "notebooks") {
-	    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
-	    // }
 	  },
 	
 	  _onChange: function () {
@@ -24210,10 +24207,6 @@
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    // debugger
-	    // if (newProps.indexInfo.header === "notebooks") {
-	    //   NotebooksApiUtil.fetchSingleNotebook(this.props.indexInfo.id);
-	    // }
 	    this.setState({ notes: this.getNotes(newProps) });
 	  },
 	
@@ -31312,11 +31305,6 @@
 	
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
-	    // debugger
-	    // // if $('.note-index-item selected')
-	    // if (this.state.selected) {
-	    //   this.indexItemClick();
-	    // }
 	  },
 	
 	  componentWillUnmount: function () {
@@ -33427,11 +33415,6 @@
 	        { id: 'guest-login-button',
 	          onClick: this.handleGuestLogin },
 	        'Guest Login'
-	      ),
-	      React.createElement(
-	        'div',
-	        { className: 'oauth-overlay' },
-	        React.createElement('a', { className: 'oauth-button', href: '/auth/google_oauth2' })
 	      )
 	    );
 	  }
@@ -35146,7 +35129,9 @@
 	  },
 	
 	  setUpToolbar: function () {
-	    var notebooks = this.getNotebooks();
+	    if (fetched) {
+	      var notebooks = this.getNotebooks();
+	    }
 	
 	    return React.createElement(
 	      'div',

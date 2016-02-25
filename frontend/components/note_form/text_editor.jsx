@@ -89,7 +89,9 @@ var TextEditor = React.createClass({
   },
 
   setUpToolbar: function () {
-    var notebooks = this.getNotebooks();
+    if (fetched) {
+      var notebooks = this.getNotebooks();
+    }
 
     return (
       <div id="toolbar" className="ql-toolbar-container toolbar">
