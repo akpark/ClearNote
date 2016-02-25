@@ -195,7 +195,7 @@ var TextEditor = React.createClass({
         notebook_id: $('.notebook-select').val()
       };
       NotesApiUtil.editNote(note);
-    }.bind(this), 3000);
+    }.bind(this), 2000);
   },
 
   render: function() {
