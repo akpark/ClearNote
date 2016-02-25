@@ -10,47 +10,24 @@
 }
 
 .done-button {
-  padding: 4px 6px;
-  border-radius: 5px;
-  border: 1px solid black;
+  font-family: baskerville;
   background: #efefef;
+  font-weight: 400;
+  /*border-radius: 5px;*/
+  padding: 4px 7px;
+  outline: 3px solid #d7d7d7;
+  outline-style: double;
+}
+
+.done-button:hover {
+  background: #5e5f5f;
+  color: white;
 }
 
 .note-form-header {
+  margin-top: 5px;
   text-align: right;
   padding: 10px;
-}
-
-.new-note-form-cancel-button {
-  float: right;
-  margin-right: 10px;
-  background: #ccc;
-}
-
-.new-note-form-done-button {
-  float: right;
-}
-
-.new-note-form-done-button,
-.new-note-form-cancel-button {
-  border: 1px solid #aaa;
-  padding: 8px 10px;
-  border-radius: 5px;
-}
-
-.new-note-form-done-button:hover,
-.new-note-form-cancel-button:hover {
-  cursor: pointer;
-  background: #877B6A;
-}
-
-.note-form-header-minimenu {
-  float: left;
-}
-
-.note-form-header-minimenu:hover {
-  cursor: pointer;
-  background: green;
 }
 
 .expand-button {

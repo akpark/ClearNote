@@ -33,6 +33,7 @@ gem 'aws-sdk', '~> 1.6'
 gem 'figaro'
 
 gem 'omniauth-google-oauth2'
+gem 'omniauth-facebook'
 
 # Use Unicorn as the app server
 # gem 'unicorn'

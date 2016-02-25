@@ -40,7 +40,7 @@ var SessionForm = React.createClass({
                 onClick={this.handleGuestLogin}>
                 Guest Login</button>
 
-              <div className="oauth-overlay"><a className="oauth-button" href="/auth/google_oauth2"></a></div>
+        <div className="oauth-overlay"><a className="oauth-button" href="/auth/google_oauth2"></a></div>
       </div>
     );
   }

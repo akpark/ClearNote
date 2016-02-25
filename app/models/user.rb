@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
       fname: auth_hash[:info][:first_name],
       lname: auth_hash[:info][:last_name],
       avatar: auth_hash[:extra][:raw_info][:picture],
-      password: "changeme"
+      # password: ""
     )
   end
 
