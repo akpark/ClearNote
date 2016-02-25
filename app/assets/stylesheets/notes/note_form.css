@@ -5,23 +5,27 @@
   height: 100%;
 }
 
-.expanded {
-  padding: 0 100px;
-}
-
+.cancel-button,
 .done-button {
   font-family: baskerville;
   background: #efefef;
   font-weight: 400;
-  /*border-radius: 5px;*/
+  border-radius: 5px;
+  border: 2px solid #b2b2b2;
+  margin-left: 5px;
   padding: 4px 7px;
-  outline: 3px solid #d7d7d7;
-  outline-style: double;
+  float: right;
 }
 
-.done-button:hover {
-  background: #5e5f5f;
+.done-button {
+  background: #586793;
   color: white;
+}
+
+.cancel-button:hover,
+.done-button:hover {
+  opacity: 0.5;
+  cursor: pointer;
 }
 
 .note-form-header {
@@ -32,20 +36,17 @@
 
 .expand-button {
   float: right;
+  border: 1px solid #b2b2b2;
+  padding: 5px 7px;
+  color: #465275;
+  border-radius: 5px;
 }
 
 .expand-button:hover {
   cursor: pointer;
-}
-
-.done-button {
-  display: inline;
-  border: 1px solid #aaa;
-  margin-left: 0;
-}
-
-.done-button:hover {
-  cursor: pointer;
+  opacity: 0.5;
+  background: #999;
+  color: white;
 }
 
 .editor-outer {

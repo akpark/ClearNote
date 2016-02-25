@@ -31299,6 +31299,11 @@
 	
 	  _onChange: function () {
 	    this.setState({ note: NoteStore.find(this.props.note.id) });
+	    // debugger
+	    // // if $('.note-index-item selected')
+	    // if (this.state.selected) {
+	    //   this.indexItemClick();
+	    // }
 	  },
 	
 	  componentWillUnmount: function () {
@@ -31347,8 +31352,6 @@
 	  },
 	
 	  handleNoteDelete: function () {
-	    //show a modal of some sort
-	
 	    NotesApiUtil.deleteNote(this.props.note.id, function () {
 	      this.history.pushState(null, '/home');
 	    }.bind(this));
@@ -34977,15 +34980,13 @@
 	var NoteForm = React.createClass({
 	  displayName: 'NoteForm',
 	
-	  getInitialState: function () {
-	    console.log("get initial state");
+	  mixins: [History],
 	
+	  getInitialState: function () {
 	    return { noteId: this.props.params.noteId };
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
-	    console.log("component will receive props");
-	
 	    this.setState({ noteId: newProps.params.noteId });
 	  },
 	
@@ -35002,20 +35003,24 @@
 	  },
 	
 	  handleCancelClick: function () {
-	    $('.notes-index').show("slow");
-	    $('.navbar').show("slow");
-	    $('.note-form-outer').removeClass("expanded");
+	    this.handleExpand();
+	    this.history.pushState(null, 'home');
 	  },
 	
 	  setUpHeader: function () {
 	    if (this.props.params.noteId === "new") {
 	      return React.createElement(
 	        'div',
-	        { className: 'note-form-header' },
+	        { className: 'note-form-header group' },
 	        React.createElement(
 	          'div',
 	          { className: 'done-button', onClick: this.handleExpand },
 	          'DONE'
+	        ),
+	        React.createElement(
+	          'div',
+	          { className: 'cancel-button', onClick: this.handleCancelClick },
+	          'CANCEL'
 	        )
 	      );
 	    } else {

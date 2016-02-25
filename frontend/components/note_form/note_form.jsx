@@ -5,15 +5,13 @@ var NoteStore = require('../../stores/note_store');
 var NotesApiUtil = require('../../util/notes_api_util');
 
 var NoteForm = React.createClass({
-  getInitialState: function () {
-    console.log("get initial state");
+  mixins: [History],
 
+  getInitialState: function () {
     return { noteId: this.props.params.noteId };
   },
 
   componentWillReceiveProps: function (newProps) {
-    console.log("component will receive props");
-    
     this.setState( {noteId: newProps.params.noteId });
   },
 
@@ -30,16 +28,16 @@ var NoteForm = React.createClass({
 	},
 
   handleCancelClick: function () {
-    $('.notes-index').show("slow");
-    $('.navbar').show("slow");
-    $('.note-form-outer').removeClass("expanded");
+    this.handleExpand();
+    this.history.pushState(null, 'home');
   },
 
   setUpHeader: function () {
     if (this.props.params.noteId === "new") {
       return (
-        <div className="note-form-header">
+        <div className="note-form-header group">
           <div className="done-button" onClick={this.handleExpand}>DONE</div>
+          <div className="cancel-button" onClick={this.handleCancelClick}>CANCEL</div>
         </div>
       )
     } else {
