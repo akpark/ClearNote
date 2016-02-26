@@ -33,7 +33,7 @@ var Search = React.createClass({
   },
 
   handleNoteClick: function (e) {
-    var id = e.target.id;
+    var id = e.currentTarget.id;
     this.history.pushState(null, '/home/note/' + id);
 
     $('.notes-index').show();
@@ -43,6 +43,7 @@ var Search = React.createClass({
   render: function () {
     var searchResults = SearchResultsStore.all().map(function (searchResult, key) {
       if (searchResult._type === "Note") {
+        debugger
         return (
           <div className="search-result-note" id={searchResult.id} key={key} onClick={this.handleNoteClick}>
             <div className="search-result-title">{searchResult.title}</div>

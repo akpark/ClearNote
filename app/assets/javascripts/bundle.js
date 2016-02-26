@@ -53,10 +53,10 @@
 	var root = document.getElementById('root');
 	var NotesIndex = __webpack_require__(208);
 	var NoteStore = __webpack_require__(210);
-	var SessionForm = __webpack_require__(255);
-	var UserForm = __webpack_require__(260);
+	var SessionForm = __webpack_require__(259);
+	var UserForm = __webpack_require__(264);
 	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(256);
+	var SessionsApiUtil = __webpack_require__(260);
 	var App = __webpack_require__(267);
 	var Home = __webpack_require__(281);
 	var NotebooksIndex = __webpack_require__(270);
@@ -24174,10 +24174,10 @@
 
 	var React = __webpack_require__(1);
 	var NotesApiUtil = __webpack_require__(209);
-	var NotebooksApiUtil = __webpack_require__(262);
+	var NotebooksApiUtil = __webpack_require__(234);
 	var NoteStore = __webpack_require__(210);
-	var NotebookStore = __webpack_require__(263);
-	var NoteIndexItem = __webpack_require__(234);
+	var NotebookStore = __webpack_require__(235);
+	var NoteIndexItem = __webpack_require__(238);
 	var History = __webpack_require__(159).History;
 	
 	var type = "notes";
@@ -31256,11 +31256,184 @@
 /* 234 */
 /***/ function(module, exports, __webpack_require__) {
 
+	var NotebookStore = __webpack_require__(235);
+	var NotebookActions = __webpack_require__(237);
+	
+	var NotebooksApiUtil = {
+	  fetchAllNotebooks: function () {
+	    $.ajax({
+	      method: "GET",
+	      url: "/api/notebooks",
+	      dataType: "json",
+	      success: function (notebooks) {
+	        NotebookActions.receiveAllNotebooks(notebooks);
+	      }
+	    });
+	  },
+	
+	  fetchSingleNotebook: function (id) {
+	    $.ajax({
+	      method: "GET",
+	      url: "api/notebooks/" + id,
+	      dataType: "json",
+	      success: function (notebook) {
+	        NotebookActions.receiveSingleNotebook(notebook);
+	      }
+	    });
+	  },
+	
+	  createNotebook: function (notebook, callback) {
+	    $.ajax({
+	      method: "POST",
+	      url: "api/notebooks",
+	      data: { notebook: notebook },
+	      dataType: "json",
+	      success: function (notebook) {
+	        NotebookActions.receiveSingleNotebook(notebook);
+	        callback && callback(notebook);
+	      }
+	    });
+	  },
+	
+	  deleteNotebook: function (notebookId) {
+	    $.ajax({
+	      method: "DELETE",
+	      url: "api/notebooks/" + notebookId,
+	      dataType: "json",
+	      success: function (notebook) {
+	        NotebookActions.deleteNotebook(notebook);
+	      }
+	    });
+	  }
+	
+	};
+	
+	module.exports = NotebooksApiUtil;
+
+/***/ },
+/* 235 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var Store = __webpack_require__(211).Store;
+	var AppDispatcher = __webpack_require__(230);
+	var NotebookStore = new Store(AppDispatcher);
+	var NotebookConstants = __webpack_require__(236);
+	var _notebooks = {};
+	
+	NotebookStore.all = function () {
+	  var notebooks = [];
+	  for (var id in _notebooks) {
+	    notebooks.push(_notebooks[id]);
+	  }
+	  return notebooks;
+	};
+	
+	NotebookStore.find = function (id) {
+	  return _notebooks[id];
+	};
+	
+	function resetNotebooks(notebooks) {
+	  _notebooks = {};
+	  notebooks.forEach(function (notebook) {
+	    _notebooks[notebook.id] = notebook;
+	  });
+	}
+	
+	function resetNotebook(notebook) {
+	  _notebooks[notebook.id] = notebook;
+	}
+	
+	function deleteNotebook(notebook) {
+	  var notebookId = notebook.id;
+	  delete _notebooks[notebookId];
+	}
+	
+	NotebookStore.__onDispatch = function (payload) {
+	  switch (payload.actionType) {
+	    case NotebookConstants.NOTEBOOKS_RECEIVED:
+	      resetNotebooks(payload.notebooks);
+	      this.__emitChange();
+	      break;
+	
+	    case NotebookConstants.NOTEBOOK_RECEIVED:
+	      resetNotebook(payload.notebook);
+	      this.__emitChange();
+	      break;
+	
+	    // case NotebookConstants.CREATE_NOTEBOOK:
+	    //   addNotebook(payload.notebook);
+	    //   this.__emitChange();
+	    //   break;
+	
+	    case NotebookConstants.DELETE_NOTEBOOK:
+	      deleteNotebook(payload.notebook);
+	      this.__emitChange();
+	      break;
+	  }
+	};
+	
+	module.exports = NotebookStore;
+
+/***/ },
+/* 236 */
+/***/ function(module, exports) {
+
+	var NotebookConstants = {
+	  NOTEBOOKS_RECEIVED: "NOTEBOOKS_RECEIVED",
+	  NOTEBOOK_RECEIVED: "NOTEBOOK_RECEIVED",
+	  DELETE_NOTEBOOK: "DELETE_NOTEBOOK"
+	};
+	
+	module.exports = NotebookConstants;
+
+/***/ },
+/* 237 */
+/***/ function(module, exports, __webpack_require__) {
+
+	var NotebookConstants = __webpack_require__(236);
+	var AppDispatcher = __webpack_require__(230);
+	
+	var NotebookActions = {
+	  receiveAllNotebooks: function (notebooks) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.NOTEBOOKS_RECEIVED,
+	      notebooks: notebooks
+	    });
+	  },
+	
+	  receiveSingleNotebook: function (notebook) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.NOTEBOOK_RECEIVED,
+	      notebook: notebook
+	    });
+	  },
+	
+	  editNotebook: function (notebook) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.EDIT_NOTEBOOK,
+	      notebook: notebook
+	    });
+	  },
+	
+	  deleteNotebook: function (notebook) {
+	    AppDispatcher.dispatch({
+	      actionType: NotebookConstants.DELETE_NOTEBOOK,
+	      notebook: notebook
+	    });
+	  }
+	};
+	
+	module.exports = NotebookActions;
+
+/***/ },
+/* 238 */
+/***/ function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
 	var NotesApiUtil = __webpack_require__(209);
 	var NoteStore = __webpack_require__(210);
 	var History = __webpack_require__(159).History;
-	var Modal = __webpack_require__(235);
+	var Modal = __webpack_require__(239);
 	
 	var customStyles = {
 	  content: {
@@ -31435,23 +31608,23 @@
 	module.exports = NoteIndexItem;
 
 /***/ },
-/* 235 */
+/* 239 */
 /***/ function(module, exports, __webpack_require__) {
 
-	module.exports = __webpack_require__(236);
+	module.exports = __webpack_require__(240);
 	
 
 
 /***/ },
-/* 236 */
+/* 240 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/* WEBPACK VAR INJECTION */(function(process) {var React = __webpack_require__(1);
 	var ReactDOM = __webpack_require__(158);
-	var ExecutionEnvironment = __webpack_require__(237);
-	var ModalPortal = React.createFactory(__webpack_require__(238));
-	var ariaAppHider = __webpack_require__(253);
-	var elementClass = __webpack_require__(254);
+	var ExecutionEnvironment = __webpack_require__(241);
+	var ModalPortal = React.createFactory(__webpack_require__(242));
+	var ariaAppHider = __webpack_require__(257);
+	var elementClass = __webpack_require__(258);
 	var renderSubtreeIntoContainer = __webpack_require__(158).unstable_renderSubtreeIntoContainer;
 	
 	var SafeHTMLElement = ExecutionEnvironment.canUseDOM ? window.HTMLElement : {};
@@ -31530,7 +31703,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(4)))
 
 /***/ },
-/* 237 */
+/* 241 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var __WEBPACK_AMD_DEFINE_RESULT__;/*!
@@ -31575,14 +31748,14 @@
 
 
 /***/ },
-/* 238 */
+/* 242 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var div = React.DOM.div;
-	var focusManager = __webpack_require__(239);
-	var scopeTab = __webpack_require__(241);
-	var Assign = __webpack_require__(242);
+	var focusManager = __webpack_require__(243);
+	var scopeTab = __webpack_require__(245);
+	var Assign = __webpack_require__(246);
 	
 	
 	// so that our CSS is statically analyzable
@@ -31779,10 +31952,10 @@
 
 
 /***/ },
-/* 239 */
+/* 243 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(240);
+	var findTabbable = __webpack_require__(244);
 	var modalElement = null;
 	var focusLaterElement = null;
 	var needToFocus = false;
@@ -31853,7 +32026,7 @@
 
 
 /***/ },
-/* 240 */
+/* 244 */
 /***/ function(module, exports) {
 
 	/*!
@@ -31909,10 +32082,10 @@
 
 
 /***/ },
-/* 241 */
+/* 245 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var findTabbable = __webpack_require__(240);
+	var findTabbable = __webpack_require__(244);
 	
 	module.exports = function(node, event) {
 	  var tabbable = findTabbable(node);
@@ -31930,7 +32103,7 @@
 
 
 /***/ },
-/* 242 */
+/* 246 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -31941,9 +32114,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseAssign = __webpack_require__(243),
-	    createAssigner = __webpack_require__(249),
-	    keys = __webpack_require__(245);
+	var baseAssign = __webpack_require__(247),
+	    createAssigner = __webpack_require__(253),
+	    keys = __webpack_require__(249);
 	
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -32016,7 +32189,7 @@
 
 
 /***/ },
-/* 243 */
+/* 247 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32027,8 +32200,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseCopy = __webpack_require__(244),
-	    keys = __webpack_require__(245);
+	var baseCopy = __webpack_require__(248),
+	    keys = __webpack_require__(249);
 	
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -32049,7 +32222,7 @@
 
 
 /***/ },
-/* 244 */
+/* 248 */
 /***/ function(module, exports) {
 
 	/**
@@ -32087,7 +32260,7 @@
 
 
 /***/ },
-/* 245 */
+/* 249 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32098,9 +32271,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var getNative = __webpack_require__(246),
-	    isArguments = __webpack_require__(247),
-	    isArray = __webpack_require__(248);
+	var getNative = __webpack_require__(250),
+	    isArguments = __webpack_require__(251),
+	    isArray = __webpack_require__(252);
 	
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -32329,7 +32502,7 @@
 
 
 /***/ },
-/* 246 */
+/* 250 */
 /***/ function(module, exports) {
 
 	/**
@@ -32472,7 +32645,7 @@
 
 
 /***/ },
-/* 247 */
+/* 251 */
 /***/ function(module, exports) {
 
 	/**
@@ -32722,7 +32895,7 @@
 
 
 /***/ },
-/* 248 */
+/* 252 */
 /***/ function(module, exports) {
 
 	/**
@@ -32908,7 +33081,7 @@
 
 
 /***/ },
-/* 249 */
+/* 253 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -32919,9 +33092,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var bindCallback = __webpack_require__(250),
-	    isIterateeCall = __webpack_require__(251),
-	    restParam = __webpack_require__(252);
+	var bindCallback = __webpack_require__(254),
+	    isIterateeCall = __webpack_require__(255),
+	    restParam = __webpack_require__(256);
 	
 	/**
 	 * Creates a function that assigns properties of source object(s) to a given
@@ -32966,7 +33139,7 @@
 
 
 /***/ },
-/* 250 */
+/* 254 */
 /***/ function(module, exports) {
 
 	/**
@@ -33037,7 +33210,7 @@
 
 
 /***/ },
-/* 251 */
+/* 255 */
 /***/ function(module, exports) {
 
 	/**
@@ -33175,7 +33348,7 @@
 
 
 /***/ },
-/* 252 */
+/* 256 */
 /***/ function(module, exports) {
 
 	/**
@@ -33248,7 +33421,7 @@
 
 
 /***/ },
-/* 253 */
+/* 257 */
 /***/ function(module, exports) {
 
 	var _element = typeof document !== 'undefined' ? document.body : null;
@@ -33295,7 +33468,7 @@
 
 
 /***/ },
-/* 254 */
+/* 258 */
 /***/ function(module, exports) {
 
 	module.exports = function(opts) {
@@ -33360,12 +33533,12 @@
 
 
 /***/ },
-/* 255 */
+/* 259 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var SessionsApiUtil = __webpack_require__(256);
+	var SessionsApiUtil = __webpack_require__(260);
 	
 	var SessionForm = React.createClass({
 	  displayName: 'SessionForm',
@@ -33423,10 +33596,10 @@
 	module.exports = SessionForm;
 
 /***/ },
-/* 256 */
+/* 260 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(257);
+	var CurrentUserActions = __webpack_require__(261);
 	
 	var SessionsApiUtil = {
 	
@@ -33478,12 +33651,12 @@
 	module.exports = SessionsApiUtil;
 
 /***/ },
-/* 257 */
+/* 261 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var AppDispatcher = __webpack_require__(230);
-	var CurrentUserConstants = __webpack_require__(258);
-	var ErrorConstants = __webpack_require__(259);
+	var CurrentUserConstants = __webpack_require__(262);
+	var ErrorConstants = __webpack_require__(263);
 	
 	var CurrentUserActions = {
 	  receiveCurrentUser: function (currentUser) {
@@ -33510,7 +33683,7 @@
 	module.exports = CurrentUserActions;
 
 /***/ },
-/* 258 */
+/* 262 */
 /***/ function(module, exports) {
 
 	var CurrentUserConstants = {
@@ -33521,7 +33694,7 @@
 	module.exports = CurrentUserConstants;
 
 /***/ },
-/* 259 */
+/* 263 */
 /***/ function(module, exports) {
 
 	var ErrorConstants = {
@@ -33531,14 +33704,14 @@
 	module.exports = ErrorConstants;
 
 /***/ },
-/* 260 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
 	var History = __webpack_require__(159).History;
-	var UsersApiUtil = __webpack_require__(261);
-	var SessionsApiUtil = __webpack_require__(256);
-	var NotebooksApiUtil = __webpack_require__(262);
+	var UsersApiUtil = __webpack_require__(265);
+	var SessionsApiUtil = __webpack_require__(260);
+	var NotebooksApiUtil = __webpack_require__(234);
 	var NotesApiUtil = __webpack_require__(209);
 	
 	var credentials;
@@ -33621,10 +33794,10 @@
 	module.exports = UserForm;
 
 /***/ },
-/* 261 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var CurrentUserActions = __webpack_require__(257);
+	var CurrentUserActions = __webpack_require__(261);
 	
 	var UsersApiUtil = {
 	  fetchUsers: function () {
@@ -33669,185 +33842,12 @@
 	module.exports = UsersApiUtil;
 
 /***/ },
-/* 262 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var NotebookStore = __webpack_require__(263);
-	var NotebookActions = __webpack_require__(265);
-	
-	var NotebooksApiUtil = {
-	  fetchAllNotebooks: function () {
-	    $.ajax({
-	      method: "GET",
-	      url: "/api/notebooks",
-	      dataType: "json",
-	      success: function (notebooks) {
-	        NotebookActions.receiveAllNotebooks(notebooks);
-	      }
-	    });
-	  },
-	
-	  fetchSingleNotebook: function (id) {
-	    $.ajax({
-	      method: "GET",
-	      url: "api/notebooks/" + id,
-	      dataType: "json",
-	      success: function (notebook) {
-	        NotebookActions.receiveSingleNotebook(notebook);
-	      }
-	    });
-	  },
-	
-	  createNotebook: function (notebook, callback) {
-	    $.ajax({
-	      method: "POST",
-	      url: "api/notebooks",
-	      data: { notebook: notebook },
-	      dataType: "json",
-	      success: function (notebook) {
-	        NotebookActions.receiveSingleNotebook(notebook);
-	        callback && callback(notebook);
-	      }
-	    });
-	  },
-	
-	  deleteNotebook: function (notebookId) {
-	    $.ajax({
-	      method: "DELETE",
-	      url: "api/notebooks/" + notebookId,
-	      dataType: "json",
-	      success: function (notebook) {
-	        NotebookActions.deleteNotebook(notebook);
-	      }
-	    });
-	  }
-	
-	};
-	
-	module.exports = NotebooksApiUtil;
-
-/***/ },
-/* 263 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var Store = __webpack_require__(211).Store;
-	var AppDispatcher = __webpack_require__(230);
-	var NotebookStore = new Store(AppDispatcher);
-	var NotebookConstants = __webpack_require__(264);
-	var _notebooks = {};
-	
-	NotebookStore.all = function () {
-	  var notebooks = [];
-	  for (var id in _notebooks) {
-	    notebooks.push(_notebooks[id]);
-	  }
-	  return notebooks;
-	};
-	
-	NotebookStore.find = function (id) {
-	  return _notebooks[id];
-	};
-	
-	function resetNotebooks(notebooks) {
-	  _notebooks = {};
-	  notebooks.forEach(function (notebook) {
-	    _notebooks[notebook.id] = notebook;
-	  });
-	}
-	
-	function resetNotebook(notebook) {
-	  _notebooks[notebook.id] = notebook;
-	}
-	
-	function deleteNotebook(notebook) {
-	  var notebookId = notebook.id;
-	  delete _notebooks[notebookId];
-	}
-	
-	NotebookStore.__onDispatch = function (payload) {
-	  switch (payload.actionType) {
-	    case NotebookConstants.NOTEBOOKS_RECEIVED:
-	      resetNotebooks(payload.notebooks);
-	      this.__emitChange();
-	      break;
-	
-	    case NotebookConstants.NOTEBOOK_RECEIVED:
-	      resetNotebook(payload.notebook);
-	      this.__emitChange();
-	      break;
-	
-	    // case NotebookConstants.CREATE_NOTEBOOK:
-	    //   addNotebook(payload.notebook);
-	    //   this.__emitChange();
-	    //   break;
-	
-	    case NotebookConstants.DELETE_NOTEBOOK:
-	      deleteNotebook(payload.notebook);
-	      this.__emitChange();
-	      break;
-	  }
-	};
-	
-	module.exports = NotebookStore;
-
-/***/ },
-/* 264 */
-/***/ function(module, exports) {
-
-	var NotebookConstants = {
-	  NOTEBOOKS_RECEIVED: "NOTEBOOKS_RECEIVED",
-	  NOTEBOOK_RECEIVED: "NOTEBOOK_RECEIVED",
-	  DELETE_NOTEBOOK: "DELETE_NOTEBOOK"
-	};
-	
-	module.exports = NotebookConstants;
-
-/***/ },
-/* 265 */
-/***/ function(module, exports, __webpack_require__) {
-
-	var NotebookConstants = __webpack_require__(264);
-	var AppDispatcher = __webpack_require__(230);
-	
-	var NotebookActions = {
-	  receiveAllNotebooks: function (notebooks) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.NOTEBOOKS_RECEIVED,
-	      notebooks: notebooks
-	    });
-	  },
-	
-	  receiveSingleNotebook: function (notebook) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.NOTEBOOK_RECEIVED,
-	      notebook: notebook
-	    });
-	  },
-	
-	  editNotebook: function (notebook) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.EDIT_NOTEBOOK,
-	      notebook: notebook
-	    });
-	  },
-	
-	  deleteNotebook: function (notebook) {
-	    AppDispatcher.dispatch({
-	      actionType: NotebookConstants.DELETE_NOTEBOOK,
-	      notebook: notebook
-	    });
-	  }
-	};
-	
-	module.exports = NotebookActions;
-
-/***/ },
 /* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var Store = __webpack_require__(211).Store;
 	var AppDispatcher = __webpack_require__(230);
-	var CurrentUserConstants = __webpack_require__(258);
+	var CurrentUserConstants = __webpack_require__(262);
 	
 	var _currentUser = {};
 	var _currentUserHasBeenFetched = false;
@@ -33888,7 +33888,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(256);
+	var SessionsApiUtil = __webpack_require__(260);
 	var CurrentUserStore = __webpack_require__(266);
 	var NotesApiUtil = __webpack_require__(209);
 	var NoteStore = __webpack_require__(210);
@@ -34089,9 +34089,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionsApiUtil = __webpack_require__(256);
+	var SessionsApiUtil = __webpack_require__(260);
 	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(256);
+	var SessionsApiUtil = __webpack_require__(260);
 	var History = __webpack_require__(159).History;
 	
 	var Account = React.createClass({
@@ -34143,10 +34143,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var NotebooksApiUtil = __webpack_require__(262);
-	var NotebookStore = __webpack_require__(263);
+	var NotebooksApiUtil = __webpack_require__(234);
+	var NotebookStore = __webpack_require__(235);
 	var NotebookIndexItem = __webpack_require__(271);
-	var Modal = __webpack_require__(235);
+	var Modal = __webpack_require__(239);
 	
 	var customStyles = {
 	  content: {
@@ -34276,9 +34276,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var NotebookStore = __webpack_require__(263);
-	var NotebooksApiUtil = __webpack_require__(262);
-	var Modal = __webpack_require__(235);
+	var NotebookStore = __webpack_require__(235);
+	var NotebooksApiUtil = __webpack_require__(234);
+	var Modal = __webpack_require__(239);
 	var History = __webpack_require__(159).History;
 	
 	var customStyles = {
@@ -34380,7 +34380,7 @@
 	var React = __webpack_require__(1);
 	var SearchApiUtil = __webpack_require__(273);
 	var SearchResultsStore = __webpack_require__(276);
-	var NoteIndexItem = __webpack_require__(234);
+	var NoteIndexItem = __webpack_require__(238);
 	var NotebookIndexItem = __webpack_require__(271);
 	var LinkedStateMixin = __webpack_require__(277);
 	var History = __webpack_require__(159).History;
@@ -34414,7 +34414,7 @@
 	  },
 	
 	  handleNoteClick: function (e) {
-	    var id = e.target.id;
+	    var id = e.currentTarget.id;
 	    this.history.pushState(null, '/home/note/' + id);
 	
 	    $('.notes-index').show();
@@ -34424,6 +34424,7 @@
 	  render: function () {
 	    var searchResults = SearchResultsStore.all().map(function (searchResult, key) {
 	      if (searchResult._type === "Note") {
+	        debugger;
 	        return React.createElement(
 	          'div',
 	          { className: 'search-result-note', id: searchResult.id, key: key, onClick: this.handleNoteClick },
@@ -34787,7 +34788,7 @@
 
 	var React = __webpack_require__(1);
 	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(256);
+	var SessionsApiUtil = __webpack_require__(260);
 	var NotesIndex = __webpack_require__(208);
 	var History = __webpack_require__(159).History;
 	
@@ -34840,10 +34841,10 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
-	var SessionForm = __webpack_require__(260);
-	var UserForm = __webpack_require__(255);
+	var SessionForm = __webpack_require__(264);
+	var UserForm = __webpack_require__(259);
 	var CurrentUserStore = __webpack_require__(266);
-	var SessionsApiUtil = __webpack_require__(256);
+	var SessionsApiUtil = __webpack_require__(260);
 	var ErrorStore = __webpack_require__(283);
 	
 	var History = __webpack_require__(159).History;
@@ -34941,7 +34942,7 @@
 	var Store = __webpack_require__(211).Store;
 	var AppDispatcher = __webpack_require__(230);
 	var ErrorStore = new Store(AppDispatcher);
-	var ErrorConstants = __webpack_require__(259);
+	var ErrorConstants = __webpack_require__(263);
 	
 	var errors = [];
 	
@@ -35055,8 +35056,8 @@
 
 	var React = __webpack_require__(1);
 	var NoteStore = __webpack_require__(210);
-	var NotebooksApiUtil = __webpack_require__(262);
-	var NotebookStore = __webpack_require__(263);
+	var NotebooksApiUtil = __webpack_require__(234);
+	var NotebookStore = __webpack_require__(235);
 	var NotesApiUtil = __webpack_require__(209);
 	var History = __webpack_require__(159).History;
 	
