@@ -37,13 +37,14 @@ var NotesApiUtil = {
     });
   },
 
-  editNote: function (note) {
+  editNote: function (note, cb) {
     $.ajax({
       method: "PATCH",
       url: "api/notes/" + note.id,
       data: {note: note},
       success: function (note) {
         NoteActions.editNote(note);
+        cb && cb();
       }
     });
   },

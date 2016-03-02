@@ -24321,13 +24321,14 @@
 	    });
 	  },
 	
-	  editNote: function (note) {
+	  editNote: function (note, cb) {
 	    $.ajax({
 	      method: "PATCH",
 	      url: "api/notes/" + note.id,
 	      data: { note: note },
 	      success: function (note) {
 	        NoteActions.editNote(note);
+	        cb && cb();
 	      }
 	    });
 	  },
@@ -35063,7 +35064,8 @@
 	const defaultColors = ['rgb(  0,   0,   0)', 'rgb(230,   0,   0)', 'rgb(255, 153,   0)', 'rgb(255, 255,   0)', 'rgb(  0, 138,   0)', 'rgb(  0, 102, 204)', 'rgb(153,  51, 255)', 'rgb(255, 255, 255)', 'rgb(250, 204, 204)', 'rgb(255, 235, 204)', 'rgb(255, 255, 204)', 'rgb(204, 232, 204)', 'rgb(204, 224, 245)', 'rgb(235, 214, 255)', 'rgb(187, 187, 187)', 'rgb(240, 102, 102)', 'rgb(255, 194, 102)', 'rgb(255, 255, 102)', 'rgb(102, 185, 102)', 'rgb(102, 163, 224)', 'rgb(194, 133, 255)', 'rgb(136, 136, 136)', 'rgb(161,   0,   0)', 'rgb(178, 107,   0)', 'rgb(178, 178,   0)', 'rgb(  0,  97,   0)', 'rgb(  0,  71, 178)', 'rgb(107,  36, 178)', 'rgb( 68,  68,  68)', 'rgb( 92,   0,   0)', 'rgb(102,  61,   0)', 'rgb(102, 102,   0)', 'rgb(  0,  55,   0)', 'rgb(  0,  41, 102)', 'rgb( 61,  20,  10)'];
 	
 	var _quillEditor;
-	var fetched = false;
+	var noteFetched = false;
+	var notebooksFetched = false;
 	var created = false;
 	
 	var TextEditor = React.createClass({
@@ -35088,14 +35090,16 @@
 	  },
 	
 	  _onChange: function () {
+	    this.setFetchBooleans();
 	    if (this.props.noteId === "new") {} else {
 	      var note = NoteStore.find(parseInt(this.props.noteId));
-	      fetched = true;
 	      this.setState({ title: note.title, note: note });
+	      debugger;
 	    }
 	  },
 	
 	  componentWillReceiveProps: function (newProps) {
+	    this.setFetchBooleans();
 	    var id = newProps.noteId;
 	    if (id === "new") {
 	      var note = { title: "", body: "", body_delta: '{"ops":[{"insert":""}]}' };
@@ -35105,45 +35109,60 @@
 	    this.setState({ note: note, title: note.title });
 	  },
 	
+	  setFetchBooleans: function () {
+	    if (NoteStore.all()) {
+	      noteFetched = true;
+	    }
+	    if (NotebookStore.all()) {
+	      notebooksFetched = true;
+	    }
+	  },
+	
 	  componentWillUnmount: function () {
-	    fetched = false;
+	    noteFetched = false;
+	    notebooksFetched = false;
 	    created = false;
 	    this.noteListener.remove();
 	  },
 	
-	  handleNotebookChange: function () {
-	    this.editNote();
-	    this.forceUpdate();
-	  },
-	
-	  getNotebooks: function () {
-	    if (fetched) {
-	      var notebooks = NotebookStore.all().map(function (notebook, key) {
-	        var selected = false;
-	        if (notebook.id === this.state.note.notebook_id) {
-	          selected = true;
-	        }
-	        return React.createElement(
-	          'option',
-	          {
-	            key: key,
-	            value: notebook.id },
-	          notebook.title
-	        );
-	      }.bind(this));
-	      return React.createElement(
-	        'select',
-	        {
-	          onChange: this.handleNotebookChange,
-	          className: 'notebook-select',
-	          value: this.state.note.notebook_id },
-	        notebooks
-	      );
+	  handleNotebookChange: function (e) {
+	    var currentNote = this.state.note;
+	    currentNote.notebook_id = parseInt(e.target.value);
+	    this.setState({ note: currentNote });
+	    if (noteFetched) {
+	      this.editNote();
 	    }
 	  },
 	
+	  getNotebooks: function () {
+	    console.log("get Notebooks");
+	    if (!notebooksFetched) {
+	      return;
+	    }
+	
+	    var notebooks = NotebookStore.all().map(function (notebook, key) {
+	      return React.createElement(
+	        'option',
+	        {
+	          key: key,
+	          value: notebook.id },
+	        notebook.title
+	      );
+	    }.bind(this));
+	    var value = noteFetched ? this.state.note.notebook_id : -1;
+	    return React.createElement(
+	      'select',
+	      {
+	        onChange: this.handleNotebookChange,
+	        className: 'notebook-select',
+	        defaultValue: NotebookStore.all()[0].id,
+	        value: value },
+	      notebooks
+	    );
+	  },
+	
 	  setUpToolbar: function () {
-	    if (fetched) {
+	    if (notebooksFetched) {
 	      var notebooks = this.getNotebooks();
 	    }
 	
@@ -35279,6 +35298,7 @@
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }
+	    debugger;
 	    this.timer = setTimeout(function () {
 	      var note = {
 	        id: this.state.note.id,
@@ -35287,16 +35307,16 @@
 	        body_delta: JSON.stringify(_quillEditor.getContents()),
 	        notebook_id: $('.notebook-select').val()
 	      };
+	      debugger;
 	      NotesApiUtil.editNote(note);
 	    }.bind(this), 2000);
 	  },
 	
 	  render: function () {
-	    debugger;
-	    console.log("render");
+	    console.log('render');
 	    var toolbar = this.setUpToolbar();
 	
-	    if (fetched) {
+	    if (noteFetched) {
 	      _quillEditor.setContents(JSON.parse(this.state.note.body_delta));
 	    }
 	
