@@ -35113,11 +35113,12 @@
 	
 	  handleNotebookChange: function () {
 	    this.editNote();
+	    this.forceUpdate();
 	  },
 	
 	  getNotebooks: function () {
 	    if (fetched) {
-	      return NotebookStore.all().map(function (notebook, key) {
+	      var notebooks = NotebookStore.all().map(function (notebook, key) {
 	        var selected = false;
 	        if (notebook.id === this.state.note.notebook_id) {
 	          selected = true;
@@ -35126,11 +35127,18 @@
 	          'option',
 	          {
 	            key: key,
-	            defaultValue: selected,
 	            value: notebook.id },
 	          notebook.title
 	        );
 	      }.bind(this));
+	      return React.createElement(
+	        'select',
+	        {
+	          onChange: this.handleNotebookChange,
+	          className: 'notebook-select',
+	          value: this.state.note.notebook_id },
+	        notebooks
+	      );
 	    }
 	  },
 	
@@ -35142,13 +35150,7 @@
 	    return React.createElement(
 	      'div',
 	      { id: 'toolbar', className: 'ql-toolbar-container toolbar' },
-	      React.createElement(
-	        'select',
-	        {
-	          onChange: this.handleNotebookChange,
-	          className: 'notebook-select' },
-	        notebooks
-	      ),
+	      notebooks,
 	      React.createElement(
 	        'select',
 	        {
@@ -35277,7 +35279,6 @@
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }
-	    debugger;
 	    this.timer = setTimeout(function () {
 	      var note = {
 	        id: this.state.note.id,
@@ -35291,6 +35292,8 @@
 	  },
 	
 	  render: function () {
+	    debugger;
+	    console.log("render");
 	    var toolbar = this.setUpToolbar();
 	
 	    if (fetched) {

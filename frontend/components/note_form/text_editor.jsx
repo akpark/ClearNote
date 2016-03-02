@@ -70,24 +70,30 @@ var TextEditor = React.createClass({
 
   handleNotebookChange: function () {
     this.editNote();
+    this.forceUpdate();
   },
 
   getNotebooks: function () {
     if (fetched) {
-      return(
-        NotebookStore.all().map(function (notebook, key) {
-          var selected = false;
-          if (notebook.id === this.state.note.notebook_id) {
-            selected = true;
-          }
-          return (
-            <option
-              key={key}
-              defaultValue={selected}
-              value={notebook.id}>
-            {notebook.title}
-          </option>)
-        }.bind(this))
+      var notebooks = NotebookStore.all().map(function (notebook, key) {
+        var selected = false;
+        if (notebook.id === this.state.note.notebook_id) {
+          selected = true;
+        }
+        return (
+          <option
+            key={key}
+            value={notebook.id}>
+          {notebook.title}
+        </option>)
+      }.bind(this));
+      return (
+        <select
+          onChange={this.handleNotebookChange}
+          className="notebook-select"
+          value={this.state.note.notebook_id}>
+          {notebooks}
+        </select>
       );
     }
   },
@@ -99,11 +105,7 @@ var TextEditor = React.createClass({
 
     return (
       <div id="toolbar" className="ql-toolbar-container toolbar">
-        <select
-          onChange={this.handleNotebookChange}
-          className="notebook-select">
-          {notebooks}
-        </select>
+        {notebooks}
         <select
           className="ql-font"
           data-reactid='2'>
@@ -197,7 +199,6 @@ var TextEditor = React.createClass({
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    debugger
     this.timer = setTimeout(function() {
       var note = {
         id: this.state.note.id,
@@ -211,6 +212,8 @@ var TextEditor = React.createClass({
   },
 
   render: function() {
+    debugger
+    console.log("render");
     var toolbar = this.setUpToolbar();
 
     if (fetched) {
