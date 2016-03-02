@@ -35067,6 +35067,7 @@
 	var noteFetched = false;
 	var notebooksFetched = false;
 	var created = false;
+	var cursor;
 	
 	var TextEditor = React.createClass({
 	  displayName: 'TextEditor',
@@ -35092,9 +35093,11 @@
 	  _onChange: function () {
 	    this.setFetchBooleans();
 	    if (this.props.noteId === "new") {} else {
+	      // debugger
+	      var cursor = _quillEditor.getSelection();
 	      var note = NoteStore.find(parseInt(this.props.noteId));
 	      this.setState({ title: note.title, note: note });
-	      debugger;
+	      _quillEditor.setSelection(cursor.start, cursor.end);
 	    }
 	  },
 	
@@ -35135,7 +35138,6 @@
 	  },
 	
 	  getNotebooks: function () {
-	    console.log("get Notebooks");
 	    if (!notebooksFetched) {
 	      return;
 	    }
@@ -35298,7 +35300,6 @@
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }
-	    debugger;
 	    this.timer = setTimeout(function () {
 	      var note = {
 	        id: this.state.note.id,
@@ -35307,13 +35308,11 @@
 	        body_delta: JSON.stringify(_quillEditor.getContents()),
 	        notebook_id: $('.notebook-select').val()
 	      };
-	      debugger;
 	      NotesApiUtil.editNote(note);
 	    }.bind(this), 2000);
 	  },
 	
 	  render: function () {
-	    console.log('render');
 	    var toolbar = this.setUpToolbar();
 	
 	    if (noteFetched) {

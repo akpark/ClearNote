@@ -24,6 +24,7 @@ var _quillEditor;
 var noteFetched = false;
 var notebooksFetched = false;
 var created = false;
+var cursor;
 
 var TextEditor = React.createClass({
   mixins: [History],
@@ -48,9 +49,11 @@ var TextEditor = React.createClass({
     this.setFetchBooleans();
     if (this.props.noteId === "new") {
     } else {
+      // debugger
+      var cursor = _quillEditor.getSelection();
       var note = NoteStore.find(parseInt(this.props.noteId));
       this.setState({ title: note.title, note: note});
-      debugger
+      _quillEditor.setSelection(cursor.start, cursor.end);
     }
   },
 
@@ -87,7 +90,6 @@ var TextEditor = React.createClass({
   },
 
   getNotebooks: function () {
-    console.log("get Notebooks");
     if (!notebooksFetched) { return; }
 
     var notebooks = NotebookStore.all().map(function (notebook, key) {
@@ -212,7 +214,6 @@ var TextEditor = React.createClass({
     if (this.timer) {
       clearTimeout(this.timer);
     }
-    debugger
     this.timer = setTimeout(function() {
       var note = {
         id: this.state.note.id,
@@ -221,13 +222,11 @@ var TextEditor = React.createClass({
         body_delta: JSON.stringify(_quillEditor.getContents()),
         notebook_id: $('.notebook-select').val()
       };
-      debugger
       NotesApiUtil.editNote(note);
     }.bind(this), 2000);
   },
 
   render: function() {
-    console.log('render');
     var toolbar = this.setUpToolbar();
 
     if (noteFetched) {
