@@ -68,6 +68,10 @@ var TextEditor = React.createClass({
     this.noteListener.remove();
   },
 
+  handleNotebookChange: function () {
+    this.editNote();
+  },
+
   getNotebooks: function () {
     if (fetched) {
       return(
@@ -95,7 +99,6 @@ var TextEditor = React.createClass({
 
     return (
       <div id="toolbar" className="ql-toolbar-container toolbar">
-
         <select
           onChange={this.handleNotebookChange}
           className="notebook-select">

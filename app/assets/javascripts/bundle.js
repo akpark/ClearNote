@@ -35111,6 +35111,10 @@
 	    this.noteListener.remove();
 	  },
 	
+	  handleNotebookChange: function () {
+	    this.editNote();
+	  },
+	
 	  getNotebooks: function () {
 	    if (fetched) {
 	      return NotebookStore.all().map(function (notebook, key) {
