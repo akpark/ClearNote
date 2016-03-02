@@ -33973,7 +33973,6 @@
 	  handleNewNoteClick: function () {
 	    this.history.pushState(null, "home/note/new");
 	    setTimeout(function () {
-	      debugger;
 	      this.reset();
 	      $('.notes-index').hide("slow");
 	      $('.note-form-outer').addClass("expanded");
@@ -35123,7 +35122,7 @@
 	          'option',
 	          {
 	            key: key,
-	            selected: selected,
+	            defaultValue: selected,
 	            value: notebook.id },
 	          notebook.title
 	        );
@@ -35140,86 +35139,90 @@
 	      'div',
 	      { id: 'toolbar', className: 'ql-toolbar-container toolbar' },
 	      React.createElement(
-	        'div',
-	        { className: 'ql-format-group' },
+	        'select',
+	        {
+	          onChange: this.handleNotebookChange,
+	          className: 'notebook-select' },
+	        notebooks
+	      ),
+	      React.createElement(
+	        'select',
+	        {
+	          className: 'ql-font',
+	          'data-reactid': '2' },
 	        React.createElement(
-	          'select',
-	          {
-	            onChange: this.handleNotebookChange,
-	            className: 'notebook-select' },
-	          notebooks
+	          'option',
+	          { value: 'sans-serif' },
+	          'Sans Serif'
 	        ),
 	        React.createElement(
-	          'select',
-	          { className: 'ql-font' },
-	          React.createElement(
-	            'option',
-	            { value: 'sans-serif' },
-	            'Sans Serif'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: 'serif' },
-	            'Serif'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: 'monospace' },
-	            'Monospace'
-	          )
+	          'option',
+	          { value: 'serif' },
+	          'Serif'
 	        ),
-	        React.createElement('span', { className: 'ql-format-separator' }),
 	        React.createElement(
-	          'select',
-	          { className: 'ql-size' },
-	          React.createElement(
-	            'option',
-	            { value: '10px' },
-	            'Small'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: '13px', defaultValue: true },
-	            'Normal'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: '18px' },
-	            'Large'
-	          ),
-	          React.createElement(
-	            'option',
-	            { value: '32px' },
-	            'Huge'
-	          )
-	        ),
-	        React.createElement('span', { className: 'ql-format-separator' }),
-	        React.createElement('span', { className: 'ql-bold ql-format-button' }),
-	        React.createElement('span', { className: 'ql-italic ql-format-button' }),
-	        React.createElement('span', { className: 'ql-strike ql-format-button' }),
-	        React.createElement('span', { className: 'ql-underline ql-format-button' }),
-	        React.createElement('span', { className: 'ql-format-separator' }),
-	        React.createElement('span', { className: 'ql-link ql-format-button' }),
-	        React.createElement('span', { className: 'ql-format-separator' }),
+	          'option',
+	          { value: 'monospace' },
+	          'Monospace'
+	        )
+	      ),
+	      React.createElement('span', { className: 'ql-format-separator' }),
+	      React.createElement(
+	        'select',
+	        {
+	          className: 'ql-size',
+	          'data-reactid': '3' },
 	        React.createElement(
-	          'select',
-	          { className: 'ql-background ql-format-button' },
-	          defaultColors.map(function (color, key) {
-	            return React.createElement('option', { key: key, value: color });
-	          })
+	          'option',
+	          { value: '10px' },
+	          'Small'
 	        ),
-	        React.createElement('span', { className: 'ql-format-separator' }),
 	        React.createElement(
-	          'select',
-	          { className: 'ql-color ql-format-button' },
-	          defaultColors.map(function (color, key) {
-	            return React.createElement('option', { key: key, value: color });
-	          })
+	          'option',
+	          { value: '13px' },
+	          'Normal'
 	        ),
-	        React.createElement('span', { className: 'ql-format-separator' }),
-	        React.createElement('span', { className: 'ql-bullet ql-format-button' }),
-	        React.createElement('span', { className: 'ql-list ql-format-button' })
-	      )
+	        React.createElement(
+	          'option',
+	          { value: '18px' },
+	          'Large'
+	        ),
+	        React.createElement(
+	          'option',
+	          { value: '32px' },
+	          'Huge'
+	        )
+	      ),
+	      React.createElement('span', { className: 'ql-format-separator' }),
+	      React.createElement('span', { className: 'ql-bold ql-format-button' }),
+	      React.createElement('span', { className: 'ql-italic ql-format-button' }),
+	      React.createElement('span', { className: 'ql-strike ql-format-button' }),
+	      React.createElement('span', { className: 'ql-underline ql-format-button' }),
+	      React.createElement('span', { className: 'ql-format-separator' }),
+	      React.createElement('span', { className: 'ql-link ql-format-button' }),
+	      React.createElement('span', { className: 'ql-format-separator' }),
+	      React.createElement(
+	        'select',
+	        {
+	          className: 'ql-background ql-format-button',
+	          'data-reactid': 'c' },
+	        defaultColors.map(function (color, key) {
+	          return React.createElement('option', { key: key, value: color });
+	        })
+	      ),
+	      React.createElement('span', { className: 'ql-format-separator' }),
+	      React.createElement(
+	        'select',
+	        {
+	          className: 'ql-color ql-format-button',
+	          'data-reactid': 'e' },
+	        defaultColors.map(function (color, key) {
+	          return React.createElement('option', { key: key, value: color });
+	        })
+	      ),
+	      React.createElement('span', { className: 'ql-format-separator' }),
+	      React.createElement('span', { className: 'ql-bullet ql-format-button' }),
+	      React.createElement('span', { className: 'ql-list ql-format-button' })
 	    );
 	  },
 	
@@ -35231,8 +35234,10 @@
 	      theme: "snow"
 	    });
 	
-	    _quillEditor.on('text-change', function () {
-	      this.handleBodyChange();
+	    _quillEditor.on('text-change', function (delta, source) {
+	      if (source === 'user') {
+	        this.handleBodyChange();
+	      }
 	    }.bind(this));
 	  },
 	
@@ -35268,7 +35273,7 @@
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }
-	
+	    debugger;
 	    this.timer = setTimeout(function () {
 	      var note = {
 	        id: this.state.note.id,

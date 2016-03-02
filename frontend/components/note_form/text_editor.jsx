@@ -79,7 +79,7 @@ var TextEditor = React.createClass({
           return (
             <option
               key={key}
-              selected={selected}
+              defaultValue={selected}
               value={notebook.id}>
             {notebook.title}
           </option>)
@@ -95,47 +95,54 @@ var TextEditor = React.createClass({
 
     return (
       <div id="toolbar" className="ql-toolbar-container toolbar">
-        <div className="ql-format-group">
-          <select
-            onChange={this.handleNotebookChange}
-            className="notebook-select">
-            {notebooks}
-          </select>
-          <select className="ql-font">
-            <option value="sans-serif">Sans Serif</option>
-            <option value="serif">Serif</option>
-            <option value="monospace">Monospace</option>
-          </select>
-          <span className="ql-format-separator"></span>
-          <select className="ql-size">
-            <option value="10px">Small</option>
-            <option value="13px" defaultValue>Normal</option>
-            <option value="18px">Large</option>
-            <option value="32px">Huge</option>
-          </select>
-          <span className="ql-format-separator"></span>
-          <span className="ql-bold ql-format-button"></span>
-          <span className="ql-italic ql-format-button"></span>
-          <span className="ql-strike ql-format-button"></span>
-          <span className="ql-underline ql-format-button"></span>
-          <span className="ql-format-separator"></span>
-          <span className="ql-link ql-format-button"></span>
-          <span className="ql-format-separator"></span>
-          <select className="ql-background ql-format-button">
-            {defaultColors.map(function (color, key) {
-              return (<option key={key} value={color} />);
-            })}
-          </select>
-          <span className="ql-format-separator"></span>
-          <select className="ql-color ql-format-button">
-            {defaultColors.map(function (color, key) {
-              return (<option key={key} value={color} />);
-            })}
-          </select>
-          <span className="ql-format-separator"></span>
-          <span className="ql-bullet ql-format-button"/>
-          <span className="ql-list ql-format-button"/>
-        </div>
+
+        <select
+          onChange={this.handleNotebookChange}
+          className="notebook-select">
+          {notebooks}
+        </select>
+        <select
+          className="ql-font"
+          data-reactid='2'>
+          <option value="sans-serif">Sans Serif</option>
+          <option value="serif">Serif</option>
+          <option value="monospace">Monospace</option>
+        </select>
+        <span className="ql-format-separator"></span>
+        <select
+          className="ql-size"
+          data-reactid='3'>
+          <option value="10px">Small</option>
+          <option value="13px">Normal</option>
+          <option value="18px">Large</option>
+          <option value="32px">Huge</option>
+        </select>
+        <span className="ql-format-separator"></span>
+        <span className="ql-bold ql-format-button"></span>
+        <span className="ql-italic ql-format-button"></span>
+        <span className="ql-strike ql-format-button"></span>
+        <span className="ql-underline ql-format-button"></span>
+        <span className="ql-format-separator"></span>
+        <span className="ql-link ql-format-button"></span>
+        <span className="ql-format-separator"></span>
+        <select
+          className="ql-background ql-format-button"
+          data-reactid='c'>
+          {defaultColors.map(function (color, key) {
+            return (<option key={key} value={color} />);
+          })}
+        </select>
+        <span className="ql-format-separator"></span>
+        <select
+          className="ql-color ql-format-button"
+          data-reactid='e'>
+          {defaultColors.map(function (color, key) {
+            return (<option key={key} value={color} />);
+          })}
+        </select>
+        <span className="ql-format-separator"></span>
+        <span className="ql-bullet ql-format-button"/>
+        <span className="ql-list ql-format-button"/>
       </div>
     );
   },
@@ -148,8 +155,10 @@ var TextEditor = React.createClass({
       theme: "snow"
     });
 
-    _quillEditor.on('text-change', function() {
-      this.handleBodyChange();
+    _quillEditor.on('text-change', function(delta, source) {
+      if (source === 'user') {
+        this.handleBodyChange();
+      }
     }.bind(this));
   },
 
@@ -185,7 +194,7 @@ var TextEditor = React.createClass({
     if (this.timer) {
       clearTimeout(this.timer);
     }
-
+    debugger
     this.timer = setTimeout(function() {
       var note = {
         id: this.state.note.id,

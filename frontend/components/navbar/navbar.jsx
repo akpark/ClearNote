@@ -21,7 +21,6 @@ var NavBar = React.createClass({
   handleNewNoteClick: function () {
     this.history.pushState(null, "home/note/new");
     setTimeout(function () {
-      debugger
       this.reset();
       $('.notes-index').hide("slow");
       $('.note-form-outer').addClass("expanded");
