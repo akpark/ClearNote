@@ -14,7 +14,7 @@ editor, users can create, edit, and delete notes and notebooks.
 
 ##ScreenShots
 
-![Screenshot](/docs/pad-screenshot.png)
+[![Screenshot](http://www.p4d.site)](http://www.p4d.site)
 
 ## Languages
 
