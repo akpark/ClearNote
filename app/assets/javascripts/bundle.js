@@ -22453,7 +22453,7 @@
 			}
 	
 			if (Array.isArray(val)) {
-				return val.sort().map(function (val2) {
+				return val.slice().sort().map(function (val2) {
 					return strictUriEncode(key) + '=' + strictUriEncode(val2);
 				}).join('&');
 			}
@@ -31442,6 +31442,7 @@
 	    left: '35%',
 	    right: 'auto',
 	    bottom: 'auto',
+	    overflow: 'none',
 	    border: '2px solid black',
 	    background: '#efefef'
 	  }
@@ -32650,7 +32651,7 @@
 /***/ function(module, exports) {
 
 	/**
-	 * lodash 3.0.7 (Custom Build) <https://lodash.com/>
+	 * lodash 3.0.8 (Custom Build) <https://lodash.com/>
 	 * Build: `lodash modularize exports="npm" -o ./`
 	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
 	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
@@ -32753,8 +32754,7 @@
 	 * // => false
 	 */
 	function isArrayLike(value) {
-	  return value != null &&
-	    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+	  return value != null && isLength(getLength(value)) && !isFunction(value);
 	}
 	
 	/**
@@ -32802,8 +32802,8 @@
 	 */
 	function isFunction(value) {
 	  // The use of `Object#toString` avoids issues with the `typeof` operator
-	  // in Safari 8 which returns 'object' for typed array constructors, and
-	  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  // in Safari 8 which returns 'object' for typed array and weak map constructors,
+	  // and PhantomJS 1.9 which returns 'function' for `NodeList` instances.
 	  var tag = isObject(value) ? objectToString.call(value) : '';
 	  return tag == funcTag || tag == genTag;
 	}
@@ -33611,7 +33611,6 @@
 	      dataType: 'json',
 	      data: credentials,
 	      success: function (currentUser) {
-	        console.log("success");
 	        CurrentUserActions.receiveCurrentUser(currentUser);
 	        success && success();
 	      },
@@ -34154,6 +34153,7 @@
 	    left: '35%',
 	    right: 'auto',
 	    bottom: 'auto',
+	    overflow: 'none',
 	    border: '2px solid black',
 	    background: '#efefef'
 	  }
@@ -34287,6 +34287,7 @@
 	    left: '35%',
 	    right: 'auto',
 	    bottom: 'auto',
+	    overflow: 'none',
 	    border: '2px solid black',
 	    background: '#efefef'
 	  }
@@ -35093,11 +35094,12 @@
 	  _onChange: function () {
 	    this.setFetchBooleans();
 	    if (this.props.noteId === "new") {} else {
-	      // debugger
 	      var cursor = _quillEditor.getSelection();
 	      var note = NoteStore.find(parseInt(this.props.noteId));
 	      this.setState({ title: note.title, note: note });
-	      _quillEditor.setSelection(cursor.start, cursor.end);
+	      if (cursor) {
+	        _quillEditor.setSelection(cursor.start, cursor.end);
+	      }
 	    }
 	  },
 	
@@ -35113,10 +35115,10 @@
 	  },
 	
 	  setFetchBooleans: function () {
-	    if (NoteStore.all()) {
+	    if (NoteStore.all().length > 0) {
 	      noteFetched = true;
 	    }
-	    if (NotebookStore.all()) {
+	    if (NotebookStore.all().length > 0) {
 	      notebooksFetched = true;
 	    }
 	  },
@@ -35270,7 +35272,9 @@
 	
 	  handleTitleChange: function (e) {
 	    this.setState({ title: e.target.value });
-	    this.editNote();
+	    if (created) {
+	      this.editNote();
+	    }
 	  },
 	
 	  handleBodyChange: function () {
@@ -35292,11 +35296,13 @@
 	        }.bind(this));
 	      }
 	    } else {
+	      debugger;
 	      this.editNote();
 	    }
 	  },
 	
 	  editNote: function () {
+	    debugger;
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }

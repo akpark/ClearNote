@@ -49,11 +49,12 @@ var TextEditor = React.createClass({
     this.setFetchBooleans();
     if (this.props.noteId === "new") {
     } else {
-      // debugger
       var cursor = _quillEditor.getSelection();
       var note = NoteStore.find(parseInt(this.props.noteId));
       this.setState({ title: note.title, note: note});
-      _quillEditor.setSelection(cursor.start, cursor.end);
+      if (cursor) {
+        _quillEditor.setSelection(cursor.start, cursor.end);
+      }
     }
   },
 
@@ -69,8 +70,8 @@ var TextEditor = React.createClass({
   },
 
   setFetchBooleans: function () {
-    if (NoteStore.all()) { noteFetched = true; }
-    if (NotebookStore.all()) { notebooksFetched = true; }
+    if (NoteStore.all().length > 0) { noteFetched = true; }
+    if (NotebookStore.all().length > 0) { notebooksFetched = true; }
   },
 
   componentWillUnmount: function () {
@@ -184,7 +185,9 @@ var TextEditor = React.createClass({
 
   handleTitleChange: function (e) {
     this.setState({title: e.target.value});
-    this.editNote();
+    if (created) {
+      this.editNote();
+    }
   },
 
   handleBodyChange: function () {
@@ -206,11 +209,13 @@ var TextEditor = React.createClass({
         }.bind(this));
       }
     } else {
+      debugger
       this.editNote();
     }
   },
 
   editNote: function () {
+    debugger
     if (this.timer) {
       clearTimeout(this.timer);
     }

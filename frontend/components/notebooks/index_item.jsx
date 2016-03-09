@@ -10,6 +10,7 @@ var customStyles={
     left: '35%',
     right: 'auto',
     bottom: 'auto',
+    overflow: 'none',
     border: '2px solid black',
     background: '#efefef'
   }

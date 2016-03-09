@@ -9,7 +9,6 @@ var SessionsApiUtil = {
       dataType: 'json',
       data: credentials,
       success: function (currentUser) {
-        console.log("success");
         CurrentUserActions.receiveCurrentUser(currentUser);
         success && success();
       },
