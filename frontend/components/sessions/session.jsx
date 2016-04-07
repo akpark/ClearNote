@@ -32,8 +32,6 @@ var Session = React.createClass({
   },
 
   handleSignInClick: function () {
-    //keep signin highlighted
-    debugger
     $('.register-button').css("opacity", 1);
     $('.sign-in-button').css("opacity", 0.7);
     $('.sign-up').hide();
