@@ -209,13 +209,11 @@ var TextEditor = React.createClass({
         }.bind(this));
       }
     } else {
-      debugger
       this.editNote();
     }
   },
 
   editNote: function () {
-    debugger
     if (this.timer) {
       clearTimeout(this.timer);
     }

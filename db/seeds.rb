@@ -17,8 +17,6 @@ n1 = Note.create!({
   title: "Welcome",
   body: "Welcome to Pad. The app to store your thoughts and ideas on a mobile notepad.",
   body_delta: '{"ops":[{"attributes":{"size":"18px","bold":true},"insert":"Welcome to Pad! The place to store your thoughts and ideas on a mobile notepad.\n"},{"attributes":{"italic":true},"insert":"You may create, edit, update, and delete notes and notebooks through the links on the left.\n"},{"attributes":{"font":"serif"},"insert":"\n"},{"attributes":{"font":"sans-serif"},"insert":"Please use the navigation bar on the left to:\nCreate Notes"},{"attributes":{"list":true,"font":"sans-serif"},"insert":"\n"},{"attributes":{"font":"sans-serif"},"insert":"Search Notes"},{"attributes":{"list":true,"font":"sans-serif"},"insert":"\n"},{"attributes":{"font":"sans-serif"},"insert":"View all notes"},{"attributes":{"list":true,"font":"sans-serif"},"insert":"\n"},{"attributes":{"font":"sans-serif"},"insert":"View all notebooks"},{"attributes":{"list":true,"font":"sans-serif"},"insert":"\n"},{"insert":"\n"}]}',
-  # body_delta: '{"ops":[{"insert":"Welcome to Pad! The place to store your thoughts and ideas on a mobile notepad.\nYou may create, edit, update, and delete notes and notebooks through the links on the left.\n\nPlease use the navigation bar on the left to:\nCreate Notes"},{"attributes":{"list":true},"insert":"\n"},{"insert":"Search Notes"},{"attributes":{"list":true},"insert":"\n"},{"insert":"View all notes"},{"attributes":{"list":true},"insert":"\n"},{"insert":"View all notebooks"},{"attributes":{"list":true},"insert":"\n"},{"insert":"\n"}]}',
-  # body_delta: '{"ops":[{"insert":"Welcome to Pad! The app to store your thoughts and ideas on a mobile notepad.\nYou may create, edit, update, and delete notes and notebooks through the links on the left."}]}',
   author_id: u2.id,
   notebook_id: 1
 })
@@ -27,7 +25,7 @@ n1 = Note.create!({
 #   author_id: u1.id,
 #   notebook_id: nb3.id,
 #   body_delta:
-#   '{"ops":[{"insert":"Long walks at night--\nthats whats good for the soul:\npeeking into windows\nwatching tired housewives\ntrying to fight off\ntheir beer-maddened husbands\n\nby Charles Bukowski\n"}]}',
+#   '{"ops":[{"insert":"Long walks at night--nthats whats good for the soul:\npeeking into windows\nwatching tired housewives\ntrying to fight off\ntheir beer-maddened husbands\n\nby Charles Bukowski\n"}]}',
 #   title: "And The Moon And The Stars And The World",
 #   body:
 #   "Long walks at night--\nthat's what's good for the soul:\npeeking into windows\nwatching tired housewives\ntrying to fight off\ntheir beer-maddened husbands\n\nby Charles Bukowski\n">,

@@ -43,7 +43,6 @@ var Search = React.createClass({
   render: function () {
     var searchResults = SearchResultsStore.all().map(function (searchResult, key) {
       if (searchResult._type === "Note") {
-        debugger
         return (
           <div className="search-result-note" id={searchResult.id} key={key} onClick={this.handleNoteClick}>
             <div className="search-result-title">{searchResult.title}</div>

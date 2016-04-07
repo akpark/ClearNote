@@ -8008,6 +8008,10 @@
 	  }
 	};
 	
+	function registerNullComponentID() {
+	  ReactEmptyComponentRegistry.registerNullComponentID(this._rootNodeID);
+	}
+	
 	var ReactEmptyComponent = function (instantiate) {
 	  this._currentElement = null;
 	  this._rootNodeID = null;
@@ -8016,7 +8020,7 @@
 	assign(ReactEmptyComponent.prototype, {
 	  construct: function (element) {},
 	  mountComponent: function (rootID, transaction, context) {
-	    ReactEmptyComponentRegistry.registerNullComponentID(rootID);
+	    transaction.getReactMountReady().enqueue(registerNullComponentID, this);
 	    this._rootNodeID = rootID;
 	    return ReactReconciler.mountComponent(this._renderedComponent, rootID, transaction, context);
 	  },
@@ -18739,7 +18743,7 @@
 	
 	'use strict';
 	
-	module.exports = '0.14.7';
+	module.exports = '0.14.8';
 
 /***/ },
 /* 147 */
@@ -34425,7 +34429,6 @@
 	  render: function () {
 	    var searchResults = SearchResultsStore.all().map(function (searchResult, key) {
 	      if (searchResult._type === "Note") {
-	        debugger;
 	        return React.createElement(
 	          'div',
 	          { className: 'search-result-note', id: searchResult.id, key: key, onClick: this.handleNoteClick },
@@ -34482,7 +34485,6 @@
 	      dataType: 'json',
 	      data: { query: query, page: page },
 	      success: function (data) {
-	        console.log("successful search!");
 	        SearchActions.receiveResults(data);
 	      }
 	    });

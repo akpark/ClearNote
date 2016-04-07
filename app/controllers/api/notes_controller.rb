@@ -39,7 +39,8 @@ class Api::NotesController < ApplicationController
       :title,
       :body,
       :body_delta,
-      :notebook_id
+      :notebook_id,
+      :author_id
     )
   end
 
