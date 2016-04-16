@@ -34879,8 +34879,6 @@
 	  },
 	
 	  handleSignInClick: function () {
-	    //keep signin highlighted
-	    debugger;
 	    $('.register-button').css("opacity", 1);
 	    $('.sign-in-button').css("opacity", 0.7);
 	    $('.sign-up').hide();
@@ -35225,16 +35223,15 @@
 	        )
 	      ),
 	      React.createElement('span', { className: 'ql-format-separator' }),
-	      React.createElement('span', { className: 'ql-bold ql-format-button' }),
-	      React.createElement('span', { className: 'ql-italic ql-format-button' }),
-	      React.createElement('span', { className: 'ql-strike ql-format-button' }),
-	      React.createElement('span', { className: 'ql-underline ql-format-button' }),
-	      React.createElement('span', { className: 'ql-format-separator' }),
-	      React.createElement('span', { className: 'ql-link ql-format-button' }),
+	      React.createElement('span', { title: 'Bold', className: 'ql-bold ql-format-button' }),
+	      React.createElement('span', { title: 'Italic', className: 'ql-italic ql-format-button' }),
+	      React.createElement('span', { title: 'Strike', className: 'ql-strike ql-format-button' }),
+	      React.createElement('span', { title: 'Underline', className: 'ql-underline ql-format-button' }),
 	      React.createElement('span', { className: 'ql-format-separator' }),
 	      React.createElement(
 	        'select',
 	        {
+	          title: 'Background',
 	          className: 'ql-background ql-format-button',
 	          'data-reactid': 'c' },
 	        defaultColors.map(function (color, key) {
@@ -35245,6 +35242,7 @@
 	      React.createElement(
 	        'select',
 	        {
+	          title: 'Color',
 	          className: 'ql-color ql-format-button',
 	          'data-reactid': 'e' },
 	        defaultColors.map(function (color, key) {
@@ -35252,8 +35250,8 @@
 	        })
 	      ),
 	      React.createElement('span', { className: 'ql-format-separator' }),
-	      React.createElement('span', { className: 'ql-bullet ql-format-button' }),
-	      React.createElement('span', { className: 'ql-list ql-format-button' })
+	      React.createElement('span', { title: 'Bullet', className: 'ql-bullet ql-format-button' }),
+	      React.createElement('span', { title: 'List', className: 'ql-list ql-format-button' })
 	    );
 	  },
 	
@@ -35298,13 +35296,11 @@
 	        }.bind(this));
 	      }
 	    } else {
-	      debugger;
 	      this.editNote();
 	    }
 	  },
 	
 	  editNote: function () {
-	    debugger;
 	    if (this.timer) {
 	      clearTimeout(this.timer);
 	    }

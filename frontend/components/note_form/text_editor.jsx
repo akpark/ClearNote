@@ -139,14 +139,13 @@ var TextEditor = React.createClass({
           <option value="32px">Huge</option>
         </select>
         <span className="ql-format-separator"></span>
-        <span className="ql-bold ql-format-button"></span>
-        <span className="ql-italic ql-format-button"></span>
-        <span className="ql-strike ql-format-button"></span>
-        <span className="ql-underline ql-format-button"></span>
-        <span className="ql-format-separator"></span>
-        <span className="ql-link ql-format-button"></span>
+        <span title="Bold" className="ql-bold ql-format-button"></span>
+        <span title="Italic" className="ql-italic ql-format-button"></span>
+        <span title="Strike" className="ql-strike ql-format-button"></span>
+        <span title="Underline" className="ql-underline ql-format-button"></span>
         <span className="ql-format-separator"></span>
         <select
+          title="Background"
           className="ql-background ql-format-button"
           data-reactid='c'>
           {defaultColors.map(function (color, key) {
@@ -155,6 +154,7 @@ var TextEditor = React.createClass({
         </select>
         <span className="ql-format-separator"></span>
         <select
+          title="Color"
           className="ql-color ql-format-button"
           data-reactid='e'>
           {defaultColors.map(function (color, key) {
@@ -162,8 +162,8 @@ var TextEditor = React.createClass({
           })}
         </select>
         <span className="ql-format-separator"></span>
-        <span className="ql-bullet ql-format-button"/>
-        <span className="ql-list ql-format-button"/>
+        <span title="Bullet" className="ql-bullet ql-format-button"/>
+        <span title="List" className="ql-list ql-format-button"/>
       </div>
     );
   },

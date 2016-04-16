@@ -12,7 +12,7 @@ var NoteForm = React.createClass({
   },
 
   componentWillReceiveProps: function (newProps) {
-    this.setState( {noteId: newProps.params.noteId });
+    this.setState( { noteId: newProps.params.noteId });
   },
 
   handleExpand: function () {
